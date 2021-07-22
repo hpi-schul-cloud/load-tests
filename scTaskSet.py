@@ -1,3 +1,5 @@
+import locustfile
+
 from loginout import *
 from requestsBuilder import *
 from locust.user.task import TaskSet, tag
@@ -40,9 +42,9 @@ class scTaskSet(TaskSet):
     @tag('sc')
     @task
     def courses_add(self):
-        #if isinstance(self._user, PupilUser.__class__):
-        #    pass
-        #else:
+        if isinstance(self._user, locustfile.PupilUser):
+           pass
+        else:
             normalGET(self, "/courses/add/")
 
     @tag('sc')
@@ -120,34 +122,33 @@ class scTaskSet(TaskSet):
     @tag('course')
     @task
     def courses_add_Lernstore(self):
-        #if isinstance(self._user, Locustfile.PupilUser):
-        #    pass
-        #else:
-        lernStore(self)
+        if isinstance(self._user, locustfile.PupilUser):
+           pass
+        else:
+            lernStore(self)
 
     @tag('sc')
     @tag('course')
     @task
     def courses_add_course(self):
-        #if isinstance(self._user, Locustfile.PupilUser):
-        #    pass
-        #else:
-        courseAddEtherPadAndTool(self)
+        if isinstance(self._user, locustfile.PupilUser):
+           pass
+        else:
+            courseAddEtherPadAndTool(self)
     
     @tag('sc')
     @task
     def newTeam(self):
-        #if isinstance(self._user, Locustfile.PupilUser):
-        #   pass
-        #else:
-        newTeam(self)
+        if isinstance(self._user, locustfile.PupilUser):
+          pass
+        else:
+            newTeam(self)
 
     @tag('mm')
     @task
     def message(self):
-        
         # Posts and edits messages at the Matrix Messenger
-        #if isinstance(self._user, Locustfile.PupilUser):
-        #    pass
-        #else:
-        matrixMessenger(self)
+        if isinstance(self._user, locustfile.PupilUser):
+           pass
+        else:
+            matrixMessenger(self)
