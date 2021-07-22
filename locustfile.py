@@ -1,55 +1,51 @@
-import sys
 import logging
-import random
-from locust.user.users import User
+import sys
+from locust.user.task import TaskSet, task
 import yaml
 import os
+import random
 
-from locust import HttpUser, between
-from pupil import WebsiteTasks
+from bbbTaskSet import *
+from scTaskSet import *
 from urllib.parse import urlparse
-from bbbTaskSet import bbbTaskSet
-from docTaskSet import docTaskSet
+from locust import HttpUser, between
 
-tasksSets = [WebsiteTasks, bbbTaskSet, docTaskSet]
 wait_time = between(5, 15)
+tasks = {bbbTaskSet:1, scTaskSet:1}
+
 class PupilUser(HttpUser):
     weight = 5
+    tasks = tasks
     wait_time = wait_time
-    tasks = tasksSets
     user_type = "pupil"
     login_credentials = None
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
+        super(PupilUser, self).__init__(*args, **kwargs)
         getUserCredentials(self)
 
 class AdminUser(HttpUser):
     weight = 1
-    tasks = tasksSets
+    tasks = tasks
     wait_time = wait_time
     user_type = "admin"
     login_credentials = None
 
     def __init__(self, *args, **kwargs):
         super(AdminUser, self).__init__(*args, **kwargs)
-
         getUserCredentials(self)
 
 class TeacherUser(HttpUser):
     weight = 3
-    tasks = tasksSets
+    tasks = tasks
     wait_time = wait_time
     user_type = "teacher"
     login_credentials = None
 
     def __init__(self, *args, **kwargs):
         super(TeacherUser, self).__init__(*args, **kwargs)
-        
         getUserCredentials(self)
 
-        
 
 def getUserCredentials(user):
     logger = logging.getLogger(__name__)

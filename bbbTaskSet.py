@@ -10,7 +10,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
 from selenium.webdriver.common.by import By
- 
+
 class bbbTaskSet(TaskSet):
     bBBKey = os.environ.get("BBBKEY")
     host = os.environ.get("BBBHOST")
