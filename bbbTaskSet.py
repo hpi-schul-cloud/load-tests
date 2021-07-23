@@ -14,8 +14,8 @@ from selenium.webdriver.common.by import By
 class bbbTaskSet(TaskSet):
     bBBKey = os.environ.get("BBBKEY")
     host = os.environ.get("BBBHOST")
-    numberRooms = int(os.environ.get("BBBNUMBERROOMS"))
-    numberUsers = int(os.environ.get("BBBNUMBERUSERS"))
+    numberRooms = 3 #int(os.environ.get("BBBNUMBERROOMS"))
+    numberUsers = 6 #int(os.environ.get("BBBNUMBERUSERS"))
     timeToWaitShort = int(os.environ.get("TIMELONG"))
     timeToWaitLong = int(os.environ.get("TIMESHORT"))
 

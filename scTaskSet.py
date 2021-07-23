@@ -7,6 +7,11 @@ from locust import task
 
 class scTaskSet(TaskSet):
 
+    # Lists which contain all the doc/courses/teams ID's beeing created from the loadtest.
+    createdDocuments = []
+    createdCourses = []
+    createdTeams = []
+
     def on_start(self):
         login(self)
 
@@ -42,7 +47,7 @@ class scTaskSet(TaskSet):
     @tag('sc')
     @task
     def courses_add(self):
-        if isinstance(self._user, locustfile.PupilUser):
+        if isinstance(self._user, locustfile.locustfile.PupilUser):
            pass
         else:
             normalGET(self, "/courses/add/")
@@ -122,7 +127,7 @@ class scTaskSet(TaskSet):
     @tag('course')
     @task
     def courses_add_Lernstore(self):
-        if isinstance(self._user, locustfile.PupilUser):
+        if isinstance(self._user, locustfile.locustfile.PupilUser):
            pass
         else:
             lernStore(self)
@@ -131,7 +136,7 @@ class scTaskSet(TaskSet):
     @tag('course')
     @task
     def courses_add_course(self):
-        if isinstance(self._user, locustfile.PupilUser):
+        if isinstance(self._user, locustfile.locustfile.PupilUser):
            pass
         else:
             courseAddEtherPadAndTool(self)
@@ -139,7 +144,7 @@ class scTaskSet(TaskSet):
     @tag('sc')
     @task
     def newTeam(self):
-        if isinstance(self._user, locustfile.PupilUser):
+        if isinstance(self._user, locustfile.locustfile.PupilUser):
           pass
         else:
             newTeam(self)
@@ -148,7 +153,7 @@ class scTaskSet(TaskSet):
     @task
     def message(self):
         # Posts and edits messages at the Matrix Messenger
-        if isinstance(self._user, locustfile.PupilUser):
+        if isinstance(self._user, locustfile.locustfile.PupilUser):
            pass
         else:
             matrixMessenger(self)

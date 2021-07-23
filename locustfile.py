@@ -1,17 +1,17 @@
 import logging
 import sys
-from locust.user.task import TaskSet, task
 import yaml
 import os
 import random
 
 from bbbTaskSet import *
 from scTaskSet import *
+from docTaskSet import *
 from urllib.parse import urlparse
 from locust import HttpUser, between
 
 wait_time = between(5, 15)
-tasks = {bbbTaskSet:1, scTaskSet:1}
+tasks = {bbbTaskSet:1, scTaskSet:1, docTaskSet:1}
 
 class PupilUser(HttpUser):
     weight = 5

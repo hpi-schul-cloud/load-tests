@@ -1,8 +1,8 @@
 import time
-import loginout
+import locustfile
 
+from loginout import *
 from requestsBuilder import createDoc, deleteDoc
-from locustfile import PupilUser
 from locust.user.task import TaskSet, task, tag
 from selenium import webdriver
 from selenium.common.exceptions import (ElementClickInterceptedException, NoSuchWindowException)
@@ -16,16 +16,16 @@ from selenium.webdriver.common.by import By
 class docTaskSet(TaskSet):
 
     def on_start(self):
-        loginout
+        login(self)
 
     def on_stop(self):
-        pass
+        logout(self)
 
     @tag('doc')
     @tag('sc')
     @task
     def newFilesDocx(self):
-        if isinstance(self._user, PupilUser):
+        if isinstance(self._user, locustfile.PupilUser):
             pass
         else:
             mainHost = self.user.host
@@ -80,7 +80,7 @@ class docTaskSet(TaskSet):
     @tag('sc')
     @task
     def newFilesXlsx(self):
-        if isinstance(self._user, PupilUser):
+        if isinstance(self._user, locustfile.PupilUser):
             pass
         else:
             mainHost = self.user.host
@@ -136,7 +136,7 @@ class docTaskSet(TaskSet):
     @tag('sc')
     @task
     def newFilesPptx(self):
-        if isinstance(self._user, PupilUser):
+        if isinstance(self._user, locustfile.PupilUser):
             pass
         else:
             mainHost = self.user.host

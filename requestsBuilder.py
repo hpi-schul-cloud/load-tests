@@ -41,6 +41,11 @@ def normalGET(self, url):
         else:
             fetch_static_assets(self, response)
 
+# Returns if the provided url is accessible (e.g. Item exists)
+def checkGetRequest(self, url):
+    with self.client.get(url, catch_response=True, allow_redirects=True) as response:
+        return response.status_code == self.returncode
+
 # Builds the request header for the specific request within the provided session information
 def requestHeaderBuilder(self, referer_url):
     header = {
@@ -159,6 +164,7 @@ def deleteCourse(self, courseId):
 def lernStore(self):  
     # Create Course
     courseId = createCourse(self, courseDataBuilder(self))    
+    self.createdCourses.append(courseId)
 
     # Add Resources
     if isinstance(self._user, locustfile.TeacherUser):
@@ -233,12 +239,13 @@ def lernStore(self):
                     if response.status_code != 201:
                         response.failure(requestFailureMessage(self, response))
     # Delete Course
-    deleteCourse(self, courseId)
+    # deleteCourse(self, courseId)
 
 def courseAddEtherPadAndTool(self):
 
     # Create Course
     courseId = createCourse(self, courseDataBuilder(self))
+    self.createdCourses.append(courseId)
 
     # Add Etherpads
     if isinstance(self._user, locustfile.TeacherUser):
@@ -318,20 +325,23 @@ def newTeam(self):
         teamIdString = soup.find_all("section", {"class": "section-teams"})
         teamId = str(teamIdString).partition('\n')[0][41:65]
 
-        # Deletes a team
-        header = requestHeaderBuilder(self, (self.user.host + "/teams/" + teamId + "/edit"))
-        header["accept"] = "*/*"
-        header["accept-language"] = "en-US,en;q=0.9"
-        
-        with self.client.request("DELETE",
-            "/teams/" + teamId + "/" ,
-            header,
-            name="/teams/delete",
-            catch_response=True,
-            allow_redirects=True
-        ) as response:
-            if response.status_code != self.returncode:
-                response.failure(requestFailureMessage(self, response))
+    # Deletes a team
+    deleteTeam(self, teamId)
+
+def deleteTeam(self, teamID):
+    header = requestHeaderBuilder(self, (self.user.host + "/teams/" + teamID + "/edit"))
+    header["accept"] = "*/*"
+    header["accept-language"] = "en-US,en;q=0.9"
+    
+    with self.client.request("DELETE",
+        "/teams/" + teamID + "/" ,
+        header,
+        name="/teams/delete",
+        catch_response=True,
+        allow_redirects=True
+    ) as response:
+        if response.status_code != self.returncode:
+            response.failure(requestFailureMessage(self, response))
 
 def matrixMessenger(self):
     txn_id = 0
