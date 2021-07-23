@@ -43,7 +43,6 @@ class scTaskSet(TaskSet):
     def courses(self):
         normalGET(self, "/courses/")
 
-    @tag('test')
     @tag('sc')
     @task
     def courses_add(self):
@@ -122,7 +121,6 @@ class scTaskSet(TaskSet):
     def content(self):
         normalGET(self, "/content/")
 
-    @tag('test')
     @tag('sc')
     @tag('course')
     @task

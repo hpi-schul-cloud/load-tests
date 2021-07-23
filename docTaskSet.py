@@ -15,12 +15,18 @@ from selenium.webdriver.common.by import By
 
 class docTaskSet(TaskSet):
 
+    # Lists which contain all the doc/courses/teams ID's beeing created from the loadtest.
+    createdDocuments = []
+    createdCourses = []
+    createdTeams = []
+
     def on_start(self):
         login(self)
 
     def on_stop(self):
         logout(self)
 
+    @tag('test')
     @tag('doc')
     @tag('sc')
     @task
@@ -28,15 +34,15 @@ class docTaskSet(TaskSet):
         if isinstance(self._user, locustfile.PupilUser):
             pass
         else:
-            mainHost = self.user.host
             data = {
                 "name"          : "Loadtest docx",
                 "type"          : "docx",
                 "studentEdit"   : "false"
             }
             docId = createDoc(self, data)
+            self.createdDocuments.append(docId)
 
-            host = mainHost + "/files"
+            host = self.user.host + "/files"
 
             driverWB = webdriver.Chrome('.\chromedriver.exe')
             driverWB.get(host)
@@ -54,7 +60,7 @@ class docTaskSet(TaskSet):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
             element.click()
 
-            host = mainHost + "/files/file/" + docId + "/lool"
+            host = self.user.host + "/files/file/" + docId + "/lool"
             driverWB.get(host)
 
             # Switch to editorframe
@@ -69,7 +75,7 @@ class docTaskSet(TaskSet):
             # Edit Doc
             ui_element = "html/body"
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.XPATH, ui_element)))
-            element.send_keys("Der Loadtest der loaded den Test")
+            element.send_keys("Der Loadtest der loaded den Test!")
 
             time.sleep(self.timeToWaitShort)
 
@@ -83,15 +89,15 @@ class docTaskSet(TaskSet):
         if isinstance(self._user, locustfile.PupilUser):
             pass
         else:
-            mainHost = self.user.host
             data = {
                 "name"          : "Loadtest xlsx",
                 "type"          : "xlsx",
                 "studentEdit"   : "false"
             }
             docId = createDoc(self, data)
+            self.createdDocuments.append(docId)
 
-            host = mainHost + "/fil es"
+            host = self.user.host + "/files"
 
             driverWB = webdriver.Chrome('.\chromedriver.exe')
             driverWB.get(host)
@@ -109,7 +115,7 @@ class docTaskSet(TaskSet):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
             element.click()
 
-            host = mainHost + "/files/file/" + docId + "/lool"
+            host = self.user.host + "/files/file/" + docId + "/lool"
             driverWB.get(host)
 
             # Switch to editorframe
@@ -122,7 +128,7 @@ class docTaskSet(TaskSet):
             # Edit Doc
             ui_element = "input[id='formulaInput']"
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
-            element.send_keys("Der Loadtest der loaded den Test")
+            element.send_keys("Der Loadtest der loaded den Test!")
             ui_element = "td[id='tb_editbar_item_save']"
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
             element.click()
@@ -139,15 +145,15 @@ class docTaskSet(TaskSet):
         if isinstance(self._user, locustfile.PupilUser):
             pass
         else:
-            mainHost = self.user.host
             data = {
                 "name"          : "Loadtest pptx",
                 "type"          : "pptx",
                 "studentEdit"   : "false"
             }
             docId = createDoc(self, data)
+            self.createdDocuments.append(docId)
 
-            host = mainHost + "/files"
+            host = self.user.host + "/files"
 
             driverWB = webdriver.Chrome('.\chromedriver.exe')
             driverWB.get(host)
@@ -165,7 +171,7 @@ class docTaskSet(TaskSet):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
             element.click()
 
-            host = mainHost + "/files/file/" + docId + "/lool"
+            host = self.user.host + "/files/file/" + docId + "/lool"
             driverWB.get(host)
 
             # Switch to editorframe
@@ -181,7 +187,7 @@ class docTaskSet(TaskSet):
             # Edit Doc
             ui_element = "html/body"
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.XPATH, ui_element)))
-            element.send_keys("Der Loadtest der loaded den Test")
+            element.send_keys("Der Loadtest der loaded den Test!")
 
             time.sleep(self.timeToWaitShort)
 

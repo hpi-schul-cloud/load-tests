@@ -33,6 +33,8 @@ def login(self):
                 decoded_token_json = json.loads(decoded_token.decode('utf_8').removeprefix('{"alg":"HS256","typ":"access"}'))
                 self.user_id = decoded_token_json["userId"]
                 self.school_id = decoded_token_json["schoolId"]
+                self.timeToWaitShort = int(os.environ.get("TIMESHORT"))
+                self.timeToWaitLong = int(os.environ.get("TIMELONG"))
                 self.returncode = 200 #int(os.environ.get("RETURNCODENORMAL"))
     return self
 

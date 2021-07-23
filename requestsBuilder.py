@@ -110,7 +110,7 @@ def createDoc(self, docdata):
     with self.client.request(
         "POST",
         "/files/newFile",
-        header,
+        headers = header,
         data = docdata,
         catch_response = True,
         allow_redirects = True
@@ -127,7 +127,7 @@ def deleteDoc(self, docId):
     with self.client.request(
         "DELETE",
         "/files/file/",
-        requestHeaderBuilder(self, "/files/my/"),
+        headers = requestHeaderBuilder(self, "/files/my/"),
         data = data,
         catch_response = True,
         allow_redirects = True,
@@ -153,7 +153,7 @@ def deleteCourse(self, courseId):
     
     with self.client.request("DELETE",
         "/courses/" + courseId + "/" ,
-        header,
+        headers = header,
         catch_response=True,
         allow_redirects=True,
         name="/courses/delete"
