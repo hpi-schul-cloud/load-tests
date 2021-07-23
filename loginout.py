@@ -1,4 +1,5 @@
 import base64
+import os
 import json
 
 from bs4 import BeautifulSoup
@@ -30,10 +31,7 @@ def login(self):
                 decoded_token_json = json.loads(decoded_token.decode('utf_8').removeprefix('{"alg":"HS256","typ":"access"}'))
                 self.user_id = decoded_token_json["userId"]
                 self.school_id = decoded_token_json["schoolId"]
-                self.account_id = decoded_token_json["accountId"]
-                self.roles_id = decoded_token_json["roles"]
-                self.iat = decoded_token_json["iat"]
-                self.jti = decoded_token_json["jti"]
+                self.returncode = int(os.environ.get("RETURNCODENORMAL"))
     return self
 
 def logout(self):

@@ -11,7 +11,7 @@ def is_static_file(f):
         return False
 
 # Scans the hmtl-page for Js and Css Files and requests the single urls/files after successful get-request
-def fetch_static_assets(session, response):
+def fetch_static_assets(self, response):
     resource_urls = set()
     soup = BeautifulSoup(response.text, "html.parser")
 
@@ -26,45 +26,44 @@ def fetch_static_assets(session, response):
             resource_urls.add(url)
 
     for use_url in resource_urls:
-        with session.client.get(use_url, catch_response=True, allow_redirects=True) as response:
-            if response.status_code != 200:
-                    response.failure(requestFailureMessage(session, response))
+        with self.client.get(use_url, catch_response=True, allow_redirects=True) as response:
+            if response.status_code != self.returncode:
+                    response.failure(requestFailureMessage(self, response))
 
 # Failure Message for unsuccessfull requests
-def requestFailureMessage(session, response):
-    return (f"Failed! (username: {session.user.login_credentials['email']}, http-code: {str(response.status_code)}, header: {str(response.headers)})")
+def requestFailureMessage(self, response):
+    return (f"Failed! (username: {self.user.login_credentials['email']}, http-code: {str(response.status_code)}, header: {str(response.headers)})")
 
-def normalGET(session, url):
-    with session.client.get(url, catch_response=True, allow_redirects=True) as response:
-        if response.status_code != 200:
-            response.failure(requestFailureMessage(session, response))
+def normalGET(self, url):
+    with self.client.get(url, catch_response=True, allow_redirects=True) as response:
+        if response.status_code != self.returncode:
+            response.failure(requestFailureMessage(self, response))
         else:
-            fetch_static_assets(session, response)
+            fetch_static_assets(self, response)
 
 # Builds the request header for the specific request within the provided session information
-def requestHeaderBuilder(session, referer_url):
+def requestHeaderBuilder(self, referer_url):
     header = {
         "Connection"        : "keep-alive", # 'keep-alive' allows the connection to remain open for further requests/response
         "x-requested-with"  : "XMLHttpRequest", # Used for identifying Ajax requests
-        "csrf-token"        : session.csrf_token, # Security token
-        "Origin"            : session.user.host,
+        "csrf-token"        : self.csrf_token, # Security token
+        "Origin"            : self.user.host,
         "Sec-Fetch-Site"    : "same-origin", # Indicates the origin of the request
         "Sec-Fetch-Mode"    : "cors", # Indicates the mode of the request
         "Sec-Fetch-Dest"    : "empty", # Indicates the request's destination
-        "Referer"           : session.user.host + referer_url
+        "Referer"           : self.user.host + referer_url
     }
-
     return header
 
 # Prvides the create-course method with needed course informations
-def courseDataBuilder(host):
+def courseDataBuilder(self):
     course_data = {
         "stage"                 : "on",
         "_method"               : "post",
-        "schoolId"              : host.school_id,
+        "schoolId"              : self.school_id,
         "name"                  : "Loadtest Lernstore",
         "color"                 : "#ACACAC",
-        "teacherIds"            : host.user_id,
+        "teacherIds"            : self.user_id,
         "startDate"             : "01.08.2020",
         "untilDate"             : "31.07.2022",
         "times[0][weekday]"     : "0",
@@ -75,16 +74,16 @@ def courseDataBuilder(host):
         "times[1][startTime]"   : "12:00",
         "times[1][duration]"    : "90",
         "times[1][room]"        : "2",
-        "_csrf"                 : host.csrf_token
+        "_csrf"                 : self.csrf_token
     }
 
     return course_data
 
-def themaDataBuilder(authority, mainHost, courseId, component, csrf_token):
+def themaDataBuilder(self, courseId, component):
     thema_data = {
-        "authority"                         : authority,
-        "origin"                            : mainHost,
-        "referer"                           : mainHost + "/courses/" + courseId + "/tools/add",
+        "authority"                         : self.user.host.replace("https://", ""),
+        "origin"                            : self.user.host,
+        "referer"                           : self.user.host + "/courses/" + courseId + "/tools/add",
         "_method"                           : "post",
         "position"                          : "",
         "courseId"                          : courseId,
@@ -93,17 +92,17 @@ def themaDataBuilder(authority, mainHost, courseId, component, csrf_token):
         "contents[0][hidden]"               : "false",
         "contents[0][component]"            : component,
         "contents[0][user]"                 : "",
-        "_csrf"                             : csrf_token
+        "_csrf"                             : self.csrf_token
     }
 
     return thema_data
 
 # Creates a document on the SchulCloud website
-def createDoc(session, docdata):
-    header = requestHeaderBuilder(session, "/files/my/")
+def createDoc(self, docdata):
+    header = requestHeaderBuilder(self, "/files/my/")
     header["Content-Type"] = "application/x-www-form-urlencoded" # Adding entry "Content-Type" (data format for request body)
     
-    with session.client.request(
+    with self.client.request(
         "POST",
         "/files/newFile",
         header,
@@ -111,61 +110,59 @@ def createDoc(session, docdata):
         catch_response = True,
         allow_redirects = True
     ) as response:
-        if response.status_code != 200:
-            response.failure(requestFailureMessage(session, response))
+        if response.status_code != self.returncode:
+            response.failure(requestFailureMessage(self, response))
         else:
             return response.text
 
 # Deletes a document on the SchulCloud website
-def deleteDoc(session, docId):
-    data = {"id" : docId
-}
-    with session.client.request(
+def deleteDoc(self, docId):
+    data = {"id" : docId}
+
+    with self.client.request(
         "DELETE",
         "/files/file/",
-        requestHeaderBuilder(session, "/files/my/"),
+        requestHeaderBuilder(self, "/files/my/"),
         data = data,
         catch_response = True,
         allow_redirects = True,
         name="/files/file/delete"
     ) as response:
-        if response.status_code != 200:
-            response.failure(requestFailureMessage(session, response))
+        if response.status_code != self.returncode:
+            response.failure(requestFailureMessage(self, response))
 
-def createCourse(session, data):
-    with session.client.request("POST", "/courses/", data=data, catch_response=True, allow_redirects=True) as response:
+def createCourse(self, data):
+    with self.client.request("POST", "/courses/", data=data, catch_response=True, allow_redirects=True) as response:
         soup = BeautifulSoup(response.text, "html.parser")
-        if response.status_code != 200:
-            response.failure(requestFailureMessage(session, response))
+        if response.status_code != self.returncode:
+            response.failure(requestFailureMessage(self, response))
         else:
             json_object = json.loads(soup.string)
             courseId = str(json_object["createdCourse"]["id"])
             return (courseId)
 
-def deleteCourse(session, courseId):
-    header = requestHeaderBuilder(session, "/courses/"+ courseId +"/edit")
+def deleteCourse(self, courseId):
+    header = requestHeaderBuilder(self, "/courses/"+ courseId +"/edit")
     header["accept"] = "*/*" # Adding "accept" entry
     header["accept-language"] = "en-US,en;q=0.9" # Adding accepted language
     
-    with session.client.request("DELETE",
+    with self.client.request("DELETE",
         "/courses/" + courseId + "/" ,
         header,
         catch_response=True,
         allow_redirects=True,
         name="/courses/delete"
     ) as response:
-        if response.status_code != 200:
-            response.failure(requestFailureMessage(session, response))
+        if response.status_code != self.returncode:
+            response.failure(requestFailureMessage(self, response))
 
-def lernStore(self):
-    mainHost = self.user.host
-    
+def lernStore(self):  
     # Create Course
     courseId = createCourse(self, courseDataBuilder(self))    
 
     # Add Resources
     if isinstance(self._user, locustfile.TeacherUser):
-        thema_data = themaDataBuilder(mainHost.replace("https://", ""), mainHost, courseId, "resources", self.crsf_token)
+        thema_data = themaDataBuilder(self, courseId, "resources")
 
         # Adding a theme to the course to be able to add material from the Lernstore
         with self.client.request("POST",
@@ -175,7 +172,7 @@ def lernStore(self):
             catch_response=True,
             allow_redirects=True
         ) as response:
-            if response.status_code != 200:
+            if response.status_code != self.returncode:
                 response.failure(requestFailureMessage(self, response))
 
             # Request to the Lernstore to get the internal id of the course
@@ -189,7 +186,7 @@ def lernStore(self):
                     "authority"         : "api.staging.niedersachsen.hpi-schul-cloud.org",
                     "accept"            : "application/json, text/plain, */*",
                     "authorization"     : "Bearer " + self.bearer_token,
-                    "origin"            : mainHost,
+                    "origin"            : self.user.host,
                     "sec-fetch-site"    : "same-site",
                     "sec-fetch-mode"    : "cors",
                     "sec-fetch-dest"    : "empty"
@@ -224,7 +221,7 @@ def lernStore(self):
                         "accept-language"   : "en-US,en;q=0.9",
                         "authorization"     : "Bearer " + self.bearer_token,
                         "content-type"      : "application/json;charset=UTF-8",
-                        "origin"            : mainHost,
+                        "origin"            : self.user.host,
                         "sec-ch-ua"         : '" Not;A Brand";v="99", "Google Chrome";v="91", "Chromium";v="91"',
                         "sec-ch-ua-moblie"  : "?0",
                         "sec-fetch-site"    : "same-site",
@@ -239,17 +236,16 @@ def lernStore(self):
     deleteCourse(self, courseId)
 
 def courseAddEtherPadAndTool(self):
-    mainHost = self.user.host
-    
+
     # Create Course
     courseId = createCourse(self, courseDataBuilder(self))
 
     # Add Etherpads
     if isinstance(self._user, locustfile.TeacherUser):
-        thema_data = themaDataBuilder("staging.niedersachsen.hpi-schul-cloud.org", mainHost, courseId, "Etherpad", self.crsf_token)
+        thema_data = themaDataBuilder(self, courseId, "Etherpad")
         thema_data["contents[0][content][title]"] = ""
         thema_data["contents[0][content][description]"] = ""
-        thema_data["contents[0][content][url]"] = mainHost + "/etherpad/pi68ca"
+        thema_data["contents[0][content][url]"] = self.user.host + "/etherpad/pi68ca"
 
         with self.client.request("POST",
             "/courses/" + courseId + "/topics",
@@ -258,7 +254,7 @@ def courseAddEtherPadAndTool(self):
             catch_response=True,
             allow_redirects=True
         ) as response:
-            if response.status_code != 200:
+            if response.status_code != self.returncode:
                 response.failure(requestFailureMessage(self, response))
 
         # Add Tool
@@ -286,14 +282,13 @@ def courseAddEtherPadAndTool(self):
                 catch_response=True,
                 allow_redirects=True
             ) as response:
-                if response.status_code != 200:
+                if response.status_code != self.returncode:
                     response.failure(requestFailureMessage(self, response))
 
     # Delete Course
     deleteCourse(self, courseId)
 
 def newTeam(self):
-    mainHost = self.user.host
     data = {
         "schoolId"      : self.school_id,
         "_method"       : "post",
@@ -308,12 +303,12 @@ def newTeam(self):
     # Creates a team
     with self.client.request(
         "POST",
-        mainHost + "/teams/",
+        self.user.host + "/teams/",
         headers = {
-            "authority" : mainHost.replace("https://", ""),
+            "authority" : self.user.host.replace("https://", ""),
             "path"      : "/teams/",
-            "origin"    : mainHost,
-            "referer"   : mainHost + "/teams/add"
+            "origin"    : self.user.host,
+            "referer"   : self.user.host + "/teams/add"
         },
         data = data,
         catch_response=True,
@@ -324,7 +319,7 @@ def newTeam(self):
         teamId = str(teamIdString).partition('\n')[0][41:65]
 
         # Deletes a team
-        header = requestHeaderBuilder(mainHost, (mainHost + "/teams/" + teamId + "/edit"))
+        header = requestHeaderBuilder(self, (self.user.host + "/teams/" + teamId + "/edit"))
         header["accept"] = "*/*"
         header["accept-language"] = "en-US,en;q=0.9"
         
@@ -335,7 +330,7 @@ def newTeam(self):
             catch_response=True,
             allow_redirects=True
         ) as response:
-            if response.status_code != 200:
+            if response.status_code != self.returncode:
                 response.failure(requestFailureMessage(self, response))
 
 def matrixMessenger(self):

@@ -8,7 +8,7 @@ from locust import task
 class scTaskSet(TaskSet):
 
     def on_start(self):
-        self = login(self)
+        login(self)
 
     def on_stop(self):
         logout(self)
