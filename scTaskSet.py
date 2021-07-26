@@ -6,8 +6,13 @@ from locust.user.task import TaskSet, tag
 from locust import task 
 
 class scTaskSet(TaskSet):
+    '''
+    Definition of the specific tasks, the loadtest should execute.
+    Tasks, which are marked with tags, can be directly addressed by the start of the loadtest. The other tasks then will be ignored.
+    '''
 
     # Lists which contain all the doc/courses/teams ID's beeing created from the loadtest.
+    # All three lists are necessary for a clean log-out procress in 'loginout'.
     createdDocuments = []
     createdCourses = []
     createdTeams = []
@@ -121,7 +126,7 @@ class scTaskSet(TaskSet):
     def content(self):
         normalGET(self, "/content/")
 
-    @tag('test')
+    # @tag('test')
     @tag('sc')
     @tag('course')
     @task
@@ -140,6 +145,7 @@ class scTaskSet(TaskSet):
         else:
             courseAddEtherPadAndTool(self)
     
+    @tag('test')
     @tag('sc')
     @task
     def newTeam(self):

@@ -10,8 +10,11 @@ def is_static_file(f):
     else:
         return False
 
-# Scans the hmtl-page for Js and Css Files and requests the single urls/files after successful get-request
 def fetch_static_assets(self, response):
+    '''
+    Scans the hmtl-page for Js and Css Files and requests the single urls/files after successful get-request.
+    '''
+
     resource_urls = set()
     soup = BeautifulSoup(response.text, "html.parser")
 
@@ -30,8 +33,11 @@ def fetch_static_assets(self, response):
             if response.status_code != self.returncode:
                     response.failure(requestFailureMessage(self, response))
 
-# Failure Message for unsuccessfull requests
 def requestFailureMessage(self, response):
+    '''
+    Failure Message for unsuccessfull requests.
+    '''
+
     return (f"Failed! (username: {self.user.login_credentials['email']}, http-code: {str(response.status_code)}, header: {str(response.headers)})")
 
 def normalGET(self, url):
@@ -41,13 +47,11 @@ def normalGET(self, url):
         else:
             fetch_static_assets(self, response)
 
-# Returns if the provided url is accessible (e.g. Item exists)
-def checkGetRequest(self, url):
-    with self.client.get(url, catch_response=True, allow_redirects=True) as response:
-        return response.status_code == self.returncode
-
-# Builds the request header for the specific request within the provided session information
 def requestHeaderBuilder(self, referer_url):
+    '''
+    Builds the request header for the specific request within the provided session information.
+    '''
+
     header = {
         "Connection"        : "keep-alive", # 'keep-alive' allows the connection to remain open for further requests/response
         "x-requested-with"  : "XMLHttpRequest", # Used for identifying Ajax requests
@@ -60,8 +64,11 @@ def requestHeaderBuilder(self, referer_url):
     }
     return header
 
-# Prvides the create-course method with needed course informations
 def courseDataBuilder(self):
+    '''
+    Provides the create-course method with needed course informations.
+    '''
+
     course_data = {
         "stage"                 : "on",
         "_method"               : "post",
@@ -85,6 +92,10 @@ def courseDataBuilder(self):
     return course_data
 
 def themaDataBuilder(self, courseId, component):
+    '''
+    Provides necessary informations for adding a theme to the course, to be able to add material from the Lernstore.
+    '''
+    
     thema_data = {
         "authority"                         : self.user.host.replace("https://", ""),
         "origin"                            : self.user.host,
@@ -102,8 +113,11 @@ def themaDataBuilder(self, courseId, component):
 
     return thema_data
 
-# Creates a document on the SchulCloud website
 def createDoc(self, docdata):
+    '''
+    Creates a document on the SchulCloud website.
+    '''
+
     header = requestHeaderBuilder(self, "/files/my/")
     header["Content-Type"] = "application/x-www-form-urlencoded" # Adding entry "Content-Type" (data format for request body)
     
@@ -118,11 +132,14 @@ def createDoc(self, docdata):
         if response.status_code != self.returncode:
             response.failure(requestFailureMessage(self, response))
         else:
-            self.createdDocuments.append(response.text)
+            self.createdDocuments.append(response.text) # Adding the new document to createdDocumets-list for final clean-up
             return response.text
 
-# Deletes a document on the SchulCloud website
 def deleteDoc(self, docId):
+    '''
+    Deletes a document on the SchulCloud website.
+    '''
+
     data = {"id" : docId}
 
     with self.client.request(
@@ -296,10 +313,16 @@ def courseAddEtherPadAndTool(self):
     deleteCourse(self, courseId)
 
 def createDeleteTeam(self):
+    '''
+    Can be called as a task for the loadtest. Creates a new team and deletes it afterwards.
+    '''
+    
     teamId = newTeam(self)
     deleteTeam(self, teamId)
 
 def newTeam(self):
+    teamId = None
+    
     data = {
         "schoolId"      : self.school_id,
         "_method"       : "post",
@@ -327,13 +350,13 @@ def newTeam(self):
     ) as response:
         if response.status_code != self.returncode:
             response.failure(requestFailureMessage(self, response))
-            teamId = None
         else:
             soup = BeautifulSoup(response.text, "html.parser")
             teamIdString = soup.find_all("section", {"class": "section-teams"})
             teamId = str(teamIdString).partition('\n')[0][41:65]
-
-        return teamId
+            self.createdTeams.append(teamId)
+            
+    return teamId
 
 def deleteTeam(self, teamID):
     header = requestHeaderBuilder(self, (self.user.host + "/teams/" + teamID + "/edit"))
@@ -342,13 +365,16 @@ def deleteTeam(self, teamID):
     
     with self.client.request("DELETE",
         "/teams/" + teamID + "/" ,
-        header,
+        headers = header,
         name="/teams/delete",
         catch_response=True,
         allow_redirects=True
     ) as response:
         if response.status_code != self.returncode:
             response.failure(requestFailureMessage(self, response))
+            return False
+        else:
+            return True
 
 def matrixMessenger(self):
     txn_id = 0

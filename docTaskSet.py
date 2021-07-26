@@ -16,6 +16,7 @@ from selenium.webdriver.common.by import By
 class docTaskSet(TaskSet):
 
     # Lists which contain all the doc/courses/teams ID's beeing created from the loadtest.
+    # All three lists are necessary for a clean log-out procress in 'loginout'.
     createdDocuments = []
     createdCourses = []
     createdTeams = []

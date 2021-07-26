@@ -6,10 +6,12 @@ import requestsBuilder
 
 from bs4 import BeautifulSoup
 
-
 def login(self):
-    # First task. Gets csrf token from login html website and logs in.
-    # Gets bearer token after login from the response header and extracts specific informations for further progress.
+    '''
+    First task. Gets csrf token from login html website and logs in.
+    Gets bearer token after login from the response header and extracts specific informations for further progress.
+    '''
+
     if self.user.login_credentials == None:
         self.interrupt(reschedule=False)
 
@@ -39,31 +41,65 @@ def login(self):
     return self
 
 def logout(self):
+    '''
+    Starts the clean-up task after stopping the loadtest and logs out the user(s) afterwards.
+    '''
+
     cleanUpLoadtest(self)
     self.client.get("/logout/", allow_redirects=True)
     self.csrf_token = None
 
 def cleanUpLoadtest(self):
     '''
-    Deletes all documents, courses and teams which were created through the loadtest and keeps the stageing-test-area clean.
+    Deletes all remaining documents, courses and teams which were created through the loadtest and keeps the stageing-test-area clean.
+    Skips if no document-, course- our team- ID found.
     '''
-    
+
     for documentID in self.createdDocuments :
         url = f"{self.user.host}/files/my/"
-        
         with self.client.get(url, catch_response=True, allow_redirects=True) as response:
             soup = BeautifulSoup(response.text, "html.parser")
-            findID = soup.findAll("div", {"data-file-id" : documentID}) # Searches document id on html page
+            findID = soup.findNext("div", {"data-file-id" : documentID}) # Searches document id on html page
         
         if len(findID) > 0:
             requestsBuilder.deleteDoc(self, documentID)
 
     for courseID in self.createdCourses:
-        url = f"{self.user.host}/courses/{courseID}"
-        if requestsBuilder.checkGetRequest(self, url):
+        url = f"{self.user.host}/courses/"
+        with self.client.get(url, catch_response=True, allow_redirects=True) as response:
+            soup = BeautifulSoup(response.text, "html.parser")
+            findID = soup.findNext("div", {"data-id" : courseID}) # Searches course id on html page
+            print(findID)
+
+        if len(findID) > 0:
             requestsBuilder.deleteCourse(self, courseID)
             
     for teamID in self.createdTeams:
-        url = f"{self.user.host}/teams/{teamID}"
-        if requestsBuilder.checkGetRequest(self, url):
-            requestsBuilder.deleteTeam(self, teamID)
+        print(f"\n{self.createdTeams}")
+        
+        url = f"{self.user.host}/teams/"
+        
+        with self.client.get(url, catch_response=True, allow_redirects=True) as response:
+            soup = BeautifulSoup(response.text, "html.parser")
+        
+            findID = soup.find_all({"data-id":teamID})
+            findID2 = soup.find_all("div", {"data-id":teamID})
+            # findID = soup.find_all('a', {"data-id":teamID})
+            # findID = soup.findNext("a", {"data-id" : teamID}) # Searches team id on html page
+            # print(findID)
+            # findID2 = soup.findAll("a", {"data-id" : teamID}) # Searches team id on html page
+            # print(findID2)
+        
+        print(findID)
+        print(findID2)
+       
+        if not findID is None:
+            if requestsBuilder.deleteTeam(self, teamID):
+                print(f"## {teamID} deleted ## \n")
+            else:
+                print(f"## {teamID} could not be removed ## \n")
+            
+            self.createdTeams.remove(teamID)
+        else:
+            self.createdTeams.remove(teamID)
+            print(f"## {teamID} not found ## \n")
