@@ -26,7 +26,7 @@ class docTaskSet(TaskSet):
     def on_stop(self):
         logout(self)
 
-    @tag('test')
+    #@tag('test')
     @tag('doc')
     @tag('sc')
     @task

@@ -121,6 +121,7 @@ class scTaskSet(TaskSet):
     def content(self):
         normalGET(self, "/content/")
 
+    @tag('test')
     @tag('sc')
     @tag('course')
     @task

@@ -118,6 +118,7 @@ def createDoc(self, docdata):
         if response.status_code != self.returncode:
             response.failure(requestFailureMessage(self, response))
         else:
+            self.createdDocuments.append(response.text)
             return response.text
 
 # Deletes a document on the SchulCloud website
@@ -144,6 +145,7 @@ def createCourse(self, data):
         else:
             json_object = json.loads(soup.string)
             courseId = str(json_object["createdCourse"]["id"])
+            self.createdCourses.append(courseId)
             return (courseId)
 
 def deleteCourse(self, courseId):
@@ -164,7 +166,6 @@ def deleteCourse(self, courseId):
 def lernStore(self):  
     # Create Course
     courseId = createCourse(self, courseDataBuilder(self))    
-    self.createdCourses.append(courseId)
 
     # Add Resources
     if isinstance(self._user, locustfile.TeacherUser):
@@ -239,13 +240,12 @@ def lernStore(self):
                     if response.status_code != 201:
                         response.failure(requestFailureMessage(self, response))
     # Delete Course
-    # deleteCourse(self, courseId)
+    deleteCourse(self, courseId)
 
 def courseAddEtherPadAndTool(self):
 
     # Create Course
     courseId = createCourse(self, courseDataBuilder(self))
-    self.createdCourses.append(courseId)
 
     # Add Etherpads
     if isinstance(self._user, locustfile.TeacherUser):
@@ -295,6 +295,10 @@ def courseAddEtherPadAndTool(self):
     # Delete Course
     deleteCourse(self, courseId)
 
+def createDeleteTeam(self):
+    teamId = newTeam(self)
+    deleteTeam(self, teamId)
+
 def newTeam(self):
     data = {
         "schoolId"      : self.school_id,
@@ -321,12 +325,15 @@ def newTeam(self):
         catch_response=True,
         allow_redirects=True
     ) as response:
-        soup = BeautifulSoup(response.text, "html.parser")
-        teamIdString = soup.find_all("section", {"class": "section-teams"})
-        teamId = str(teamIdString).partition('\n')[0][41:65]
+        if response.status_code != self.returncode:
+            response.failure(requestFailureMessage(self, response))
+            teamId = None
+        else:
+            soup = BeautifulSoup(response.text, "html.parser")
+            teamIdString = soup.find_all("section", {"class": "section-teams"})
+            teamId = str(teamIdString).partition('\n')[0][41:65]
 
-    # Deletes a team
-    deleteTeam(self, teamId)
+        return teamId
 
 def deleteTeam(self, teamID):
     header = requestHeaderBuilder(self, (self.user.host + "/teams/" + teamID + "/edit"))
