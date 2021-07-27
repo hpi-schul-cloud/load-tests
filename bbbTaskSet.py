@@ -12,6 +12,18 @@ from selenium.webdriver.support import expected_conditions as EC # available sin
 from selenium.webdriver.common.by import By
 
 class bbbTaskSet(TaskSet):
+    '''
+    Task-Set which contains all test-tasks for working with BBB on the SchulCloud.
+
+    Args:
+        bBBKey (str) : key for using BBB
+        host (str) : url of BBB
+        numberRooms (int) : number of rooms which should be created
+        numberUsers (int) : number od useres which are involved in the test
+        timeWaitShort (int) : waiting time short
+        timeWaitLong (int) : waiting time long
+    '''
+
     bBBKey = os.environ.get("BBBKEY")
     host = os.environ.get("BBBHOST")
     numberRooms = 3 #int(os.environ.get("BBBNUMBERROOMS"))
@@ -28,6 +40,19 @@ class bbbTaskSet(TaskSet):
     @tag('bbb')
     @task
     def bBBTest(self):
+        '''
+        Task for creating multiple BBB rooms.
+
+        Creates the number of BBB rooms which is contained in the 'numberRooms' variable. After creating a room, other users join and the 
+        moderator will share a video. The number of joining users is contained in the 'numberUsers' variable. After finishing the taks, all tabs
+        and BBB rooms will be closed.
+
+        Args:
+            driverWB (webdriver) : browser which will be used for creating the BBB rooms
+            counterfirst (int) : counter for creating a specific number of rooms
+            countersecond (int) : counter for users to join a BBB room
+            counterTab (int) : counter for open tabs
+        '''
 
         #Starts a chrome Browser
         driverWB = webdriver.Chrome('.\chromedriver.exe')
