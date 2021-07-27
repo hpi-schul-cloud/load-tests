@@ -4,12 +4,6 @@ import locustfile
 
 from bs4 import BeautifulSoup
 
-def is_static_file(f):
-    if f.endswith(".css") or f.endswith(".png"):
-        return True
-    else:
-        return False
-
 def fetch_static_assets(self, response):
     '''
     Scans the hmtl-page for Js and Css Files and requests the single urls/files after successful get-request.
@@ -25,7 +19,7 @@ def fetch_static_assets(self, response):
 
     for res in soup.find_all(href=True):
         url = res['href']
-        if is_static_file(url):
+        if f.endswith(".css") or f.endswith(".png"):
             resource_urls.add(url)
 
     for use_url in resource_urls:
@@ -41,6 +35,10 @@ def requestFailureMessage(self, response):
     return (f"Failed! (username: {self.user.login_credentials['email']}, http-code: {str(response.status_code)}, header: {str(response.headers)})")
 
 def normalGET(self, url):
+    '''
+    Normal Get-Request for an URL
+    '''
+
     with self.client.get(url, catch_response=True, allow_redirects=True) as response:
         if response.status_code != self.returncode:
             response.failure(requestFailureMessage(self, response))
@@ -141,7 +139,7 @@ def deleteDoc(self, docId):
     '''
 
     data = {"id" : docId}
-
+    print(docId)
     with self.client.request(
         "DELETE",
         "/files/file/",
@@ -181,6 +179,10 @@ def deleteCourse(self, courseId):
             response.failure(requestFailureMessage(self, response))
 
 def lernStore(self):  
+    '''
+    Creates a Course which 
+    '''
+
     # Create Course
     courseId = createCourse(self, courseDataBuilder(self))    
 

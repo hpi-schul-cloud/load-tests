@@ -148,7 +148,7 @@ class scTaskSet(TaskSet):
     @tag('test')
     @tag('sc')
     @task
-    def newTeam(self):
+    def createDeleteTeam(self):
         if isinstance(self._user, locustfile.locustfile.PupilUser):
           pass
         else:

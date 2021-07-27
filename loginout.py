@@ -1,6 +1,7 @@
 import base64
 import os
 import json
+import locustfile
 from re import I
 import requestsBuilder
 
@@ -55,51 +56,35 @@ def cleanUpLoadtest(self):
     Skips if no document-, course- our team- ID found.
     '''
 
-    for documentID in self.createdDocuments :
-        url = f"{self.user.host}/files/my/"
-        with self.client.get(url, catch_response=True, allow_redirects=True) as response:
-            soup = BeautifulSoup(response.text, "html.parser")
-            findID = soup.findNext("div", {"data-file-id" : documentID}) # Searches document id on html page
-        
-        if len(findID) > 0:
-            requestsBuilder.deleteDoc(self, documentID)
+    if isinstance(self._user, locustfile.locustfile.TeacherUser):
 
-    for courseID in self.createdCourses:
-        url = f"{self.user.host}/courses/"
-        with self.client.get(url, catch_response=True, allow_redirects=True) as response:
-            soup = BeautifulSoup(response.text, "html.parser")
-            findID = soup.findNext("div", {"data-id" : courseID}) # Searches course id on html page
-            print(findID)
+        for documentId in self.createdDocuments :
+            url = f"{self.user.host}/files/my/"
+            with self.client.get(url, catch_response=True, allow_redirects=True) as response:
+                soup = BeautifulSoup(response.text, "html.parser")
+                findId = soup.findNext("div", {"data-file-id" : documentId}) # Searches document id on html page
+            
+            if len(findId) > 0:
+                requestsBuilder.deleteDoc(self, documentId)
+        self.createdDocuments = None
+        
+        for courseId in self.createdCourses:
+            url = f"{self.user.host}/courses/"
+            with self.client.get(url, catch_response=True, allow_redirects=True) as response:
+                soup = BeautifulSoup(response.text, "html.parser")
+                findId = soup.findNext("div", {"data-id" : courseId}) # Searches course id on html page
+                print(findId)
 
-        if len(findID) > 0:
-            requestsBuilder.deleteCourse(self, courseID)
-            
-    for teamID in self.createdTeams:
-        print(f"\n{self.createdTeams}")
-        
-        url = f"{self.user.host}/teams/"
-        
-        with self.client.get(url, catch_response=True, allow_redirects=True) as response:
-            soup = BeautifulSoup(response.text, "html.parser")
-        
-            findID = soup.find_all({"data-id":teamID})
-            findID2 = soup.find_all("div", {"data-id":teamID})
-            # findID = soup.find_all('a', {"data-id":teamID})
-            # findID = soup.findNext("a", {"data-id" : teamID}) # Searches team id on html page
-            # print(findID)
-            # findID2 = soup.findAll("a", {"data-id" : teamID}) # Searches team id on html page
-            # print(findID2)
-        
-        print(findID)
-        print(findID2)
-       
-        if not findID is None:
-            if requestsBuilder.deleteTeam(self, teamID):
-                print(f"## {teamID} deleted ## \n")
-            else:
-                print(f"## {teamID} could not be removed ## \n")
-            
-            self.createdTeams.remove(teamID)
-        else:
-            self.createdTeams.remove(teamID)
-            print(f"## {teamID} not found ## \n")
+            if len(findId) > 0:
+                requestsBuilder.deleteCourse(self, courseId)
+        self.createdCourses = None
+    
+        for teamId in self.createdTeams:
+            if teamId != 0:
+                url = f"{self.user.host}/teams/"
+                with self.client.get(url, catch_response=True, allow_redirects=True) as response:
+                    soup = BeautifulSoup(response.text, "html.parser") 
+                    findId = soup.find_all({"data-id":teamId})
+                if not findId is None:
+                    requestsBuilder.deleteTeam(self, teamId)
+        self.createdTeams = None
