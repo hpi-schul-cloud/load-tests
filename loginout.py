@@ -96,10 +96,10 @@ def cleanUpLoadtest(self):
         if not findID is None:
             if requestsBuilder.deleteTeam(self, teamID):
                 print(f"## {teamID} deleted ## \n")
+                self.createdTeams.remove(teamID)
             else:
                 print(f"## {teamID} could not be removed ## \n")
             
-            self.createdTeams.remove(teamID)
         else:
             self.createdTeams.remove(teamID)
             print(f"## {teamID} not found ## \n")
