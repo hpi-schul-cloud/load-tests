@@ -1,5 +1,6 @@
 import time
 import locustfile
+import constant
 
 from loginout import *
 from requestsBuilder import createDoc, deleteDoc
@@ -97,7 +98,7 @@ class docTaskSet(TaskSet):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.TAG_NAME, ui_element)))
             driverWB.switch_to.frame(element)
 
-            time.sleep(self.timeToWaitShort)
+            time.sleep(constant.constant.timeToWaitShort)
 
             # Edit document
             ui_element = "html/body"
@@ -165,7 +166,7 @@ class docTaskSet(TaskSet):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.TAG_NAME, ui_element)))
             driverWB.switch_to.frame(element)
 
-            time.sleep(self.timeToWaitShort)
+            time.sleep(constant.constant.timeToWaitShort)
 
             # Edit Doc
             ui_element = "input[id='formulaInput']"
@@ -175,7 +176,7 @@ class docTaskSet(TaskSet):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
             element.click()
 
-            time.sleep(self.timeToWaitShort)
+            time.sleep(constant.constant.timeToWaitShort)
 
             driverWB.quit()
             deleteDoc(self, docId)
@@ -239,14 +240,14 @@ class docTaskSet(TaskSet):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
             driverWB.switch_to.frame(element)
 
-            time.sleep(self.timeToWaitShort)
+            time.sleep(constant.constant.timeToWaitShort)
 
             # Edit Doc
             ui_element = "html/body"
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.XPATH, ui_element)))
             element.send_keys("Der Loadtest der loaded den Test!")
 
-            time.sleep(self.timeToWaitShort)
+            time.sleep(constant.constant.timeToWaitShort)
 
             driverWB.quit()
             deleteDoc(self, docId)

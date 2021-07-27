@@ -1,6 +1,7 @@
 import time
 import os
 import hashlib
+import constant
 
 from locust import task, tag
 from locust.user.task import TaskSet
@@ -17,19 +18,12 @@ class bbbTaskSet(TaskSet):
 
     Args:
         bBBKey (str) : key for using BBB
-        host (str) : url of BBB
+        bBBHost (str) : url of BBB
         numberRooms (int) : number of rooms which should be created
         numberUsers (int) : number od useres which are involved in the test
         timeWaitShort (int) : waiting time short
         timeWaitLong (int) : waiting time long
     '''
-
-    bBBKey = os.environ.get("BBBKEY")
-    host = os.environ.get("BBBHOST")
-    numberRooms = 3 #int(os.environ.get("BBBNUMBERROOMS"))
-    numberUsers = 6 #int(os.environ.get("BBBNUMBERUSERS"))
-    timeToWaitShort = int(os.environ.get("TIMELONG"))
-    timeToWaitLong = int(os.environ.get("TIMESHORT"))
 
     def on_start(self):
         pass
@@ -56,35 +50,35 @@ class bbbTaskSet(TaskSet):
 
         #Starts a chrome Browser
         driverWB = webdriver.Chrome('.\chromedriver.exe')
-        driverWB.get(self.host)
+        driverWB.get(constant.constant.bBBHost)
 
         counterfirst = 0
         counterTab = 1
-        while counterfirst < self.numberRooms:
+        while counterfirst < constant.constant.numberRooms:
 
             timestamp = str(time.time())
             # Creates a BBB-Room with a password
-            v = "create"
-            x = "meetingID=loadtest-" + timestamp + str(counterfirst) + "&name=loadtest-" + str(time.time()) + str(counterfirst) + "&moderatorPW=123&attendeePW=456&lockSettingsDisableMic=true"
-            y = self.host + "/bigbluebutton/api/" + v + "?" + x
-            z = str(v) + str(x) + str(self.bBBKey)
-            w = str(y) + "&checksum=" + hashlib.sha1(z.encode()).hexdigest()
+            operator = "create"
+            urlparam = "meetingID=loadtest-" + timestamp + str(counterfirst) + "&name=loadtest-" + str(time.time()) + str(counterfirst) + "&moderatorPW=123&attendeePW=456&lockSettingsDisableMic=true"
+            urlstart = constant.constant.bBBHost + "/bigbluebutton/api/" + operator + "?" + urlparam
+            url = str(operator) + str(urlparam) + str(constant.constant.bBBKey)
+            urlsha = str(urlstart) + "&checksum=" + hashlib.sha1(url.encode()).hexdigest()
 
-            driverWB.get(w)
+            driverWB.get(urlsha)
 
             countersecond = 0
 
             # Moderator joins the room on a new Tab
-            v = "join"
-            x = "meetingID=loadtest-" + timestamp + str(counterfirst) + "&fullName=loadtest-" + str(counterfirst) + "userMLoadtest-" + str(countersecond) + "&userID=loadtest-" + str(counterfirst) + "userMLoadtest-" + str(countersecond) + "&password=123"
-            y = self.host + "/bigbluebutton/api/" + v + "?" + x
-            z = str(v) + str(x) + str(self.bBBKey)
-            w = y + "&checksum=" + hashlib.sha1(z.encode()).hexdigest()
+            operator = "join"
+            urlparam = "meetingID=loadtest-" + timestamp + str(counterfirst) + "&fullName=loadtest-" + str(counterfirst) + "userMLoadtest-" + str(countersecond) + "&userID=loadtest-" + str(counterfirst) + "userMLoadtest-" + str(countersecond) + "&password=123"
+            urlstart = constant.constant.bBBHost + "/bigbluebutton/api/" + operator + "?" + urlparam
+            url = str(operator) + str(urlparam) + str(constant.constant.bBBKey)
+            urlsha = urlstart + "&checksum=" + hashlib.sha1(url.encode()).hexdigest()
 
             windows = driverWB.window_handles
             driverWB.execute_script("window.open('');")
             driverWB.switch_to.window(driverWB.window_handles[counterTab])
-            driverWB.get(w)
+            driverWB.get(urlsha)
             # time.sleep(self.timeToWaitShort)
 
             # Chooses to join the room with "Listen only"
@@ -92,7 +86,7 @@ class bbbTaskSet(TaskSet):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
             element.click()
 
-            time.sleep(self.timeToWaitShort)
+            time.sleep(constant.constant.timeToWaitShort)
 
             # Clicks on the Plussign
             ui_element = "tippy-21"
@@ -109,38 +103,38 @@ class bbbTaskSet(TaskSet):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
             element.send_keys('https://player.vimeo.com/video/418854539')
 
-            time.sleep(self.timeToWaitShort)
+            time.sleep(constant.constant.timeToWaitShort)
 
             # Clicks on the button "Share a new video"
             ui_element = "button[class='button--Z2dosza md--Q7ug4 default--Z19H5du startBtn--ZifpQ9']"
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
             element.click()
 
-            time.sleep(self.timeToWaitLong)
+            time.sleep(constant.constant.timeToWaitLong)
 
             counterTab += 1
             countersecond += 1
 
-            while countersecond < self.numberUsers:
+            while countersecond < constant.constant.numberUsers:
 
                 # Normal User joins the room
-                v = "join"
-                x = "meetingID=loadtest-" + timestamp + str(counterfirst) + "&fullName=loadtest-" + str(counterfirst) + "userLoadtest-" + str(countersecond) + "&userID=loadtest-" + str(counterfirst) + "userLoadtest-" + str(countersecond) + "&password=456"
-                y = self.host + "/bigbluebutton/api/" + v + "?" + x
-                z = str(v) + str(x) + str(self.bBBKey)
-                w = y + "&checksum=" + hashlib.sha1(z.encode()).hexdigest()
+                operator = "join"
+                urlparam = "meetingID=loadtest-" + timestamp + str(counterfirst) + "&fullName=loadtest-" + str(counterfirst) + "userLoadtest-" + str(countersecond) + "&userID=loadtest-" + str(counterfirst) + "userLoadtest-" + str(countersecond) + "&password=456"
+                urlstart = constant.constant.bBBHost + "/bigbluebutton/api/" + operator + "?" + urlparam
+                url = str(operator) + str(urlparam) + str(constant.constant.bBBKey)
+                urlsha = urlstart + "&checksum=" + hashlib.sha1(url.encode()).hexdigest()
 
                 # changes the browsertab
                 windows = driverWB.window_handles
                 driverWB.execute_script("window.open('');")
                 driverWB.switch_to.window(driverWB.window_handles[counterTab])
-                driverWB.get(w)
+                driverWB.get(urlsha)
 
                 ui_element = "button[aria-label='Play audio']"
                 element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
                 element.click()
 
-                time.sleep(self.timeToWaitLong)
+                time.sleep(constant.constant.timeToWaitLong)
 
                 countersecond += 1
                 counterTab += 1
@@ -149,15 +143,15 @@ class bbbTaskSet(TaskSet):
 
         counterfirst = 0
         time.sleep(30)
-        while counterfirst < self.numberRooms:
+        while counterfirst < constant.constant.numberRooms:
             # Closes all the rooms
-            v = "end"
-            x = "meetingID=loadtest-" + timestamp + str(counterfirst) + "&password=123"
-            y = self.host + "/bigbluebutton/api/" + v + "?" + x
-            z = str(v) + str(x) + str(self.bBBKey)
-            w = str(y) + "&checksum=" + hashlib.sha1(z.encode()).hexdigest()
+            operator = "end"
+            urlparam = "meetingID=loadtest-" + timestamp + str(counterfirst) + "&password=123"
+            urlstart = constant.constant.bBBHost + "/bigbluebutton/api/" + operator + "?" + urlparam
+            url = str(operator) + str(urlparam) + str(constant.constant.bBBKey)
+            urlsha = str(urlstart) + "&checksum=" + hashlib.sha1(url.encode()).hexdigest()
 
-            driverWB.get(w)
+            driverWB.get(urlsha)
 
             time.sleep(2)
             counterfirst += 1

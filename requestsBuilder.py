@@ -1,6 +1,7 @@
 import json
 import os
 import locustfile
+import constant
 
 from bs4 import BeautifulSoup
 
@@ -19,19 +20,19 @@ def fetch_static_assets(self, response):
 
     for res in soup.find_all(href=True):
         url = res['href']
-        if f.endswith(".css") or f.endswith(".png"):
+        if url.endswith(".css") or url.endswith(".png"):
             resource_urls.add(url)
 
     for use_url in resource_urls:
         with self.client.get(use_url, catch_response=True, allow_redirects=True) as response:
-            if response.status_code != self.returncode:
+            if response.status_code != constant.constant.returncodeNormal:
                     response.failure(requestFailureMessage(self, response))
 
 def requestFailureMessage(self, response):
     '''
     Failure Message for unsuccessfull requests.
     '''
-
+    
     return (f"Failed! (username: {self.user.login_credentials['email']}, http-code: {str(response.status_code)}, header: {str(response.headers)})")
 
 def normalGET(self, url):
@@ -40,7 +41,7 @@ def normalGET(self, url):
     '''
 
     with self.client.get(url, catch_response=True, allow_redirects=True) as response:
-        if response.status_code != self.returncode:
+        if response.status_code != constant.constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
         else:
             fetch_static_assets(self, response)
@@ -92,6 +93,11 @@ def courseDataBuilder(self):
 def themaDataBuilder(self, courseId, component):
     '''
     Provides necessary informations for adding a theme to the course, to be able to add material from the Lernstore.
+
+    Param:
+        self: Taskset
+        courseId: Course ID
+        components: 
     '''
     
     thema_data = {
@@ -114,6 +120,10 @@ def themaDataBuilder(self, courseId, component):
 def createDoc(self, docdata):
     '''
     Creates a document on the SchulCloud website.
+
+    Param:
+        self: Taskset
+        docdata: Configuration for the new Document
     '''
 
     header = requestHeaderBuilder(self, "/files/my/")
@@ -127,7 +137,7 @@ def createDoc(self, docdata):
         catch_response = True,
         allow_redirects = True
     ) as response:
-        if response.status_code != self.returncode:
+        if response.status_code != constant.constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
         else:
             self.createdDocuments.append(response.text) # Adding the new document to createdDocumets-list for final clean-up
@@ -136,6 +146,10 @@ def createDoc(self, docdata):
 def deleteDoc(self, docId):
     '''
     Deletes a document on the SchulCloud website.
+
+    Param: 
+        self: Taskset
+        docId: Document ID
     '''
 
     data = {"id" : docId}
@@ -149,13 +163,21 @@ def deleteDoc(self, docId):
         allow_redirects = True,
         name="/files/file/delete"
     ) as response:
-        if response.status_code != self.returncode:
+        if response.status_code != constant.constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
 
 def createCourse(self, data):
+    '''
+    Creates a course
+
+    Param:
+        self: Taskset
+        data: Configuration of the course
+    '''
+
     with self.client.request("POST", "/courses/", data=data, catch_response=True, allow_redirects=True) as response:
         soup = BeautifulSoup(response.text, "html.parser")
-        if response.status_code != self.returncode:
+        if response.status_code != constant.constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
         else:
             json_object = json.loads(soup.string)
@@ -164,6 +186,14 @@ def createCourse(self, data):
             return (courseId)
 
 def deleteCourse(self, courseId):
+    '''
+    Delete a course
+
+    Param:
+        self: Taskset
+        data: Configuration of the course
+    '''
+
     header = requestHeaderBuilder(self, "/courses/"+ courseId +"/edit")
     header["accept"] = "*/*" # Adding "accept" entry
     header["accept-language"] = "en-US,en;q=0.9" # Adding accepted language
@@ -175,12 +205,17 @@ def deleteCourse(self, courseId):
         allow_redirects=True,
         name="/courses/delete"
     ) as response:
-        if response.status_code != self.returncode:
+        if response.status_code != constant.constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
 
 def lernStore(self):  
     '''
-    Creates a Course which 
+    Creates a Course and adds a theme. 
+    After that the id of the course is requestet from the lernstore to add Material of the Lernstore.
+    At the End the Course is deleted.
+
+    Param:
+        self: Taskset
     '''
 
     # Create Course
@@ -198,7 +233,7 @@ def lernStore(self):
             catch_response=True,
             allow_redirects=True
         ) as response:
-            if response.status_code != self.returncode:
+            if response.status_code != constant.constant.returncodeNormal:
                 response.failure(requestFailureMessage(self, response))
 
             # Request to the Lernstore to get the internal id of the course
@@ -256,12 +291,19 @@ def lernStore(self):
                         "sec-ch-ua-moblie"  : "?0"
                     }
                 ) as response:
-                    if response.status_code != 201:
+                    if response.status_code != constant.constant.returncodeCreated:
                         response.failure(requestFailureMessage(self, response))
     # Delete Course
     deleteCourse(self, courseId)
 
 def courseAddEtherPadAndTool(self):
+    '''
+    Creates and deletes a Course and adds an Etherpad and a Tool, if the User is an Teacher.
+    If the User is an Admin, it only creates and deletes a Course 
+
+    Param:
+        self: Taskset
+    '''
 
     # Create Course
     courseId = createCourse(self, courseDataBuilder(self))
@@ -280,7 +322,7 @@ def courseAddEtherPadAndTool(self):
             catch_response=True,
             allow_redirects=True
         ) as response:
-            if response.status_code != self.returncode:
+            if response.status_code != constant.constant.returncodeNormal:
                 response.failure(requestFailureMessage(self, response))
 
         # Add Tool
@@ -308,7 +350,7 @@ def courseAddEtherPadAndTool(self):
                 catch_response=True,
                 allow_redirects=True
             ) as response:
-                if response.status_code != self.returncode:
+                if response.status_code != constant.constant.returncodeNormal:
                     response.failure(requestFailureMessage(self, response))
 
     # Delete Course
@@ -316,13 +358,23 @@ def courseAddEtherPadAndTool(self):
 
 def createDeleteTeam(self):
     '''
-    Can be called as a task for the loadtest. Creates a new team and deletes it afterwards.
+    Creates a new team and deletes it afterwards.
+
+    Param:
+        self: Taskset
     '''
     
     teamId = newTeam(self)
     deleteTeam(self, teamId)
 
 def newTeam(self):
+    '''
+    Creates a new team
+
+    Param:
+        self: Taskset
+    '''
+
     teamId = None
     
     data = {
@@ -350,7 +402,7 @@ def newTeam(self):
         catch_response=True,
         allow_redirects=True
     ) as response:
-        if response.status_code != self.returncode:
+        if response.status_code != constant.constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
         else:
             soup = BeautifulSoup(response.text, "html.parser")
@@ -360,19 +412,27 @@ def newTeam(self):
             
     return teamId
 
-def deleteTeam(self, teamID):
-    header = requestHeaderBuilder(self, (self.user.host + "/teams/" + teamID + "/edit"))
+def deleteTeam(self, teamId):
+    '''
+    Deletes a team
+
+    Param:
+        self: Taskset
+        teamId: Id of the team
+    '''
+
+    header = requestHeaderBuilder(self, (self.user.host + "/teams/" + teamId + "/edit"))
     header["accept"] = "*/*"
     header["accept-language"] = "en-US,en;q=0.9"
     
     with self.client.request("DELETE",
-        "/teams/" + teamID + "/" ,
+        "/teams/" + teamId + "/" ,
         headers = header,
         name="/teams/delete",
         catch_response=True,
         allow_redirects=True
     ) as response:
-        if response.status_code != self.returncode:
+        if response.status_code != constant.constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
             return False
         else:
@@ -380,16 +440,16 @@ def deleteTeam(self, teamID):
 
 def matrixMessenger(self):
     txn_id = 0
-    mainHost = os.environ.get("MMHOST")
+    mainHost = constant.constant.matrixMessengerHost
     with self.client.request("GET", "/messenger/token", catch_response=True, allow_redirects=False) as response:
-                if(response.status_code == 200):
+                if(response.status_code == constant.constant.returncodeNormal):
                     i = json.loads(response.text)
                     self.token = i["accessToken"]
                     self.user_id = i["userId"]
 
     room_ids = None
     with self.client.get("/courses/" , catch_response=True, allow_redirects=True) as response:
-        if(response.status_code == 200):
+        if(response.status_code == constant.constant.returncodeNormal):
             soup = BeautifulSoup(response.text, "html.parser")
             for room_id in soup.find_all('article'):
                 room_ids.append(room_id.get('data-loclink').removeprefix("/courses/"))
@@ -403,7 +463,7 @@ def matrixMessenger(self):
 
     name = mainHost + "/r0/sync"
     response = self.client.get(mainHost + "/r0/sync", params=payload)#, name=name)
-    if response.status_code != 200:
+    if response.status_code != constant.constant.returncodeNormal:
         return
 
     json_response_dict = response.json()
@@ -436,7 +496,7 @@ def matrixMessenger(self):
             mainHost + "/r0/rooms/" + room_id + "/send/m.room.message",
             json=message,
         ) as response:
-            if response.status_code == 200:
+            if response.status_code == constant.constant.returncodeNormal:
                 soup = BeautifulSoup(response.text, "html.parser")
                 json_object = json.loads(soup.string)
 

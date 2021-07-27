@@ -3,16 +3,10 @@ import sys
 import yaml
 import os
 import random
+import constant
 
-from bbbTaskSet import *
-from scTaskSet import *
-from docTaskSet import *
 from urllib.parse import urlparse
 from locust import HttpUser, between
-
-wait_time = between(5, 15) # Provides a random number which will be used as waiting time for the users
-tasks = {bbbTaskSet:1, scTaskSet:1, docTaskSet:1} # Conatins all task-sets which will be applied on the users
-
 class PupilUser(HttpUser):
     ''' 
     Representing a pupil user on the SchulCloud.
@@ -26,8 +20,8 @@ class PupilUser(HttpUser):
     '''
 
     weight = 5
-    tasks = tasks
-    wait_time = wait_time
+    tasks = constant.constant.tasks
+    wait_time = constant.constant.wait_time
     user_type = "pupil"
     login_credentials = None
 
@@ -48,8 +42,8 @@ class AdminUser(HttpUser):
     '''
 
     weight = 1
-    tasks = tasks
-    wait_time = wait_time
+    tasks = constant.constant.tasks
+    wait_time = constant.constant.wait_time
     user_type = "admin"
     login_credentials = None
 
@@ -70,8 +64,8 @@ class TeacherUser(HttpUser):
     '''
     
     weight = 3
-    tasks = tasks
-    wait_time = wait_time
+    tasks = constant.constant.tasks
+    wait_time = constant.constant.wait_time
     user_type = "teacher"
     login_credentials = None
 
