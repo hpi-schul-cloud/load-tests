@@ -19,4 +19,4 @@ class constant():
     bBBHost = os.environ.get("BBBHOST")
     numberRooms = 3 #int(os.environ.get("BBBNUMBERROOMS"))
     numberUsers = 6 #int(os.environ.get("BBBNUMBERUSERS"))
-    urlReqWithoutUser = "niedersachsen.cloud"
+    urlReqWithoutUser = "niedersachsen.cloud" # Used for reqWithoutUserTaskSet as url
