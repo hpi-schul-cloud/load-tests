@@ -448,15 +448,15 @@ def requestWithoutUser(domain):
     '''
 
     with requests.get(f"api.{domain}/version") as api_response:
-        if api_response.status_code != 200:
+        if api_response.status_code != constant.returncodeNormal:
             api_response.failure(f"API response failed : {api_response} - {api_response.headers}")
 
     with requests.get(f"{domain}/version") as response:
-        if response.status_code != 200:
+        if response.status_code != constant.returncodeNormal:
             response.failure(f"req failed : {response.status_code} - {response.headers}")
 
     with requests.get(f"{domain}/nuxtversion") as nuxt_response:
-        if nuxt_response.status_code != 200:
+        if nuxt_response.status_code != constant.returncodeNormal:
             nuxt_response.failure(f"nuxt_req failed : {nuxt_response} - {nuxt_response.headers}")
 
 def matrixMessenger(self):
