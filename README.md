@@ -31,11 +31,9 @@ pupil:
 ```
 3. Install required programs with `pip3 install -r requirements.txt`
 4. Create new environment variables to finish the config:
-    -
-    -
-    -
-    -
-    -
+```
+
+```
 
 ## Run the load tests
 
