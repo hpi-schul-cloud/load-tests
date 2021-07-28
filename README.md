@@ -5,7 +5,7 @@ Running load tests for HPI Schul-Cloud application, which swarms the system witc
 ## Requirements
 
 - Python (>= 3.6.10)
-- ChromeDriver (>= 90.0.4430.24, just necessary for BBB-Loadtest)
+- ChromeDriver (>= 90.0.4430.24, just necessary for BBB-Loadtest, Document-Loadtest)
 - Docker (>= 19.03.5, optional)
 
 ## Preparations
@@ -29,7 +29,13 @@ pupil:
   - email: schueler@schul-cloud.org
     password: baz
 ```
-3. Install required pragrams with `pip3 install -r requirements.txt`
+3. Install required programs with `pip3 install -r requirements.txt`
+4. Create new environment variables to finish the config:
+    -
+    -
+    -
+    -
+    -
 
 ## Run the load tests
 
