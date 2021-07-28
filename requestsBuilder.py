@@ -2,6 +2,7 @@ import json
 import os
 import locustfile
 import constant
+import requests
 
 from bs4 import BeautifulSoup
 
@@ -437,6 +438,26 @@ def deleteTeam(self, teamId):
             return False
         else:
             return True
+
+def requestWithoutUser(domain):
+    '''
+    Request of API, domain and nuxtversion of a supplied domain without a user.
+
+    Args:
+        domain (str) : domain to which the requests should be send
+    '''
+
+    with requests.get(f"api.{domain}/version") as api_response:
+        if api_response.status_code != 200:
+            api_response.failure(f"API response failed : {api_response} - {api_response.headers}")
+
+    with requests.get(f"{domain}/version") as response:
+        if response.status_code != 200:
+            response.failure(f"req failed : {response.status_code} - {response.headers}")
+
+    with requests.get(f"{domain}/nuxtversion") as nuxt_response:
+        if nuxt_response.status_code != 200:
+            nuxt_response.failure(f"nuxt_req failed : {nuxt_response} - {nuxt_response.headers}")
 
 def matrixMessenger(self):
     txn_id = 0
