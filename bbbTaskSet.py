@@ -25,12 +25,6 @@ class bbbTaskSet(TaskSet):
         timeWaitLong (int) : waiting time long
     '''
 
-    def on_start(self):
-        pass
-
-    def on_stop(self):
-        pass
-
     @tag('bbb')
     @task
     def bBBTest(self):
