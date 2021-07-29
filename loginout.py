@@ -3,7 +3,6 @@ import os
 import json
 import locustfile
 import constant
-from re import I
 import requestsBuilder
 
 from bs4 import BeautifulSoup

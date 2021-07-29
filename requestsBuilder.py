@@ -1,8 +1,6 @@
 import json
-import os
 import locustfile
 import constant
-import requests
 
 from bs4 import BeautifulSoup
 
