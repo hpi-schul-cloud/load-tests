@@ -32,7 +32,13 @@ pupil:
 3. Install required programs with `pip3 install -r requirements.txt`
 4. Create new environment variables to finish the config:
 ```
-
+BBBKEY          : Key for BigBlueButton
+BBBHOST         : URL of BigBlueButton
+BBBNUMBERROOMS  : INT of Rooms of BBB
+BBBNUMERUSERS   : INT of Users per Room
+MMHOST          : URL of MatrixMessenger
+TIMESHORT       : Time in Sec
+TIMELONG        : Time in Sec
 ```
 
 ## Run the load tests
