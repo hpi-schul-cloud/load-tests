@@ -439,7 +439,7 @@ def deleteTeam(self, teamId):
 
 def matrixMessenger(self):
     txn_id = 0
-    mainHost = constant.constant.matrixMessengerHost
+    mainHost = constant.constant.MATRIX_MESSENGER
     with self.client.request("GET", "/messenger/token", catch_response=True, allow_redirects=False) as response:
                 if(response.status_code == constant.constant.returncodeNormal):
                     i = json.loads(response.text)

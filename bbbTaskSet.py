@@ -15,14 +15,6 @@ from selenium.webdriver.common.by import By
 class bbbTaskSet(TaskSet):
     '''
     Task-Set which contains all test-tasks for working with BBB on the SchulCloud.
-
-    Args:
-        bBBKey (str) : key for using BBB
-        bBBHost (str) : url of BBB
-        numberRooms (int) : number of rooms which should be created
-        numberUsers (int) : number od useres which are involved in the test
-        timeWaitShort (int) : waiting time short
-        timeWaitLong (int) : waiting time long
     '''
 
     @tag('bbb')
@@ -34,20 +26,14 @@ class bbbTaskSet(TaskSet):
         Creates the number of BBB rooms which is contained in the 'numberRooms' variable. After creating a room, other users join and the 
         moderator will share a video. The number of joining users is contained in the 'numberUsers' variable. After finishing the taks, all tabs
         and BBB rooms will be closed.
-
-        Args:
-            driverWB (webdriver) : browser which will be used for creating the BBB rooms
-            counterfirst (int) : counter for creating a specific number of rooms
-            countersecond (int) : counter for users to join a BBB room
-            counterTab (int) : counter for open tabs
         '''
 
         #Starts a chrome Browser
-        driverWB = webdriver.Chrome('.\chromedriver.exe')
+        driverWB = webdriver.Chrome('.\chromedriver.exe') # browser which will be used for creating the BBB rooms
         driverWB.get(constant.constant.bBBHost)
 
-        counterfirst = 0
-        counterTab = 1
+        counterfirst = 0 # counter for creating a specific number of rooms
+        counterTab = 1 # counter for open tabs
         while counterfirst < constant.constant.numberRooms:
 
             timestamp = str(time.time())
@@ -60,7 +46,7 @@ class bbbTaskSet(TaskSet):
 
             driverWB.get(urlsha)
 
-            countersecond = 0
+            countersecond = 0 # counter for users to join a BBB room
 
             # Moderator joins the room on a new Tab
             operator = "join"

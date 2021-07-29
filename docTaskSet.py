@@ -13,12 +13,10 @@ from selenium.webdriver.common.by import By
 class docTaskSet(TaskSet):
     '''
     Task-Set which contains all test-tasks for working with documents on the SchulCloud.
-
-    Args:
-        createdDocuments, createdCourses, createdTeams (list) : Lists which contain all the doc/courses/teams ID's beeing created 
-        from the loadtest. All three lists are necessary for a clean log-out procress in 'loginout'.
     '''
 
+    # Lists which contain all the doc/courses/teams ID's beeing created from the loadtest. 
+    # All three lists are necessary for a clean log-out procress in 'loginout'.
     createdDocuments = []
     createdCourses = []
     createdTeams = []
@@ -37,7 +35,6 @@ class docTaskSet(TaskSet):
 
         logout(self)
 
-    #@tag('test')
     @tag('doc')
     @tag('sc')
     @task
@@ -47,17 +44,12 @@ class docTaskSet(TaskSet):
 
         Abbords, if the user is a pupil user. Otherwise, logs in the user and creates as well as edits a new document. 
         Deletes the doument after finishing the task.
-
-        Args:
-            data (dictionary) : provides the post-request (for saving the created document) with necessary informations
-            docId (int) : ID of the new document
-            host (str) : url to where the file will be saved
-            driverWB (webdriver) : browser which will be used for calling the host and saving the documents
         '''
 
         if isinstance(self._user, locustfile.PupilUser):
             pass
         else:
+            # provides the post-request (for saving the created document) with necessary informations
             data = {
                 "name"          : "Loadtest docx",
                 "type"          : "docx",
@@ -65,12 +57,12 @@ class docTaskSet(TaskSet):
             }
             
             # Creates .docx document
-            docId = createDoc(self, data)
+            docId = createDoc(self, data) # ID of the new document
             self.createdDocuments.append(docId)
 
-            host = self.user.host + "/files"
+            host = self.user.host + "/files" # url to where the file will be saved
 
-            driverWB = webdriver.Chrome('.\chromedriver.exe')
+            driverWB = webdriver.Chrome('.\chromedriver.exe') # browser which will be used for calling the host and saving the documents
             driverWB.get(host)
 
             # Login user
@@ -117,17 +109,12 @@ class docTaskSet(TaskSet):
 
         Abbords, if the user is a pupil user. Otherwise, logs in the user and creates as well as edits a new document. 
         Deletes the doument after finishing the task.
-
-        Args:
-            data (dictionary) : provides the post-request (for saving the created document) with necessary informations
-            docId (int) : ID of the new document
-            host (str) : url to where the file will be saved
-            driverWB (webdriver) : browser which will be used for calling the host and saving the documents
         '''
 
         if isinstance(self._user, locustfile.PupilUser):
             pass
         else:
+            # provides the post-request (for saving the created document) with necessary informations
             data = {
                 "name"          : "Loadtest xlsx",
                 "type"          : "xlsx",
@@ -135,12 +122,12 @@ class docTaskSet(TaskSet):
             }
             
             # Creates .xlsx document
-            docId = createDoc(self, data)
+            docId = createDoc(self, data) # ID of the new document
             self.createdDocuments.append(docId)
 
-            host = self.user.host + "/files"
+            host = self.user.host + "/files" # url to where the file will be saved
 
-            driverWB = webdriver.Chrome('.\chromedriver.exe')
+            driverWB = webdriver.Chrome('.\chromedriver.exe') # browser which will be used for calling the host and saving the documents
             driverWB.get(host)
 
             # Login User
@@ -188,17 +175,12 @@ class docTaskSet(TaskSet):
 
         Abbords, if the user is a pupil user. Otherwise, logs in the user and creates as well as edits a new document. 
         Deletes the doument after finishing the task.
-
-        Args:
-            data (dictionary) : provides the post-request (for saving the created document) with necessary informations
-            docId (int) : ID of the new document
-            host (str) : url to where the file will be saved
-            driverWB (webdriver) : browser which will be used for calling the host and saving the documents
         '''
 
         if isinstance(self._user, locustfile.PupilUser):
             pass
         else:
+            # provides the post-request (for saving the created document) with necessary informations
             data = {
                 "name"          : "Loadtest pptx",
                 "type"          : "pptx",
@@ -206,12 +188,12 @@ class docTaskSet(TaskSet):
             }
             
             # Create .pptx document
-            docId = createDoc(self, data)
+            docId = createDoc(self, data) # ID of the new document
             self.createdDocuments.append(docId)
 
-            host = self.user.host + "/files"
+            host = self.user.host + "/files" # url to where the file will be saved
 
-            driverWB = webdriver.Chrome('.\chromedriver.exe')
+            driverWB = webdriver.Chrome('.\chromedriver.exe') # browser which will be used for calling the host and saving the documents
             driverWB.get(host)
 
             # Login User

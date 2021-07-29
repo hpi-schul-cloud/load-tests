@@ -9,10 +9,6 @@ class scTaskSet(TaskSet):
     '''
     Definition of the specific tasks, the loadtest should execute.
     Tasks, which are marked with tags, can be directly addressed by the start of the loadtest. The other tasks then will be ignored.
-
-    Args:
-        Lists which contain all the doc/courses/teams ID's beeing created from the loadtest.
-        All three lists are necessary for a clean log-out procress in 'loginout'.
     '''
 
     # Lists which contain all the doc/courses/teams ID's beeing created from the loadtest.

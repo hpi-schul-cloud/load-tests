@@ -10,10 +10,12 @@ class reqWithoutUserTaskSet(TaskSet):
         '''
         Request of API, domain and nuxtversion of a supplied domain without a user.
 
-        Args:
-            url (str) : domain to which the requests should be send (importet from constant)
+        Param:
+            self (TaskSet): TaskSet
         '''
-        url = constant.constant.urlReqWithoutUser
+        
+        url = self.user.host.replace("https://", "") # uses the host domain for get-requests
+
         with self.client.get("https://api." + url + "/version", name="/api/version") as api_response:
             if api_response.status_code != constant.constant.returncodeNormal:
                 api_response.failure(f"API response failed : {api_response} - {api_response.headers}")
