@@ -51,7 +51,7 @@ To run the load test, first open a command line and start locust with the follow
 *- The '--tags test' tag is optional and will only start tasks which are marked with this tag*
 
 Afterwards, start your webbrowser and open `localhost:8089` or `http://127.0.0.1:8089/`. The locust web-interface should load, and you can fill out the form and start swarming. \
-For further informations about running locust check out their [documentation](https://docs.locust.io/en/stable/quickstart.html#start-locust).
+For further information about running locust check out their [documentation](https://docs.locust.io/en/stable/quickstart.html#start-locust).
 
 ### Docker
 
