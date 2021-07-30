@@ -14,10 +14,15 @@ def fetch_static_assets(self, response):
         url = src['src']
         if url.endswith(".js"):
             resource_urls.add(url)
-        if ".woff" in url:
-            resource_urls.add(url)
         if url.endswith(".svg"):
             resource_urls.add(url)
+
+        for font in soup.find_all(type="font/woff"):
+            resource_urls.add(font['href'])
+
+        for font in soup.find_all(type="font/woff2"):
+            resource_urls.add(font['href'])
+
 
     for res in soup.find_all(href=True):
         url = res['href']
