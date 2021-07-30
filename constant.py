@@ -19,4 +19,4 @@ class constant():
     bBBHost = os.environ.get("BBBHOST")
     numberRooms = int(os.environ.get("BBBNUMBERROOMS"))
     numberUsers = int(os.environ.get("BBBNUMBERUSERS"))
-    urlBetterMarks = "https://acc.bettermarks.com/v1.0/schulcloud/de_ni_staging/login" #os.environ.get("URLBETTERMARKS")
+    urlBetterMarks = os.environ.get("URLBETTERMARKS") # required for downloading bettermarks-tools
