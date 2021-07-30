@@ -1,3 +1,6 @@
+import json
+import locustfile
+
 from requestsBuilder import *
 
 def createDoc(self, docdata):
