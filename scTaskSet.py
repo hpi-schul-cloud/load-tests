@@ -260,7 +260,7 @@ class scTaskSet(TaskSet):
     @tag('sc')
     @tag('course')
     @task
-    def courses_add_Lernstore(self):
+    def coursesAddLernstore(self):
         '''
         Task that, if the user is not a PupilUser, starts the function
         lernstore.
@@ -271,14 +271,15 @@ class scTaskSet(TaskSet):
         if isinstance(self._user, locustfile.PupilUser):
            pass
         else:
-            courseId = createCourse(self)
+            courseId = createCourse(self, courseDataBuilder(self))
             lernStore(self, courseId)
             deleteCourse(self, courseId)
 
+    @tag('test')
     @tag('sc')
     @tag('course')
     @task
-    def courses_add_course(self):
+    def courseAddEtherPadAndTool(self):
         '''
         Task that, if the user is not a PupilUser, starts the function
         courseAddEtherPadAndTool.
@@ -289,11 +290,10 @@ class scTaskSet(TaskSet):
         if isinstance(self._user, locustfile.PupilUser):
            pass
         else:
-            courseId = createCourse(self)
-            courseAddEtherPadAndTool(self)
+            courseId = createCourse(self, courseDataBuilder(self))
+            courseAddEtherPadAndTool(self, courseId)
             deleteCourse(self, courseId)
     
-    @tag('test')
     @tag('sc')
     @task
     def createDeleteTeam(self):

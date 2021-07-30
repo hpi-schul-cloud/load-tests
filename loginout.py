@@ -71,8 +71,6 @@ def cleanUpLoadtest(self):
             with self.client.get(url, catch_response=True, allow_redirects=True) as response:
                 soup = BeautifulSoup(response.text, "html.parser")
                 findId = soup.find_all("div", {"data-id" : courseId}) # Searches course id on html page
-                print(findId)
-
             if len(findId) > 0:
                 deleteCourse(self, courseId)
         self.createdCourses = None

@@ -217,12 +217,15 @@ def courseAddEtherPadAndTool(self, courseId):
                 "sec-fetch-site"    : "same-origin",
                 "x-requested-with"  : "XMLHttpRequest"
             },
-            data = "privacy_permission=anonymous&openNewTab=true&name=bettermarks&url=https://acc.bettermarks.com/Fv1.0/schulcloud/de_ni_staging/login&key=&logo_url=https://acc.bettermarks.com/app/assets/bm-logo.png&isLocal=true&resource_link_id=&lti_version=&lti_message_type=&isTemplate=false&skipConsent=false&createdAt=2021-01-14T13:35:44.689Z&updatedAt=2021-01-14T13:35:44.689Z&__v=0&originTool=600048b0755565002840fde4&courseId=" + str(courseId),
+            data = ("privacy_permission=anonymous&openNewTab=true&name=bettermarks&url=" 
+                + constant.constant.urlBetterMarks + 
+                "&key=&logo_url=https://acc.bettermarks.com/app/assets/bm-logo.png&isLocal=true&resource_link_id=&lti_version=&lti_message_type=&isTemplate=false&skipConsent=false&createdAt=2021-01-14T13:35:44.689Z&updatedAt=2021-01-14T13:35:44.689Z&__v=0&originTool=600048b0755565002840fde4&courseId=" 
+                + str(courseId)),
             catch_response=True,
             allow_redirects=True
         ) as response:
             with self.client.request("GET",
-                "https://acc.bettermarks.com/v1.0/schulcloud/de_ni_staging/login",
+                constant.constant.urlBetterMarks,
                 catch_response=True,
                 allow_redirects=True
             ) as response:
