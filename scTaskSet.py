@@ -271,7 +271,9 @@ class scTaskSet(TaskSet):
         if isinstance(self._user, locustfile.PupilUser):
            pass
         else:
-            lernStore(self)
+            courseId = createCourse(self)
+            lernStore(self, courseId)
+            deleteCourse(self, courseId)
 
     @tag('sc')
     @tag('course')
@@ -287,7 +289,9 @@ class scTaskSet(TaskSet):
         if isinstance(self._user, locustfile.PupilUser):
            pass
         else:
+            courseId = createCourse(self)
             courseAddEtherPadAndTool(self)
+            deleteCourse(self, courseId)
     
     @tag('test')
     @tag('sc')
@@ -303,7 +307,8 @@ class scTaskSet(TaskSet):
         if isinstance(self._user, locustfile.PupilUser):
           pass
         else:
-            createDeleteTeam(self)
+            teamId = newTeam(self)
+            deleteTeam(self, teamId)
 
     def message(self):
         '''

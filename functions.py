@@ -93,18 +93,14 @@ def deleteCourse(self, courseId):
         if response.status_code != constant.constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
 
-def lernStore(self):  
+def lernStore(self, courseId):  
     '''
-    Creates a Course and adds a theme. 
+    Adds a theme. 
     After that the id of the course is requestet from the lernstore to add Material of the Lernstore.
-    At the End the Course is deleted.
 
     Param:
         self: Taskset
-    '''
-
-    # Create Course
-    courseId = createCourse(self, courseDataBuilder(self))    
+    '''   
 
     # Add Resources
     if isinstance(self._user, locustfile.TeacherUser):
@@ -178,10 +174,8 @@ def lernStore(self):
                 ) as response:
                     if response.status_code != constant.constant.returncodeCreated:
                         response.failure(requestFailureMessage(self, response))
-    # Delete Course
-    deleteCourse(self, courseId)
 
-def courseAddEtherPadAndTool(self):
+def courseAddEtherPadAndTool(self, courseId):
     '''
     Creates and deletes a Course and adds an Etherpad and a Tool, if the User is an Teacher.
     If the User is an Admin, it only creates and deletes a Course 
@@ -189,9 +183,6 @@ def courseAddEtherPadAndTool(self):
     Param:
         self: Taskset
     '''
-
-    # Create Course
-    courseId = createCourse(self, courseDataBuilder(self))
 
     # Add Etherpads
     if isinstance(self._user, locustfile.TeacherUser):
@@ -237,20 +228,6 @@ def courseAddEtherPadAndTool(self):
             ) as response:
                 if response.status_code != constant.constant.returncodeNormal:
                     response.failure(requestFailureMessage(self, response))
-
-    # Delete Course
-    deleteCourse(self, courseId)
-
-def createDeleteTeam(self):
-    '''
-    Creates a new team and deletes it afterwards.
-
-    Param:
-        self: Taskset
-    '''
-    
-    teamId = newTeam(self)
-    deleteTeam(self, teamId)
 
 def newTeam(self):
     '''
