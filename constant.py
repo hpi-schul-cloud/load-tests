@@ -17,5 +17,5 @@ class constant():
     returncodeCreated = 201 # Returncode if a Request to create something was successful
     bBBKey = os.environ.get("BBBKEY")
     bBBHost = os.environ.get("BBBHOST")
-    numberRooms = 3 #int(os.environ.get("BBBNUMBERROOMS"))
-    numberUsers = 6 #int(os.environ.get("BBBNUMBERUSERS"))
+    numberRooms = int(os.environ.get("BBBNUMBERROOMS"))
+    numberUsers = int(os.environ.get("BBBNUMBERUSERS"))

@@ -2,6 +2,7 @@ import locustfile
 
 from loginout import *
 from requestsBuilder import *
+from functions import *
 from locust.user.task import TaskSet, tag
 from locust import task 
 
@@ -304,10 +305,9 @@ class scTaskSet(TaskSet):
         else:
             createDeleteTeam(self)
 
-    @tag('mm')
-    @task
     def message(self):
         '''
+        Is not functional anymore.
         Task that, if the user is not a PupilUser, starts the function
         MatrixMessenger.
 

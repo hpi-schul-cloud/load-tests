@@ -3,7 +3,7 @@ import locustfile
 import constant
 
 from loginout import *
-from requestsBuilder import createDoc, deleteDoc
+from functions import createDoc, deleteDoc
 from locust.user.task import TaskSet, task, tag
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
@@ -95,7 +95,7 @@ class docTaskSet(TaskSet):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.XPATH, ui_element)))
             element.send_keys("Der Loadtest der loaded den Test!")
 
-            time.sleep(self.timeToWaitShort)
+            time.sleep(constant.constant.timeToWaitShort)
 
             driverWB.quit()
             deleteDoc(self, docId)

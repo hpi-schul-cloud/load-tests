@@ -3,8 +3,8 @@ import os
 import json
 import locustfile
 import constant
-import requestsBuilder
 
+from functions import *
 from bs4 import BeautifulSoup
 
 def login(self):
@@ -31,13 +31,12 @@ def login(self):
                 login_post_response.failure("Failed! (username: " + self.user.login_credentials["email"] + ", http-code: "+str(login_post_response.status_code)+", header: "+str(login_post_response.headers)+")")
             else:
                 response_header = login_post_response.headers
+                #Extracting BearerToken from Responses Header
                 self.bearer_token = (response_header["set-cookie"]).split(";")[0].replace("jwt=", "")
                 decoded_token = base64.b64decode(self.bearer_token[0:461])
                 decoded_token_json = json.loads(decoded_token.decode('utf_8').removeprefix('{"alg":"HS256","typ":"access"}'))
                 self.user_id = decoded_token_json["userId"]
                 self.school_id = decoded_token_json["schoolId"]
-                self.timeToWaitShort = int(os.environ.get("TIMESHORT"))
-                self.timeToWaitLong = int(os.environ.get("TIMELONG"))
     return self
 
 def logout(self):
@@ -64,7 +63,7 @@ def cleanUpLoadtest(self):
                 findId = soup.find_all("div", {"data-file-id" : documentId}) # Searches document id on html page
             
             if len(findId) > 0:
-                requestsBuilder.deleteDoc(self, documentId)
+                deleteDoc(self, documentId)
         self.createdDocuments = None
         
         for courseId in self.createdCourses:
@@ -75,7 +74,7 @@ def cleanUpLoadtest(self):
                 print(findId)
 
             if len(findId) > 0:
-                requestsBuilder.deleteCourse(self, courseId)
+                deleteCourse(self, courseId)
         self.createdCourses = None
     
         for teamId in self.createdTeams:
@@ -84,5 +83,5 @@ def cleanUpLoadtest(self):
                 soup = BeautifulSoup(response.text, "html.parser") 
                 findId = soup.find_all({"data-id":teamId})
             if not findId is None:
-                requestsBuilder.deleteTeam(self, teamId)
+                deleteTeam(self, teamId)
         self.createdTeams = None
