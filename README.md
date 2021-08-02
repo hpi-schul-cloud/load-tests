@@ -1,16 +1,19 @@
-# HPI Schul-Cloud load tests
+# HPI SchulCloud load tests
 
-Load tests for HPI Schul-Cloud application.
+To test the performance of the HPI-SchulCloud application, multiple useres will be simulated by the loadtest. It creates a provided number of users, which are different by their user-type (admin, techer, pupil), and swarms the system simultaneausly, simulating their behavior. Courses, BBB-rooms, tasks etc. will be created, edited and deleted to generate additional traffic, and is captured on the Locust web-interface for subsequent analysis.
 
 ## Requirements
 
 - Python (>= 3.6.10)
-- ChromeDriver (>= 90.0.4430.24, just necessary for BBB-Loadtest)
+- ChromeDriver (>= 90.0.4430.24, just necessary for BBB-Loadtest, Document-Loadtest)
 - Docker (>= 19.03.5, optional)
 
-The ChromeDriver needs to be in the same path as the python-File.
+## Preparations
 
-Create a YAML file with user credentials (email, password). Filename should be `users_${HOSTNAME}.yaml`.
+1. Download ChromeDriver
+  - The chromedriver.exe needs to be in the same path as the locustfile.py-File
+2. Create a YAML file with user credentials (email, password)
+  - Filename should be `users_${HOSTNAME}.yaml`.
 
 Example for `HOSTNAME=hackathon.hpi-schul-cloud.de`:
 ```
@@ -26,16 +29,29 @@ pupil:
   - email: schueler@schul-cloud.org
     password: baz
 ```
-Create a TXT file with just the BBB-Key. Filename should be `requirements_BBB.txt`.
+3. Install required programs with `pip3 install -r requirements.txt`
+4. Create new environment variables to finish the config:
+```
+BBBKEY          : Key for BigBlueButton
+BBBHOST         : URL of BigBlueButton
+BBBNUMBERROOMS  : INT of Rooms of BBB
+BBBNUMERUSERS   : INT of Users per Room
+MMHOST          : URL of MatrixMessenger
+TIMESHORT       : Time in Sec
+TIMELONG        : Time in Sec
+```
 
 ## Run the load tests
 
-### Python
+### Command line and web-interface
+To run the load test, first open a command line and start locust with the following command: \
+`locust -f ./locustfile.py --host https://hackathon.hpi-schul-cloud.de --tags test`
 
-```
-pip3 install -r requirements.txt
-locust -f ./locustfile.py --no-web --clients 20 --run-time 30s --host https://hackathon.hpi-schul-cloud.de --tag TEST
-```
+*- Insert the right host after the '--host' tag* \
+*- The '--tags test' tag is optional and will only start tasks which are marked with this tag*
+
+Afterwards, start your webbrowser and open `localhost:8089` or `http://127.0.0.1:8089/`. The locust web-interface should load, and you can fill out the form and start swarming. \
+For further information about running locust check out their [documentation](https://docs.locust.io/en/stable/quickstart.html#start-locust).
 
 ### Docker
 
