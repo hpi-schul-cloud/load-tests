@@ -1,6 +1,6 @@
-# HPI Schul-Cloud load tests
+# HPI SchulCloud load tests
 
-Running load tests for HPI Schul-Cloud application, which swarms the system witch multiple simultaneous users and simulates their behavior.
+To test the performance of the HPI-SchulCloud application, multiple useres will be simulated by the loadtest. It creates a provided number of users, which are different by their user-type (admin, techer, pupil), and swarms the system simultaneausly, simulating their behavior. Courses, BBB-rooms, tasks etc. will be created, edited and deleted to generate additional traffic, and is captured on the Locust web-interface for subsequent analysis.
 
 ## Requirements
 
