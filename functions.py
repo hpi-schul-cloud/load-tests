@@ -1,5 +1,8 @@
 import json
+
+from requests.api import head
 import locustfile
+import requests
 
 from requestsBuilder import *
 
@@ -299,6 +302,90 @@ def deleteTeam(self, teamId):
     ) as response:
         if response.status_code != constant.constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
+
+def enableTeamMessenger(self):#, teamId):
+    '''
+    Opens the team settings and enables the team-messenger. This will create a new chat on RocketChat.
+    '''
+
+    url = f"{self.user.host}/team/61093a27bb528e001c7aa4b3/edit"
+
+    data = {
+        "schoolId": self.school_id,
+        "_method": "patch",
+        "name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "description": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+        "messenger": "true",
+        "rocketChat": "true",
+        "videoconference": "true",
+        "color": "#d32f2f",
+        "_csrf": self.csrf_token
+    }
+
+    header = {
+        "Host": "staging.niedersachsen.hpi-schul-cloud.org",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+        "Accept-Language": "de,en-US;q=0.7,en;q=0.3",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Referer": "https://staging.niedersachsen.hpi-schul-cloud.org/teams/61093a27bb528e001c7aa4b3/edit",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Length": "263",
+        "Origin": "https://staging.niedersachsen.hpi-schul-cloud.org",
+        "DNT": "1",
+        "Connection": "keep-alive",
+        "Upgrade-Insecure-Requests": "1",
+        "Sec-Fetch-Dest": "document",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-Site": "same-origin",
+        "Sec-Fetch-User": "?1",
+        "Sec-GPC": "1",
+        "TE": "trailers",
+    }
+
+    with requests.post(url, headers=header, data=data) as response:
+        print(f"post request 61093a27bb528e001c7aa4b3 : {response.status_code}")
+    
+    # with self.client.request(
+    #     "POST",
+    #     url, 
+    #     headers=header,
+    #     data=data,
+    #     catch_response=True,
+    #     allow_redirects=True
+    # ) as response:
+    #     print(f"post request 61093a27bb528e001c7aa4b3 : {response.status_code}")
+
+
+
+    # url = f"{self.user.host}/teams/{teamId}/edit"
+    
+    # data = {
+    #     "schoolId"      : self.school_id,
+    #     "_method"       : "patch",
+    #     "name"          : "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    #     "description"   : "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+    #     "messenger"     : "true",
+    #     "rocketChat"    : "true",
+    #     "color"         : "#d32f2f",
+    #     "_csrf"         : self.csrf_token
+    # }
+
+    # headers = {
+    #     "accept-language"           : "en-US,en;q=0.9",
+    #     "Referer"                   : f"{self.user.host}/teams/{teamId}/edit",
+    #     "Content-Type"              : "application/x-www-form-urlencoded",
+    #     "Origin"                    : self.user.host,
+    #     # "DNT"                       : 1,
+    #     "Connection"                : "keep-alive",
+    #     # "Upgrade-Insecure-Requests" : 1
+    # }
+
+    # with requests.post(url, data=data, headers=headers) as response:
+    #     print(f"[enableTeamMessenger] post request {teamId} : {response.status_code}")
+
+
+
 
 def matrixMessenger(self):
     '''

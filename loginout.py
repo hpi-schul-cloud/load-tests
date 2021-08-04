@@ -82,4 +82,5 @@ def cleanUpLoadtest(self):
                 findId = soup.find_all({"data-id":teamId})
             if not findId is None:
                 deleteTeam(self, teamId)
+                print(f"[loginout] Deleted {teamId}.")
         self.createdTeams = None

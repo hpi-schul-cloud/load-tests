@@ -7,6 +7,7 @@ import constant
 
 from urllib.parse import urlparse
 from locust import HttpUser, between
+
 class PupilUser(HttpUser):
     ''' 
     Representing a pupil user on the SchulCloud.
