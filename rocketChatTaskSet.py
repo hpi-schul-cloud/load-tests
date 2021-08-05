@@ -1,8 +1,14 @@
 import functions
 import loginout
 import locustfile
+import time
 
 from locust.user.task import TaskSet, tag, task
+from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 
 class rocketChatTaskSet(TaskSet):
 
@@ -26,14 +32,27 @@ class rocketChatTaskSet(TaskSet):
         posts some chat messanges. At the end, the created team will be deleted. 
         Note: only teacher or admins can create a new team.
         '''
-        # Create team
-        # Enable team messenger
-        # Post messages
-        # Delete team -> functions.deleteTeam(self, teamId)
-
+        
         if isinstance(self._user, locustfile.PupilUser) is False:
             teamId = functions.newTeam(self)
-            functions.enableTeamMessenger(self)#, teamId)
-        
+
+            # Opens chrome browser
+            url = f"{self.user.host}/teams/{teamId}/edit"
+            driverWB = webdriver.Chrome('.\chromedriver.exe') # browser which will be used
+            driverWB.get(url)
+
+            functions.loginLoadtestUserOnTeamToEdit(self, driverWB) # Login user
+            functions.enableTeamMessenger(driverWB) # Enable team messenger
+
+            # Open team chat in new tab (RocketChat)
+            url = f"https://chat.{self.user.host.replace('https://', '')}/group/{functions.findTeamChatId(self, teamId)}"
+            driverWB.find_element_by_tag_name('body').send_keys(Keys.COMMAND + 't') # Open new tab
+            time.sleep(1)
+            driverWB.get(url)
+            time.sleep(1)
+
+            functions.postTeamChatMessage(self, driverWB) # Post messages
+
+            driverWB.close # Close webbrowser
 
         

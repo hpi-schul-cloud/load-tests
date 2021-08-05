@@ -1,9 +1,15 @@
 import json
-
-from requests.api import head
+from random import betavariate
 import locustfile
 import requests
+import time
+import requestsBuilder
 
+from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
+from selenium import webdriver
+from requests.api import head
 from requestsBuilder import *
 
 def createDoc(self, docdata):
@@ -303,88 +309,80 @@ def deleteTeam(self, teamId):
         if response.status_code != constant.constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
 
-def enableTeamMessenger(self):#, teamId):
+def loginLoadtestUserOnTeamToEdit(self, webbrowser):
+    # Login user
+    ui_element = "input[id='name']"
+    element = WebDriverWait(webbrowser, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
+    element.send_keys(self.user.login_credentials["email"])
+
+    ui_element = "input[id='password']"
+    element = WebDriverWait(webbrowser, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
+    element.send_keys(self.user.login_credentials["password"])
+
+    ui_element = "input[id='submit-login']"
+    element = WebDriverWait(webbrowser, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
+    element.click()
+    time.sleep(1)
+
+def enableTeamMessenger(webbrowser):
     '''
-    Opens the team settings and enables the team-messenger. This will create a new chat on RocketChat.
+    Enables the team-messenger. This will create a new chat on RocketChat. When the team will be deleted later, the connected rocket chat will be deleted as well. 
+    Only works with an already startet webbrowser, where the user is already logged in.
+    '''
+    
+    # Klick on rocket chat checkbox
+    ui_element = "input[id='activateRC']"
+    element = WebDriverWait(webbrowser, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
+    element.click()
+    time.sleep(1)
+
+    # Apply changes
+    ui_element = "button[data-testid='create_team_btn']"
+    element = WebDriverWait(webbrowser, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
+    element.click()
+    time.sleep(1)
+
+
+def findTeamChatId(self, teamId):
+    '''
+    Returns the team-chat-id of the provided team.
     '''
 
-    url = f"{self.user.host}/team/61093a27bb528e001c7aa4b3/edit"
+    url = f"{self.user.host}/teams/{teamId}"
 
-    data = {
-        "schoolId": self.school_id,
-        "_method": "patch",
-        "name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-        "description": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
-        "messenger": "true",
-        "rocketChat": "true",
-        "videoconference": "true",
-        "color": "#d32f2f",
-        "_csrf": self.csrf_token
-    }
-
-    header = {
-        "Host": "staging.niedersachsen.hpi-schul-cloud.org",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-        "Accept-Language": "de,en-US;q=0.7,en;q=0.3",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Referer": "https://staging.niedersachsen.hpi-schul-cloud.org/teams/61093a27bb528e001c7aa4b3/edit",
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Content-Length": "263",
-        "Origin": "https://staging.niedersachsen.hpi-schul-cloud.org",
-        "DNT": "1",
-        "Connection": "keep-alive",
-        "Upgrade-Insecure-Requests": "1",
-        "Sec-Fetch-Dest": "document",
-        "Sec-Fetch-Mode": "navigate",
-        "Sec-Fetch-Site": "same-origin",
-        "Sec-Fetch-User": "?1",
-        "Sec-GPC": "1",
-        "TE": "trailers",
-    }
-
-    with requests.post(url, headers=header, data=data) as response:
-        print(f"post request 61093a27bb528e001c7aa4b3 : {response.status_code}")
-    
-    # with self.client.request(
-    #     "POST",
-    #     url, 
-    #     headers=header,
-    #     data=data,
-    #     catch_response=True,
-    #     allow_redirects=True
-    # ) as response:
-    #     print(f"post request 61093a27bb528e001c7aa4b3 : {response.status_code}")
+    # Get team-chat-id
+    with self.client.request(
+        "GET",
+        url,
+        headers = requestsBuilder.requestHeaderBuilder(self, self.user.host),
+        catch_response = True,
+        allow_redirects = True
+    ) as response:
+        if response.status_code == constant.constant.returncodeNormal:
+            soup = BeautifulSoup(response.text, 'html.parser')
+            teamChatId = soup.find('iframe')['src']
+            host = self.user.host.replace("https://", "")
+            return teamChatId.replace('?layout=embedded', '').replace(f"https://chat.{host}/group/", '')
+        else:
+            response.failure(requestFailureMessage(self, response))
 
 
+def postTeamChatMessage(self, webbrowser):
+    '''
+    Posts a message on rocket chat.
+    '''
 
-    # url = f"{self.user.host}/teams/{teamId}/edit"
-    
-    # data = {
-    #     "schoolId"      : self.school_id,
-    #     "_method"       : "patch",
-    #     "name"          : "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-    #     "description"   : "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
-    #     "messenger"     : "true",
-    #     "rocketChat"    : "true",
-    #     "color"         : "#d32f2f",
-    #     "_csrf"         : self.csrf_token
-    # }
+    # Type in the test message
+    ui_element = "textarea[class='rc-message-box__textarea js-input-message']"
+    element = WebDriverWait(webbrowser, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
+    element.send_keys("This is an automated loadtest chat message.")
 
-    # headers = {
-    #     "accept-language"           : "en-US,en;q=0.9",
-    #     "Referer"                   : f"{self.user.host}/teams/{teamId}/edit",
-    #     "Content-Type"              : "application/x-www-form-urlencoded",
-    #     "Origin"                    : self.user.host,
-    #     # "DNT"                       : 1,
-    #     "Connection"                : "keep-alive",
-    #     # "Upgrade-Insecure-Requests" : 1
-    # }
+    # Klick 'send' button
+    ui_element = "svg[class='rc-icon rc-input__icon-svg rc-input__icon-svg--send']"  
+    element = WebDriverWait(webbrowser, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
+    element.click()
 
-    # with requests.post(url, data=data, headers=headers) as response:
-    #     print(f"[enableTeamMessenger] post request {teamId} : {response.status_code}")
-
-
+    time.sleep(1)
 
 
 def matrixMessenger(self):
