@@ -310,6 +310,10 @@ def deleteTeam(self, teamId):
             response.failure(requestFailureMessage(self, response))
 
 def loginLoadtestUserOnTeamToEdit(self, webbrowser):
+    '''
+    Logs-in a user on the 'edit-page' of a team on SchulCloud.
+    '''
+    
     # Login user
     ui_element = "input[id='name']"
     element = WebDriverWait(webbrowser, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
@@ -322,12 +326,13 @@ def loginLoadtestUserOnTeamToEdit(self, webbrowser):
     ui_element = "input[id='submit-login']"
     element = WebDriverWait(webbrowser, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
     element.click()
+    
     time.sleep(1)
 
 def enableTeamMessenger(webbrowser):
     '''
-    Enables the team-messenger. This will create a new chat on RocketChat. When the team will be deleted later, the connected rocket chat will be deleted as well. 
-    Only works with an already startet webbrowser, where the user is already logged in.
+    Enables the team-messenger. This will create a new chat on RocketChat. When the team will be deleted later, 
+    the connected rocket chat will be deleted as well. Only works with an already startet webbrowser, where the user is already logged in.
     '''
     
     # Klick on rocket chat checkbox

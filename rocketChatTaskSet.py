@@ -6,11 +6,13 @@ import time
 from locust.user.task import TaskSet, tag, task
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
 class rocketChatTaskSet(TaskSet):
+    '''
+    This class defines the TaskSet for RocketChat.
+    '''
 
     # Lists which contain all the doc/courses/teams ID's beeing created from the loadtest. 
     # All three lists are necessary for a clean log-out process in 'loginout'.
@@ -30,7 +32,12 @@ class rocketChatTaskSet(TaskSet):
         '''
         This task creates a new team and enables the team-messenger (settings). Afterwards, it opens the team-messenger and 
         posts some chat messanges. At the end, the created team will be deleted. 
-        Note: only teacher or admins can create a new team.
+        
+        Note: Only teacher or admins can create a new team. Because there are many bugs on enabling RocketChat for a team on the SchulCloud,
+        this method contains several workarounds.
+
+        Param:
+        - self (TaskSet) : TaskSet for RocketChat
         '''
         
         if isinstance(self._user, locustfile.PupilUser) is False:
