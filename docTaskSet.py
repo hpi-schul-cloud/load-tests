@@ -25,14 +25,12 @@ class docTaskSet(TaskSet):
         '''
         First task on docTaskSet, which starts the login of the user.
         '''
-
         login(self)
 
     def on_stop(self):
         '''
         Last task on docTaskSet, which will be triggerd after stopping the loadtest. Automatically starts a clean-up and loggs out the user.
         '''
-
         logout(self)
 
     @tag('doc')
