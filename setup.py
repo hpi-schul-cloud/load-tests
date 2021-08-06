@@ -11,9 +11,8 @@ setuptools.setup(
     description="Utilities to work with 1password",
     long_description=long_description,
     url="https://github.com/hpi-schul-cloud/loadtests",
-    package_dir={"": "."},
-    packages=setuptools.find_packages(where="."),
-    # scripts=['bin/onepwd'],
+    package_dir={"": "src"},
+    packages=setuptools.find_packages(where="src"),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU AFFERO GENERAL PUBLIC LICENSE V3",
