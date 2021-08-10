@@ -4,7 +4,7 @@ import json
 from loadtests import locustfile
 from loadtests import constant
 
-from functions import *
+from loadtests.functions import *
 from bs4 import BeautifulSoup
 
 def login(self):

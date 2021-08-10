@@ -64,7 +64,7 @@ def getUserCredentials(user):
     '''
 
     logger = logging.getLogger(__name__)
-    
+
     try:
         filename = constant.constant.userCredentialsFilePath
         if os.path.exists(filename):
