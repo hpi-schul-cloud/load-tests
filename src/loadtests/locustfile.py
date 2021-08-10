@@ -7,11 +7,11 @@ from loadtests import constant
 
 from urllib.parse import urlparse
 from locust import HttpUser, between
-from loadtests.bbbTaskSet import *
-from loadtests.scTaskSet import *
-from loadtests.docTaskSet import *
-from loadtests.reqWithoutUserTaskSet import *
-from loadtests.rocketChatTaskSet import *
+from loadtests.bbbTaskSet import bbbTaskSet
+from loadtests.scTaskSet import scTaskSet
+from loadtests.docTaskSet import docTaskSet
+from loadtests.reqWithoutUserTaskSet import reqWithoutUserTaskSet
+from loadtests.rocketChatTaskSet import rocketChatTaskSet
 
 class PupilUser(HttpUser):
     '''
