@@ -1,5 +1,3 @@
-from loadtests import locustfile
-
 from loadtests.loginout import *
 from loadtests.requestsBuilder import *
 from loadtests.functions import *
@@ -101,7 +99,7 @@ class scTaskSet(TaskSet):
         Param:
             self: Taskset
         '''
-        if isinstance(self._user, locustfile.PupilUser):
+        if self._user.user_type == "pupil":
            pass
         else:
             normalGET(self, "/courses/add/")
@@ -268,7 +266,7 @@ class scTaskSet(TaskSet):
         Param:
             self: Taskset
         '''
-        if isinstance(self._user, locustfile.PupilUser):
+        if self._user.user_type == "pupil":
            pass
         else:
             courseId = createCourse(self, courseDataBuilder(self))
@@ -287,7 +285,7 @@ class scTaskSet(TaskSet):
         Param:
             self: Taskset
         '''
-        if isinstance(self._user, locustfile.PupilUser):
+        if self._user.user_type == "pupil":
            pass
         else:
             courseId = createCourse(self, courseDataBuilder(self))
@@ -304,7 +302,7 @@ class scTaskSet(TaskSet):
         Param:
             self: Taskset
         '''
-        if isinstance(self._user, locustfile.PupilUser):
+        if self._user.user_type == "pupil":
           pass
         else:
             teamId = newTeam(self)
@@ -320,7 +318,7 @@ class scTaskSet(TaskSet):
             self: Taskset
         '''
         # Posts and edits messages at the Matrix Messenger
-        if isinstance(self._user, locustfile.PupilUser):
+        if self._user.user_type == "pupil":
            pass
         else:
             matrixMessenger(self)
