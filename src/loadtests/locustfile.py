@@ -7,6 +7,11 @@ from loadtests import constant
 
 from urllib.parse import urlparse
 from locust import HttpUser, between
+from loadtests.bbbTaskSet import *
+from loadtests.scTaskSet import *
+from loadtests.docTaskSet import *
+from loadtests.reqWithoutUserTaskSet import *
+from loadtests.rocketChatTaskSet import *
 
 class PupilUser(HttpUser):
     '''
@@ -14,7 +19,7 @@ class PupilUser(HttpUser):
     '''
 
     weight = 5 # specifys how often the loadtest should simulate this user-type.
-    tasks = constant.constant.tasks # collection of taks-sets which can be applied to the user
+    tasks = {bbbTaskSet:1, scTaskSet:3, docTaskSet:1, reqWithoutUserTaskSet:1, rocketChatTaskSet:1} # collection of taks-sets which can be applied to the user
     wait_time = constant.constant.wait_time # specifys the waiting time after finishing a task and starting the next
     user_type = "pupil" # specifys the type of the user
     login_credentials = None # gives the user log-in credentials for further actions
@@ -29,7 +34,7 @@ class AdminUser(HttpUser):
     '''
 
     weight = 1 # specifys how often the loadtest should simulate this user-type
-    tasks = constant.constant.tasks # collection of taks-sets which can be applied to the user
+    tasks = {bbbTaskSet:1, scTaskSet:3, docTaskSet:1, reqWithoutUserTaskSet:1, rocketChatTaskSet:1} # collection of taks-sets which can be applied to the user
     wait_time = constant.constant.wait_time # specifys the waiting time after finishing a task and starting the next
     user_type = "admin" # specifys the type of the user
     login_credentials = None # gives the user log-in credentials for further actions
@@ -44,7 +49,7 @@ class TeacherUser(HttpUser):
     '''
 
     weight = 3 # specifys how often the loadtest should simulate this user-type.
-    tasks = constant.constant.tasks # collection of taks-sets which can be applied to the user
+    tasks = {bbbTaskSet:1, scTaskSet:3, docTaskSet:1, reqWithoutUserTaskSet:1, rocketChatTaskSet:1} # collection of taks-sets which can be applied to the user
     wait_time = constant.constant.wait_time # specifys the waiting time after finishing a task and starting the next
     user_type = "teacher" # specifys the type of the user
     login_credentials = None # gives the user log-in credentials for further actions
