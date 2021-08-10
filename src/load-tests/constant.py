@@ -1,10 +1,10 @@
 import os
 
-from loadtests.bbbTaskSet import *
-from loadtests.scTaskSet import *
-from loadtests.docTaskSet import *
-from loadtests.reqWithoutUserTaskSet import *
-from loadtests.rocketChatTaskSet import *
+from bbbTaskSet import *
+from scTaskSet import *
+from docTaskSet import *
+from reqWithoutUserTaskSet import *
+from rocketChatTaskSet import *
 from locust import between
 
 class constant():
@@ -21,6 +21,9 @@ class constant():
     numberRooms = int(os.environ.get("BBBNUMBERROOMS"))
     numberUsers = int(os.environ.get("BBBNUMBERUSERS"))
     urlBetterMarks = os.environ.get("URLBETTERMARKS") # required for downloading bettermarks-tools
-    userCredentialsFile=os.environ.get("USER_CREDENTIALS_FILE")
-    adminUsername = os.environ.get("ADMIN_USERNAME")
-    adminPass = os.environ.get("ADMIN_USERNAME")
+    
+    # Get the user credentials for locust HttpUser. Either the file-path or the constants will be used, other wise the programm will exit.
+    userCredentialsFilePath = os.environ.get("USER_CREDENTIALS_FILE_PATH")
+    loginCredentialsAdmin = {'email':os.environ.get("ADMIN_EMAIL"), 'password':os.environ.get("ADMIN_PASSWORD")}
+    loginCredentialsTeacher = {'email':os.environ.get("TEACHER_EMAIL"), 'password':os.environ.get("TEACHER_PASSWORD")}
+    loginCredentialsPupil = {'email':os.environ.get("PUPIL_EMAIL"), 'password':os.environ.get("PUPIL_PASSWORD")}
