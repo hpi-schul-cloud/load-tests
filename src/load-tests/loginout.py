@@ -1,8 +1,8 @@
 import base64
 import os
 import json
-import locustfile
-import constant
+from loadtests import locustfile
+from loadtests import constant
 
 from functions import *
 from bs4 import BeautifulSoup
@@ -61,11 +61,11 @@ def cleanUpLoadtest(self):
             with self.client.get(url, catch_response=True, allow_redirects=True) as response:
                 soup = BeautifulSoup(response.text, "html.parser")
                 findId = soup.find_all("div", {"data-file-id" : documentId}) # Searches document id on html page
-            
+
             if len(findId) > 0:
                 deleteDoc(self, documentId)
         self.createdDocuments = None
-        
+
         for courseId in self.createdCourses:
             url = f"{self.user.host}/courses/"
             with self.client.get(url, catch_response=True, allow_redirects=True) as response:
@@ -74,11 +74,11 @@ def cleanUpLoadtest(self):
             if len(findId) > 0:
                 deleteCourse(self, courseId)
         self.createdCourses = None
-    
+
         for teamId in self.createdTeams:
             url = f"{self.user.host}/teams/"
             with self.client.get(url, catch_response=True, allow_redirects=True) as response:
-                soup = BeautifulSoup(response.text, "html.parser") 
+                soup = BeautifulSoup(response.text, "html.parser")
                 findId = soup.find_all({"data-id":teamId})
             if not findId is None:
                 deleteTeam(self, teamId)

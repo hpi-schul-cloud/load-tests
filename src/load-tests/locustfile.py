@@ -3,13 +3,13 @@ import sys
 import yaml
 import os
 import random
-import constant
+from loadtests import constant
 
 from urllib.parse import urlparse
 from locust import HttpUser, between
 
 class PupilUser(HttpUser):
-    ''' 
+    '''
     Representing a pupil user on the SchulCloud.
     '''
 
@@ -24,7 +24,7 @@ class PupilUser(HttpUser):
         getUserCredentials(self)
 
 class AdminUser(HttpUser):
-    ''' 
+    '''
     Representing a admin user on the SchulCloud.
     '''
 
@@ -39,10 +39,10 @@ class AdminUser(HttpUser):
         getUserCredentials(self)
 
 class TeacherUser(HttpUser):
-    ''' 
+    '''
     Representing a teacher user on the SchulCloud.
     '''
-    
+
     weight = 3 # specifys how often the loadtest should simulate this user-type.
     tasks = constant.constant.tasks # collection of taks-sets which can be applied to the user
     wait_time = constant.constant.wait_time # specifys the waiting time after finishing a task and starting the next

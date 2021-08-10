@@ -1,10 +1,10 @@
-import locustfile
+from loadtests import locustfile
 
-from loginout import *
-from requestsBuilder import *
-from functions import *
+from loadtests.loginout import *
+from loadtests.requestsBuilder import *
+from loadtests.functions import *
 from locust.user.task import TaskSet, tag
-from locust import task 
+from locust import task
 
 class scTaskSet(TaskSet):
     '''
@@ -24,7 +24,7 @@ class scTaskSet(TaskSet):
         It logs in the User.
 
         Param:
-            self: Taskset 
+            self: Taskset
         '''
         login(self)
 
@@ -293,7 +293,7 @@ class scTaskSet(TaskSet):
             courseId = createCourse(self, courseDataBuilder(self))
             courseAddEtherPadAndTool(self, courseId)
             deleteCourse(self, courseId)
-    
+
     @tag('sc')
     @task
     def createDeleteTeam(self):
