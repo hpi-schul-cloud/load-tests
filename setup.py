@@ -15,7 +15,7 @@ setuptools.setup(
     packages=setuptools.find_packages(where="src"),
     install_requires=[
             'bs4==0.0.1',
-            'locust==1.1.1',
+            'locust==2.0.0',
             'pyyaml==5.4',
             'selenium==3.141.0'
     ],
