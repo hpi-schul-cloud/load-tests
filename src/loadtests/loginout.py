@@ -1,7 +1,6 @@
 import base64
 import os
 import json
-from loadtests import locustfile
 from loadtests import constant
 
 from loadtests.functions import *
@@ -54,7 +53,7 @@ def cleanUpLoadtest(self):
     Skips if no document-, course- our team- ID found.
     '''
 
-    if isinstance(self._user, locustfile.TeacherUser):
+    if self._user.user_type == "teacher":
 
         for documentId in self.createdDocuments :
             url = f"{self.user.host}/files/my/"

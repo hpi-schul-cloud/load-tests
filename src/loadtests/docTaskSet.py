@@ -1,5 +1,4 @@
 import time
-from loadtests import locustfile
 from loadtests import constant
 
 from loadtests.loginout import *
@@ -44,7 +43,7 @@ class docTaskSet(TaskSet):
         Deletes the doument after finishing the task.
         '''
 
-        if isinstance(self._user, locustfile.PupilUser):
+        if self._user.user_type == "pupil":
             pass
         else:
             # provides the post-request (for saving the created document) with necessary informations
@@ -109,7 +108,7 @@ class docTaskSet(TaskSet):
         Deletes the doument after finishing the task.
         '''
 
-        if isinstance(self._user, locustfile.PupilUser):
+        if self._user.user_type == "pupil":
             pass
         else:
             # provides the post-request (for saving the created document) with necessary informations
@@ -175,7 +174,7 @@ class docTaskSet(TaskSet):
         Deletes the doument after finishing the task.
         '''
 
-        if isinstance(self._user, locustfile.PupilUser):
+        if self._user.user_type == "pupil":
             pass
         else:
             # provides the post-request (for saving the created document) with necessary informations

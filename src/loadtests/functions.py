@@ -1,6 +1,5 @@
 import json
 from random import betavariate
-from loadtests import locustfile
 import requests
 import time
 from loadtests import requestsBuilder
@@ -112,7 +111,7 @@ def lernStore(self, courseId):
     '''
 
     # Add Resources
-    if isinstance(self._user, locustfile.TeacherUser):
+    if self._user.user_type == "teacher":
         thema_data = themaDataBuilder(self, courseId, "resources")
 
         # Adding a theme to the course to be able to add material from the Lernstore
@@ -194,7 +193,7 @@ def courseAddEtherPadAndTool(self, courseId):
     '''
 
     # Add Etherpads
-    if isinstance(self._user, locustfile.TeacherUser):
+    if self._user.user_type == "teacher":
         thema_data = themaDataBuilder(self, courseId, "Etherpad")
         thema_data["contents[0][content][title]"] = ""
         thema_data["contents[0][content][description]"] = ""

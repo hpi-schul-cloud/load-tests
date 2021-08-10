@@ -1,6 +1,5 @@
 from loadtests import functions
 from loadtests import loginout
-from loadtests import locustfile
 import time
 
 from locust.user.task import TaskSet, tag, task
@@ -40,7 +39,7 @@ class rocketChatTaskSet(TaskSet):
         - self (TaskSet) : TaskSet for RocketChat
         '''
 
-        if isinstance(self._user, locustfile.PupilUser) is False:
+        if self._user.user_type != "pupil":
             teamId = functions.newTeam(self)
 
             # Opens chrome browser
