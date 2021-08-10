@@ -21,3 +21,9 @@ class constant():
     numberRooms = int(os.environ.get("BBBNUMBERROOMS"))
     numberUsers = int(os.environ.get("BBBNUMBERUSERS"))
     urlBetterMarks = os.environ.get("URLBETTERMARKS") # required for downloading bettermarks-tools
+    
+    # Get the user credentials for locust HttpUser. Either the file-path or the constants will be used, other wise the programm will exit.
+    userCredentialsFilePath = os.environ.get("USER_CREDENTIALS_FILE_PATH")
+    loginCredentialsAdmin = {'email':os.environ.get("ADMIN_EMAIL"), 'password':os.environ.get("ADMIN_PASSWORD")}
+    loginCredentialsTeacher = {'email':os.environ.get("TEACHER_EMAIL"), 'password':os.environ.get("TEACHER_PASSWORD")}
+    loginCredentialsPupil = {'email':os.environ.get("PUPIL_EMAIL"), 'password':os.environ.get("PUPIL_PASSWORD")}

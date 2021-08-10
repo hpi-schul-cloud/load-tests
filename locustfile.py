@@ -56,24 +56,35 @@ class TeacherUser(HttpUser):
 
 def getUserCredentials(user):
     '''
-    Configuers the login credentials for the provided user.
+    Configuers the login credentials for the provided user. If the user credentials are stored at a (lokal) .yaml
+    file, these credentials will be used. Other wise environment-variables will be used as login-credentials.
 
     Param:
         user (HttpUser) : user which calls for new credentials
     '''
 
     logger = logging.getLogger(__name__)
-
-    hostname = urlparse(user.host).hostname # name of the host
-    filename = "./users_" + hostname + ".yaml" # url to file which contains login credentials
-    if not os.path.exists(filename):
-        logger.error("File does not exist: " + filename)
-        sys.exit(1)
-
-    with open(filename, 'r') as file:
-        yaml_loaded = yaml.safe_load(file)
-        if (yaml_loaded != None) and (user.user_type in yaml_loaded):
-            user.login_credentials = random.choice(yaml_loaded[user.user_type])
+    
+    try:
+        filename = constant.constant.userCredentialsFilePath
+        if os.path.exists(filename):
+            with open(filename, 'r') as file:
+                yaml_loaded = yaml.safe_load(file)
+                if (yaml_loaded != None) and (user.user_type in yaml_loaded):
+                    user.login_credentials = random.choice(yaml_loaded[user.user_type])
+        else:
+            logger.error("File does not exist: " + filename)
+            sys.exit(1)
+    except:
+        if user.user_type == 'admin' and constant.constant.loginCredentialsAdmin['email'] is not None and constant.constant.loginCredentialsAdmin['password'] is not None:
+            user.login_credentials = constant.constant.loginCredentialsAdmin
+        elif user.user_type == 'teacher' and constant.constant.loginCredentialsTeacher['email'] is not None and constant.constant.loginCredentialsTeacher['password'] is not None:
+            user.login_credentials = constant.constant.loginCredentialsTeacher
+        elif user.user_type == 'pupil' and constant.constant.loginCredentialsPupil['email'] is not None and constant.constant.loginCredentialsPupil['password'] is not None:
+            user.login_credentials = constant.constant.loginCredentialsPupil
+        else:
+            logger.error("User not found: " + user.user_type)
+            sys.exit(1)
 
     if user.login_credentials == None:
         logger.info("No %s users found in " + filename, user.user_type)
