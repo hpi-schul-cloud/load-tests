@@ -1,4 +1,4 @@
-from loadtests import constant
+import constant
 
 from locust.user.task import TaskSet, tag, task
 

@@ -3,15 +3,14 @@ import sys
 import yaml
 import os
 import random
-from loadtests import constant
+import constant
 
-from urllib.parse import urlparse
-from locust import HttpUser, between
-from loadtests.bbbTaskSet import bbbTaskSet
-from loadtests.scTaskSet import scTaskSet
-from loadtests.docTaskSet import docTaskSet
-from loadtests.reqWithoutUserTaskSet import reqWithoutUserTaskSet
-from loadtests.rocketChatTaskSet import rocketChatTaskSet
+from locust import HttpUser
+from bbbTaskSet import bbbTaskSet
+from scTaskSet import scTaskSet
+from docTaskSet import docTaskSet
+from reqWithoutUserTaskSet import reqWithoutUserTaskSet
+from rocketChatTaskSet import rocketChatTaskSet
 
 class PupilUser(HttpUser):
     '''

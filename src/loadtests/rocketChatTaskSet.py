@@ -1,10 +1,9 @@
-from loadtests import functions
-from loadtests import loginout
+import functions
+import loginout
 import time
 
 from locust.user.task import TaskSet, tag, task
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
-from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
