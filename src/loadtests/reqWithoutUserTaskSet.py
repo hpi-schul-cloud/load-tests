@@ -1,4 +1,4 @@
-import constant
+from loadtests import constant
 
 from locust.user.task import TaskSet, tag, task
 
@@ -13,7 +13,7 @@ class reqWithoutUserTaskSet(TaskSet):
         Param:
             self (TaskSet): TaskSet
         '''
-        
+
         url = self.user.host.replace("https://", "") # uses the host domain for get-requests
 
         with self.client.get("https://api." + url + "/version", name="/api/version") as api_response:

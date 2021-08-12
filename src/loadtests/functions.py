@@ -1,16 +1,15 @@
 import json
 from random import betavariate
-import locustfile
 import requests
 import time
-import requestsBuilder
+from loadtests import requestsBuilder
 
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
 from selenium import webdriver
 from requests.api import head
-from requestsBuilder import *
+from loadtests.requestsBuilder import *
 
 def createDoc(self, docdata):
     '''
@@ -23,7 +22,7 @@ def createDoc(self, docdata):
 
     header = requestHeaderBuilder(self, "/files/my/")
     header["Content-Type"] = "application/x-www-form-urlencoded" # Adding entry "Content-Type" (data format for request body)
-    
+
     with self.client.request(
         "POST",
         "/files/newFile",
@@ -42,7 +41,7 @@ def deleteDoc(self, docId):
     '''
     Deletes a document on the SchulCloud website.
 
-    Param: 
+    Param:
         self: Taskset
         docId: Document ID
     '''
@@ -91,7 +90,7 @@ def deleteCourse(self, courseId):
     header = requestHeaderBuilder(self, "/courses/"+ courseId +"/edit")
     header["accept"] = "*/*" # Adding "accept" entry
     header["accept-language"] = "en-US,en;q=0.9" # Adding accepted language
-    
+
     with self.client.request("DELETE",
         "/courses/" + courseId + "/" ,
         headers = header,
@@ -102,17 +101,17 @@ def deleteCourse(self, courseId):
         if response.status_code != constant.constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
 
-def lernStore(self, courseId):  
+def lernStore(self, courseId):
     '''
-    Adds a theme. 
+    Adds a theme.
     After that the id of the course is requestet from the lernstore to add Material of the Lernstore.
 
     Param:
         self: Taskset
-    '''   
+    '''
 
     # Add Resources
-    if isinstance(self._user, locustfile.TeacherUser):
+    if self._user.user_type == "teacher":
         thema_data = themaDataBuilder(self, courseId, "resources")
 
         # Adding a theme to the course to be able to add material from the Lernstore
@@ -187,14 +186,14 @@ def lernStore(self, courseId):
 def courseAddEtherPadAndTool(self, courseId):
     '''
     Creates and deletes a Course and adds an Etherpad and a Tool, if the User is an Teacher.
-    If the User is an Admin, it only creates and deletes a Course 
+    If the User is an Admin, it only creates and deletes a Course
 
     Param:
         self: Taskset
     '''
 
     # Add Etherpads
-    if isinstance(self._user, locustfile.TeacherUser):
+    if self._user.user_type == "teacher":
         thema_data = themaDataBuilder(self, courseId, "Etherpad")
         thema_data["contents[0][content][title]"] = ""
         thema_data["contents[0][content][description]"] = ""
@@ -226,9 +225,9 @@ def courseAddEtherPadAndTool(self, courseId):
                 "sec-fetch-site"    : "same-origin",
                 "x-requested-with"  : "XMLHttpRequest"
             },
-            data = ("privacy_permission=anonymous&openNewTab=true&name=bettermarks&url=" 
-                + constant.constant.urlBetterMarks + 
-                "&key=&logo_url=https://acc.bettermarks.com/app/assets/bm-logo.png&isLocal=true&resource_link_id=&lti_version=&lti_message_type=&isTemplate=false&skipConsent=false&createdAt=2021-01-14T13:35:44.689Z&updatedAt=2021-01-14T13:35:44.689Z&__v=0&originTool=600048b0755565002840fde4&courseId=" 
+            data = ("privacy_permission=anonymous&openNewTab=true&name=bettermarks&url="
+                + constant.constant.urlBetterMarks +
+                "&key=&logo_url=https://acc.bettermarks.com/app/assets/bm-logo.png&isLocal=true&resource_link_id=&lti_version=&lti_message_type=&isTemplate=false&skipConsent=false&createdAt=2021-01-14T13:35:44.689Z&updatedAt=2021-01-14T13:35:44.689Z&__v=0&originTool=600048b0755565002840fde4&courseId="
                 + str(courseId)),
             catch_response=True,
             allow_redirects=True
@@ -250,7 +249,7 @@ def newTeam(self):
     '''
 
     teamId = None
-    
+
     data = {
         "schoolId"      : self.school_id,
         "_method"       : "post",
@@ -283,7 +282,7 @@ def newTeam(self):
             teamIdString = soup.find_all("section", {"class": "section-teams"})
             teamId = str(teamIdString).partition('\n')[0][41:65]
             self.createdTeams.append(teamId)
-            
+
     return teamId
 
 def deleteTeam(self, teamId):
@@ -298,7 +297,7 @@ def deleteTeam(self, teamId):
     header = requestHeaderBuilder(self, (self.user.host + "/teams/" + teamId + "/edit"))
     header["accept"] = "*/*"
     header["accept-language"] = "en-US,en;q=0.9"
-    
+
     with self.client.request("DELETE",
         "/teams/" + teamId + "/" ,
         headers = header,
@@ -313,7 +312,7 @@ def loginLoadtestUserOnTeamToEdit(self, webbrowser):
     '''
     Logs-in a user on the 'edit-page' of a team on SchulCloud.
     '''
-    
+
     # Login user
     ui_element = "input[id='name']"
     element = WebDriverWait(webbrowser, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
@@ -326,15 +325,15 @@ def loginLoadtestUserOnTeamToEdit(self, webbrowser):
     ui_element = "input[id='submit-login']"
     element = WebDriverWait(webbrowser, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
     element.click()
-    
+
     time.sleep(1)
 
 def enableTeamMessenger(webbrowser):
     '''
-    Enables the team-messenger. This will create a new chat on RocketChat. When the team will be deleted later, 
+    Enables the team-messenger. This will create a new chat on RocketChat. When the team will be deleted later,
     the connected rocket chat will be deleted as well. Only works with an already startet webbrowser, where the user is already logged in.
     '''
-    
+
     # Klick on rocket chat checkbox
     ui_element = "input[id='activateRC']"
     element = WebDriverWait(webbrowser, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
@@ -383,7 +382,7 @@ def postTeamChatMessage(self, webbrowser):
     element.send_keys("This is an automated loadtest chat message.")
 
     # Klick 'send' button
-    ui_element = "svg[class='rc-icon rc-input__icon-svg rc-input__icon-svg--send']"  
+    ui_element = "svg[class='rc-icon rc-input__icon-svg rc-input__icon-svg--send']"
     element = WebDriverWait(webbrowser, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
     element.click()
 

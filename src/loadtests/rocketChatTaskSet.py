@@ -1,6 +1,5 @@
-import functions
-import loginout
-import locustfile
+from loadtests import functions
+from loadtests import loginout
 import time
 
 from locust.user.task import TaskSet, tag, task
@@ -14,7 +13,7 @@ class rocketChatTaskSet(TaskSet):
     This class defines the TaskSet for RocketChat.
     '''
 
-    # Lists which contain all the doc/courses/teams ID's beeing created from the loadtest. 
+    # Lists which contain all the doc/courses/teams ID's beeing created from the loadtest.
     # All three lists are necessary for a clean log-out process in 'loginout'.
     createdDocuments = []
     createdCourses = []
@@ -30,17 +29,17 @@ class rocketChatTaskSet(TaskSet):
     @task
     def createTeamWithRocketChat(self):
         '''
-        This task creates a new team and enables the team-messenger (settings). Afterwards, it opens the team-messenger and 
-        posts some chat messanges. At the end, the created team will be deleted. 
-        
+        This task creates a new team and enables the team-messenger (settings). Afterwards, it opens the team-messenger and
+        posts some chat messanges. At the end, the created team will be deleted.
+
         Note: Only teacher or admins can create a new team. Because there are many bugs on enabling RocketChat for a team on the SchulCloud,
         this method contains several workarounds.
 
         Param:
         - self (TaskSet) : TaskSet for RocketChat
         '''
-        
-        if isinstance(self._user, locustfile.PupilUser) is False:
+
+        if self._user.user_type != "pupil":
             teamId = functions.newTeam(self)
 
             # Opens chrome browser
@@ -62,4 +61,3 @@ class rocketChatTaskSet(TaskSet):
 
             driverWB.close # Close webbrowser
 
-        

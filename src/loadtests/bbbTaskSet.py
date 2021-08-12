@@ -1,7 +1,7 @@
 import time
 import os
 import hashlib
-import constant
+from loadtests import constant
 
 from locust import task, tag
 from locust.user.task import TaskSet
@@ -23,7 +23,7 @@ class bbbTaskSet(TaskSet):
         '''
         Task for creating multiple BBB rooms.
 
-        Creates the number of BBB rooms which is contained in the 'numberRooms' variable. After creating a room, other users join and the 
+        Creates the number of BBB rooms which is contained in the 'numberRooms' variable. After creating a room, other users join and the
         moderator will share a video. The number of joining users is contained in the 'numberUsers' variable. After finishing the taks, all tabs
         and BBB rooms will be closed.
         '''

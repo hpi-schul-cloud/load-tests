@@ -1,9 +1,8 @@
 import time
-import locustfile
-import constant
+from loadtests import constant
 
-from loginout import *
-from functions import createDoc, deleteDoc
+from loadtests.loginout import *
+from loadtests.functions import createDoc, deleteDoc
 from locust.user.task import TaskSet, task, tag
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
@@ -15,7 +14,7 @@ class docTaskSet(TaskSet):
     Task-Set which contains all test-tasks for working with documents on the SchulCloud.
     '''
 
-    # Lists which contain all the doc/courses/teams ID's beeing created from the loadtest. 
+    # Lists which contain all the doc/courses/teams ID's beeing created from the loadtest.
     # All three lists are necessary for a clean log-out procress in 'loginout'.
     createdDocuments = []
     createdCourses = []
@@ -40,11 +39,11 @@ class docTaskSet(TaskSet):
         '''
         Task for creating and editing .docx documents on the SchulCloud.
 
-        Abbords, if the user is a pupil user. Otherwise, logs in the user and creates as well as edits a new document. 
+        Abbords, if the user is a pupil user. Otherwise, logs in the user and creates as well as edits a new document.
         Deletes the doument after finishing the task.
         '''
 
-        if isinstance(self._user, locustfile.PupilUser):
+        if self._user.user_type == "pupil":
             pass
         else:
             # provides the post-request (for saving the created document) with necessary informations
@@ -53,7 +52,7 @@ class docTaskSet(TaskSet):
                 "type"          : "docx",
                 "studentEdit"   : "false"
             }
-            
+
             # Creates .docx document
             docId = createDoc(self, data) # ID of the new document
             self.createdDocuments.append(docId)
@@ -105,11 +104,11 @@ class docTaskSet(TaskSet):
         '''
         Task for creating and editing .xlsx documents on the SchulCloud.
 
-        Abbords, if the user is a pupil user. Otherwise, logs in the user and creates as well as edits a new document. 
+        Abbords, if the user is a pupil user. Otherwise, logs in the user and creates as well as edits a new document.
         Deletes the doument after finishing the task.
         '''
 
-        if isinstance(self._user, locustfile.PupilUser):
+        if self._user.user_type == "pupil":
             pass
         else:
             # provides the post-request (for saving the created document) with necessary informations
@@ -118,7 +117,7 @@ class docTaskSet(TaskSet):
                 "type"          : "xlsx",
                 "studentEdit"   : "false"
             }
-            
+
             # Creates .xlsx document
             docId = createDoc(self, data) # ID of the new document
             self.createdDocuments.append(docId)
@@ -171,11 +170,11 @@ class docTaskSet(TaskSet):
         '''
         Task for creating and editing .pptx documents on the SchulCloud.
 
-        Abbords, if the user is a pupil user. Otherwise, logs in the user and creates as well as edits a new document. 
+        Abbords, if the user is a pupil user. Otherwise, logs in the user and creates as well as edits a new document.
         Deletes the doument after finishing the task.
         '''
 
-        if isinstance(self._user, locustfile.PupilUser):
+        if self._user.user_type == "pupil":
             pass
         else:
             # provides the post-request (for saving the created document) with necessary informations
@@ -184,7 +183,7 @@ class docTaskSet(TaskSet):
                 "type"          : "pptx",
                 "studentEdit"   : "false"
             }
-            
+
             # Create .pptx document
             docId = createDoc(self, data) # ID of the new document
             self.createdDocuments.append(docId)

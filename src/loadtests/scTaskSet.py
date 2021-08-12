@@ -1,10 +1,8 @@
-import locustfile
-
-from loginout import *
-from requestsBuilder import *
-from functions import *
+from loadtests.loginout import *
+from loadtests.requestsBuilder import *
+from loadtests.functions import *
 from locust.user.task import TaskSet, tag
-from locust import task 
+from locust import task
 
 class scTaskSet(TaskSet):
     '''
@@ -24,7 +22,7 @@ class scTaskSet(TaskSet):
         It logs in the User.
 
         Param:
-            self: Taskset 
+            self: Taskset
         '''
         login(self)
 
@@ -101,7 +99,7 @@ class scTaskSet(TaskSet):
         Param:
             self: Taskset
         '''
-        if isinstance(self._user, locustfile.PupilUser):
+        if self._user.user_type == "pupil":
            pass
         else:
             normalGET(self, "/courses/add/")
@@ -268,7 +266,7 @@ class scTaskSet(TaskSet):
         Param:
             self: Taskset
         '''
-        if isinstance(self._user, locustfile.PupilUser):
+        if self._user.user_type == "pupil":
            pass
         else:
             courseId = createCourse(self, courseDataBuilder(self))
@@ -287,13 +285,13 @@ class scTaskSet(TaskSet):
         Param:
             self: Taskset
         '''
-        if isinstance(self._user, locustfile.PupilUser):
+        if self._user.user_type == "pupil":
            pass
         else:
             courseId = createCourse(self, courseDataBuilder(self))
             courseAddEtherPadAndTool(self, courseId)
             deleteCourse(self, courseId)
-    
+
     @tag('sc')
     @task
     def createDeleteTeam(self):
@@ -304,7 +302,7 @@ class scTaskSet(TaskSet):
         Param:
             self: Taskset
         '''
-        if isinstance(self._user, locustfile.PupilUser):
+        if self._user.user_type == "pupil":
           pass
         else:
             teamId = newTeam(self)
@@ -320,7 +318,7 @@ class scTaskSet(TaskSet):
             self: Taskset
         '''
         # Posts and edits messages at the Matrix Messenger
-        if isinstance(self._user, locustfile.PupilUser):
+        if self._user.user_type == "pupil":
            pass
         else:
             matrixMessenger(self)

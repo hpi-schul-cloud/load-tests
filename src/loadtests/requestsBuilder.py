@@ -1,4 +1,4 @@
-import constant
+from loadtests import constant
 
 from bs4 import BeautifulSoup
 
@@ -38,7 +38,7 @@ def requestFailureMessage(self, response):
     '''
     Failure Message for unsuccessfull requests.
     '''
-    
+
     return (f"Failed! (username: {self.user.login_credentials['email']}, http-code: {str(response.status_code)}, header: {str(response.headers)})")
 
 def normalGET(self, url):
@@ -103,9 +103,9 @@ def themaDataBuilder(self, courseId, component):
     Param:
         self: Taskset
         courseId: Course ID
-        components: 
+        components:
     '''
-    
+
     thema_data = {
         "authority"                         : self.user.host.replace("https://", ""),
         "origin"                            : self.user.host,
