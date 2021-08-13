@@ -1,4 +1,4 @@
-import constant
+from loadtests import constant
 
 from bs4 import BeautifulSoup
 
