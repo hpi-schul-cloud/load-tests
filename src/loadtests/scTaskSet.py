@@ -1,6 +1,6 @@
-from loginout import *
-from requestsBuilder import *
-from functions import *
+from loadtests.loginout import *
+from loadtests.requestsBuilder import *
+from loadtests.functions import *
 from locust.user.task import TaskSet, tag
 from locust import task
 

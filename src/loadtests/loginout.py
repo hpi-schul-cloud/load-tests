@@ -1,8 +1,9 @@
 import base64
+import os
 import json
-import constant
+from loadtests import constant
 
-from functions import *
+from loadtests.functions import *
 from bs4 import BeautifulSoup
 
 def login(self):

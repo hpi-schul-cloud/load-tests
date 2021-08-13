@@ -1,8 +1,8 @@
 import time
-import constant
+from loadtests import constant
 
-from loginout import *
-from functions import createDoc, deleteDoc
+from loadtests.loginout import *
+from loadtests.functions import createDoc, deleteDoc
 from locust.user.task import TaskSet, task, tag
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0

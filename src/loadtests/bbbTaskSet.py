@@ -1,6 +1,7 @@
 import time
+import os
 import hashlib
-import constant
+from loadtests import constant
 
 from locust import task, tag
 from locust.user.task import TaskSet
