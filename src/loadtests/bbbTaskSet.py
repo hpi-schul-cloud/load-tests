@@ -33,7 +33,7 @@ class bbbTaskSet(TaskSet):
 
         counterfirst = 0 # counter for creating a specific number of rooms
         counterTab = 1 # counter for open tabs
-        while counterfirst < constant.constant.numberRooms:
+        while counterfirst < int(constant.constant.numberRooms):
 
             timestamp = str(time.time())
             # Creates a BBB-Room with a password
@@ -65,7 +65,7 @@ class bbbTaskSet(TaskSet):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
             element.click()
 
-            time.sleep(constant.constant.timeToWaitShort)
+            time.sleep(int(constant.constant.timeToWaitShort))
 
             # Clicks on the Plussign
             ui_element = "tippy-21"
@@ -82,14 +82,14 @@ class bbbTaskSet(TaskSet):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
             element.send_keys('https://player.vimeo.com/video/418854539')
 
-            time.sleep(constant.constant.timeToWaitShort)
+            time.sleep(int(constant.constant.timeToWaitShort))
 
             # Clicks on the button "Share a new video"
             ui_element = "button[class='button--Z2dosza md--Q7ug4 default--Z19H5du startBtn--ZifpQ9']"
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
             element.click()
 
-            time.sleep(constant.constant.timeToWaitLong)
+            time.sleep(int(constant.constant.timeToWaitShort))
 
             counterTab += 1
             countersecond += 1
@@ -113,7 +113,7 @@ class bbbTaskSet(TaskSet):
                 element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
                 element.click()
 
-                time.sleep(constant.constant.timeToWaitLong)
+                time.sleep(int(constant.constant.timeToWaitShort))
 
                 countersecond += 1
                 counterTab += 1
@@ -122,7 +122,7 @@ class bbbTaskSet(TaskSet):
 
         counterfirst = 0
         time.sleep(30)
-        while counterfirst < constant.constant.numberRooms:
+        while counterfirst < int(constant.constant.numberRooms):
             # Closes all the rooms
             operator = "end"
             urlparam = "meetingID=loadtest-" + timestamp + str(counterfirst) + "&password=123"

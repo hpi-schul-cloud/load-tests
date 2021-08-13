@@ -85,14 +85,14 @@ class docTaskSet(TaskSet):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.TAG_NAME, ui_element)))
             driverWB.switch_to.frame(element)
 
-            time.sleep(constant.constant.timeToWaitShort)
+            time.sleep(int(constant.constant.timeToWaitShort))
 
             # Edit document
             ui_element = "html/body"
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.XPATH, ui_element)))
             element.send_keys("Der Loadtest der loaded den Test!")
 
-            time.sleep(constant.constant.timeToWaitShort)
+            time.sleep(int(constant.constant.timeToWaitShort))
 
             driverWB.quit()
             deleteDoc(self, docId)
@@ -148,7 +148,7 @@ class docTaskSet(TaskSet):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.TAG_NAME, ui_element)))
             driverWB.switch_to.frame(element)
 
-            time.sleep(constant.constant.timeToWaitShort)
+            time.sleep(int(constant.constant.timeToWaitShort))
 
             # Edit Doc
             ui_element = "input[id='formulaInput']"
@@ -158,7 +158,7 @@ class docTaskSet(TaskSet):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
             element.click()
 
-            time.sleep(constant.constant.timeToWaitShort)
+            time.sleep(int(constant.constant.timeToWaitShort))
 
             driverWB.quit()
             deleteDoc(self, docId)
@@ -217,14 +217,14 @@ class docTaskSet(TaskSet):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
             driverWB.switch_to.frame(element)
 
-            time.sleep(constant.constant.timeToWaitShort)
+            time.sleep(int(constant.constant.timeToWaitShort))
 
             # Edit Doc
             ui_element = "html/body"
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.XPATH, ui_element)))
             element.send_keys("Der Loadtest der loaded den Test!")
 
-            time.sleep(constant.constant.timeToWaitShort)
+            time.sleep(int(constant.constant.timeToWaitShort))
 
             driverWB.quit()
             deleteDoc(self, docId)
