@@ -2,8 +2,8 @@ import json
 from random import betavariate
 import requests
 import time
-from loadtests import requestsBuilder
 
+from loadtests import requestsBuilder
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0

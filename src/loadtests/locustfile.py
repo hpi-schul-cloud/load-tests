@@ -3,8 +3,8 @@ import sys
 import yaml
 import os
 import random
-from loadtests import constant
 
+from loadtests import constant
 from urllib.parse import urlparse
 from locust import HttpUser, between
 from loadtests.bbbTaskSet import bbbTaskSet
