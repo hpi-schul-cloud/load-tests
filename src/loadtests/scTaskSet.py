@@ -16,6 +16,8 @@ class scTaskSet(TaskSet):
     createdCourses = []
     createdTeams = []
 
+    school_id = None
+
     def on_start(self):
         '''
         Frist Task that is executed.
