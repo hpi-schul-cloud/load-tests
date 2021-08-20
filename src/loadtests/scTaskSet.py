@@ -16,7 +16,9 @@ class scTaskSet(TaskSet):
     createdCourses = []
     createdTeams = []
 
+    # Initialization of important id's
     school_id = None
+    user_id = None
 
     def on_start(self):
         '''
