@@ -73,7 +73,7 @@ def createCourse(self, data):
         if response.status_code != constant.constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
         else:
-            json_object = json.loads(soup.string)
+            json_object = json.loads(str(soup.string))
             courseId = str(json_object["createdCourse"]["id"])
             self.createdCourses.append(courseId)
             return (courseId)
