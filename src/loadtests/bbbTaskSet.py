@@ -31,8 +31,8 @@ class bbbTaskSet(TaskSet):
 
 
     def on_stop(self):
-        if os.path.exists("chromedriver"):
-            os.remove("chromedriver")
+        if os.path.exists("./chromedriver"):
+            os.remove("./chromedriver")
 
     @tag('bbb')
     @task
