@@ -43,7 +43,7 @@ class bbbTaskSet(TaskSet):
         '''
 
         #Starts a chrome Browser
-        driverWB = webdriver.Chrome('./chromedriver.exe') # browser which will be used for creating the BBB rooms
+        driverWB = webdriver.Chrome(executable_path='./chromedriver') # browser which will be used for creating the BBB rooms
         driverWB.get(constant.constant.bBBHost)
 
         counterfirst = 0 # counter for creating a specific number of rooms
