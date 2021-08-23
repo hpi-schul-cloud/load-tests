@@ -1,6 +1,6 @@
 import time
 import os
-from urllib import request
+import urllib.request
 from loadtests import constant
 
 from loadtests.loginout import *
@@ -31,7 +31,7 @@ class docTaskSet(TaskSet):
         # Define the local filename to save data
         local_file = 'chromedriver.exe'
         # Download remote and save locally
-        request.urlretrieve(remote_url, local_file)
+        urllib.request.urlretrieve(remote_url, local_file)
 
     def on_stop(self):
         '''
