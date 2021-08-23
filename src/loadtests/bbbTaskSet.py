@@ -1,6 +1,6 @@
 import time
 import os
-from urllib import request
+import urllib.request
 import hashlib
 
 from requests.api import request
@@ -25,7 +25,7 @@ class bbbTaskSet(TaskSet):
         # Define the local filename to save data
         local_file = 'chromedriver.exe'
         # Download remote and save locally
-        request.urlretrieve(remote_url, local_file)
+        urllib.request.urlretrieve(remote_url, local_file)
 
     def on_stop(self):
         if os.path.exists("chromedriver.exe"):
