@@ -1,6 +1,7 @@
 import time
 import os
 import urllib.request
+import shutil
 from loadtests import constant
 
 from loadtests.loginout import *
@@ -27,18 +28,19 @@ class docTaskSet(TaskSet):
         First task on docTaskSet, which starts the login of the user.
         '''
         login(self)
-        remote_url = 'https://chromedriver.storage.googleapis.com/index.html?path=90.0.4430.24/'
+        remote_url = 'https://chromedriver.storage.googleapis.com/90.0.4430.24/chromedriver_linux64.zip'
         # Define the local filename to save data
-        local_file = 'chromedriver.exe'
+        local_file = 'chromedriver_linux64.zip'
         # Download remote and save locally
         urllib.request.urlretrieve(remote_url, local_file)
+        shutil.unpack_archive(local_file)
 
     def on_stop(self):
         '''
         Last task on docTaskSet, which will be triggerd after stopping the loadtest. Automatically starts a clean-up and loggs out the user.
         '''
-        if os.path.exists("chromedriver.exe"):
-            os.remove("chromedriver.exe")
+        if os.path.exists("./chromedriver"):
+            os.remove("./chromedriver")
         logout(self)
 
     @tag('doc')

@@ -2,6 +2,7 @@ from loadtests import functions
 from loadtests import loginout
 import time
 import os
+import shutil
 import urllib.request
 
 from locust.user.task import TaskSet, tag, task
@@ -27,11 +28,12 @@ class rocketChatTaskSet(TaskSet):
 
     def on_start(self):
         loginout.login(self)
-        remote_url = 'https://chromedriver.storage.googleapis.com/index.html?path=90.0.4430.24/'
+        remote_url = 'https://chromedriver.storage.googleapis.com/90.0.4430.24/chromedriver_linux64.zip'
         # Define the local filename to save data
-        local_file = 'chromedriver.exe'
+        local_file = 'chromedriver_linux64.zip'
         # Download remote and save locally
         urllib.request.urlretrieve(remote_url, local_file)
+        shutil.unpack_archive(local_file)
 
     def on_stop(self):
         if os.path.exists("chromedriver.exe"):
