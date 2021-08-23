@@ -1,6 +1,8 @@
 from loadtests import functions
 from loadtests import loginout
 import time
+import os
+import urllib
 
 from locust.user.task import TaskSet, tag, task
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
@@ -25,8 +27,12 @@ class rocketChatTaskSet(TaskSet):
 
     def on_start(self):
         loginout.login(self)
+        chrome = urllib.URLopener()
+        chrome.retrieve("https://chromedriver.storage.googleapis.com/index.html?path=90.0.4430.24/", "chromedriver.exe")
 
     def on_stop(self):
+        if os.path.exists("chromedriver.exe"):
+            os.remove("chromedriver.exe")
         loginout.logout(self)
 
     @tag('rocketChat')

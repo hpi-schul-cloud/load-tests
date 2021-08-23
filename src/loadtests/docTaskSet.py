@@ -1,4 +1,6 @@
 import time
+import os
+import urllib
 from loadtests import constant
 
 from loadtests.loginout import *
@@ -25,11 +27,15 @@ class docTaskSet(TaskSet):
         First task on docTaskSet, which starts the login of the user.
         '''
         login(self)
+        chrome = urllib.URLopener()
+        chrome.retrieve("https://chromedriver.storage.googleapis.com/index.html?path=90.0.4430.24/", "chromedriver.exe")
 
     def on_stop(self):
         '''
         Last task on docTaskSet, which will be triggerd after stopping the loadtest. Automatically starts a clean-up and loggs out the user.
         '''
+        if os.path.exists("chromedriver.exe"):
+            os.remove("chromedriver.exe")
         logout(self)
 
     @tag('doc')

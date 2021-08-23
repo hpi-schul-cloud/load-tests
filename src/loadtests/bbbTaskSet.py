@@ -1,5 +1,6 @@
 import time
 import os
+import urllib
 import hashlib
 from loadtests import constant
 
@@ -16,6 +17,14 @@ class bbbTaskSet(TaskSet):
     '''
     Task-Set which contains all test-tasks for working with BBB on the SchulCloud.
     '''
+
+    def on_start(self):
+        chrome = urllib.URLopener()
+        chrome.retrieve("https://chromedriver.storage.googleapis.com/index.html?path=90.0.4430.24/", "chromedriver.exe")
+
+    def on_stop(self):
+        if os.path.exists("chromedriver.exe"):
+            os.remove("chromedriver.exe")
 
     @tag('bbb')
     @task
