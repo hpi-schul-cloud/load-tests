@@ -59,7 +59,7 @@ class docTaskSet(TaskSet):
 
             host = self.user.host + "/files" # url to where the file will be saved
 
-            driverWB = webdriver.Chrome('.\chromedriver.exe') # browser which will be used for calling the host and saving the documents
+            driverWB = webdriver.Chrome('./chromedriver.exe') # browser which will be used for calling the host and saving the documents
             driverWB.get(host)
 
             # Login user
@@ -124,7 +124,7 @@ class docTaskSet(TaskSet):
 
             host = self.user.host + "/files" # url to where the file will be saved
 
-            driverWB = webdriver.Chrome('.\chromedriver.exe') # browser which will be used for calling the host and saving the documents
+            driverWB = webdriver.Chrome('./chromedriver.exe') # browser which will be used for calling the host and saving the documents
             driverWB.get(host)
 
             # Login User
@@ -190,7 +190,7 @@ class docTaskSet(TaskSet):
 
             host = self.user.host + "/files" # url to where the file will be saved
 
-            driverWB = webdriver.Chrome('.\chromedriver.exe') # browser which will be used for calling the host and saving the documents
+            driverWB = webdriver.Chrome('./chromedriver.exe') # browser which will be used for calling the host and saving the documents
             driverWB.get(host)
 
             # Login User
