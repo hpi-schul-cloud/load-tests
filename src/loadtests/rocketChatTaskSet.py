@@ -36,8 +36,8 @@ class rocketChatTaskSet(TaskSet):
         shutil.unpack_archive(local_file)
 
     def on_stop(self):
-        if os.path.exists("chromedriver.exe"):
-            os.remove("chromedriver.exe")
+        if os.path.exists("chromedriver"):
+            os.remove("chromedriver")
         loginout.logout(self)
 
     @tag('rocketChat')
