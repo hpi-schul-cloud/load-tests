@@ -34,7 +34,7 @@ def login(self):
                 #Extracting BearerToken from Responses Header
                 self.bearer_token = (response_header["set-cookie"]).split(";")[0].replace("jwt=", "")
                 decoded_token = base64.b64decode(self.bearer_token[0:461]).decode('utf-8') #base64.decodestring(str.encode(self.bearer_token[0:461]))
-                decoded_token_json = json.loads(decoded_token.removeprefix('{"alg":"HS256","typ":"access"}'))
+                decoded_token_json = json.loads(str(decoded_token).removeprefix('{"alg":"HS256","typ":"access"}'))
                 self.user_id = decoded_token_json["userId"]
                 self.school_id = decoded_token_json["schoolId"]
                 print(self.school_id)
