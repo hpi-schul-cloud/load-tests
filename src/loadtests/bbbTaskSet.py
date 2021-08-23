@@ -1,7 +1,9 @@
 import time
 import os
-import urllib
+from urllib import request
 import hashlib
+
+from requests.api import request
 from loadtests import constant
 
 from locust import task, tag
@@ -19,8 +21,11 @@ class bbbTaskSet(TaskSet):
     '''
 
     def on_start(self):
-        chrome = urllib.URLopener()
-        chrome.retrieve("https://chromedriver.storage.googleapis.com/index.html?path=90.0.4430.24/", "chromedriver.exe")
+        remote_url = 'https://chromedriver.storage.googleapis.com/index.html?path=90.0.4430.24/'
+        # Define the local filename to save data
+        local_file = 'chromedriver.exe'
+        # Download remote and save locally
+        request.urlretrieve(remote_url, local_file)
 
     def on_stop(self):
         if os.path.exists("chromedriver.exe"):

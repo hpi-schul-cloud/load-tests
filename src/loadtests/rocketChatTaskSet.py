@@ -2,7 +2,7 @@ from loadtests import functions
 from loadtests import loginout
 import time
 import os
-import urllib
+from urllib import request
 
 from locust.user.task import TaskSet, tag, task
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
@@ -27,8 +27,11 @@ class rocketChatTaskSet(TaskSet):
 
     def on_start(self):
         loginout.login(self)
-        chrome = urllib.URLopener()
-        chrome.retrieve("https://chromedriver.storage.googleapis.com/index.html?path=90.0.4430.24/", "chromedriver.exe")
+        remote_url = 'https://chromedriver.storage.googleapis.com/index.html?path=90.0.4430.24/'
+        # Define the local filename to save data
+        local_file = 'chromedriver.exe'
+        # Download remote and save locally
+        request.urlretrieve(remote_url, local_file)
 
     def on_stop(self):
         if os.path.exists("chromedriver.exe"):

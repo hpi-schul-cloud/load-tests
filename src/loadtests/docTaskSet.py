@@ -1,6 +1,6 @@
 import time
 import os
-import urllib
+from urllib import request
 from loadtests import constant
 
 from loadtests.loginout import *
@@ -27,8 +27,11 @@ class docTaskSet(TaskSet):
         First task on docTaskSet, which starts the login of the user.
         '''
         login(self)
-        chrome = urllib.URLopener()
-        chrome.retrieve("https://chromedriver.storage.googleapis.com/index.html?path=90.0.4430.24/", "chromedriver.exe")
+        remote_url = 'https://chromedriver.storage.googleapis.com/index.html?path=90.0.4430.24/'
+        # Define the local filename to save data
+        local_file = 'chromedriver.exe'
+        # Download remote and save locally
+        request.urlretrieve(remote_url, local_file)
 
     def on_stop(self):
         '''
