@@ -292,7 +292,7 @@ def deleteTeam(self, teamId):
         teamId: Id of the team
     '''
 
-    header = requestHeaderBuilder(self, (self.user.host + "/teams/" + teamId + "/edit"))
+    header = requestHeaderBuilder(self, (str(self.user.host) + "/teams/" + teamId + "/edit"))
     header["accept"] = "*/*"
     header["accept-language"] = "en-US,en;q=0.9"
 
