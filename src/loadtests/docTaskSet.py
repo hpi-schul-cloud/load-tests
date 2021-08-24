@@ -1,5 +1,6 @@
 import time
 import os
+import stat
 import urllib.request
 import shutil
 from loadtests import constant
@@ -34,6 +35,7 @@ class docTaskSet(TaskSet):
         # Download remote and save locally
         urllib.request.urlretrieve(remote_url, local_file)
         shutil.unpack_archive(local_file)
+        os.chmod("chromedriver", stat.S_IXOTH)
 
     def on_stop(self):
         '''

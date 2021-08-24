@@ -1,4 +1,5 @@
 import time
+import stat
 import os
 import urllib.request
 import hashlib
@@ -28,6 +29,7 @@ class bbbTaskSet(TaskSet):
         # Download remote and save locally
         urllib.request.urlretrieve(remote_url, local_file)
         shutil.unpack_archive(local_file)
+        os.chmod("chromedriver", stat.S_IXOTH)
 
 
     def on_stop(self):

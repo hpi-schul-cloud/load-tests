@@ -1,6 +1,7 @@
 from loadtests import functions
 from loadtests import loginout
 import time
+import stat
 import os
 import shutil
 import urllib.request
@@ -34,6 +35,7 @@ class rocketChatTaskSet(TaskSet):
         # Download remote and save locally
         urllib.request.urlretrieve(remote_url, local_file)
         shutil.unpack_archive(local_file)
+        os.chmod("chromedriver", stat.S_IXOTH)
 
     def on_stop(self):
         if os.path.exists("./chromedriver"):
