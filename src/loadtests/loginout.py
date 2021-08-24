@@ -38,12 +38,11 @@ def login(self):
                 token = (self.bearer_token)[0:461] + "=="
                 decoded_token =  base64.b64decode(token)
                 print(decoded_token)
-                decoded_token_json = json.loads(decoded_token.decode('utf-8')[31:])
+                decoded_token_json = json.loads(decoded_token.decode('utf-8')[33:348])
                 print(decoded_token_json)
                 #decoded_token_json = json.loads(decoded_token.replace('{"alg":"HS256","typ":"access"}.', ''))
                 self.user_id = decoded_token_json["userId"]
                 self.school_id = decoded_token_json["schoolId"]
-                print(self.school_id)
     return self
 
 def logout(self):
