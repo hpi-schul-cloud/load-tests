@@ -3,7 +3,7 @@ import os
 import json
 import urllib.request
 import stat
-import shutil
+import zipfile
 from loadtests import constant
 
 from loadtests.functions import *
@@ -96,7 +96,8 @@ def installChromedriver(self):
     # Download remote and save locally
     urllib.request.urlretrieve(remote_url, local_file)
     os.chmod(local_file, stat.S_IRWXU)
-    shutil.unpack_archive(local_file)
+    with zipfile.ZipFile(local_file,"r") as zip_ref:
+        zip_ref.extractall(self.workpath)
     os.chmod(self.workpath + "/chromedriver", stat.S_IRWXU)
 
 def deleteChromedriver(self):
