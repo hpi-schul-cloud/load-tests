@@ -95,9 +95,9 @@ def installChromedriver(self):
     local_file = self.workpath + '/chromedriver_linux64.zip'
     # Download remote and save locally
     urllib.request.urlretrieve(remote_url, local_file)
-    os.chmod(local_file, stat.S_IRWXO)
+    os.chmod(local_file, stat.S_IRWXU)
     shutil.unpack_archive(local_file)
-    os.chmod(self.workpath + "/chromedriver", stat.S_IRWXO)
+    os.chmod(self.workpath + "/chromedriver", stat.S_IRWXU)
 
 def deleteChromedriver(self):
     if os.path.exists(self.workpath + "/chromedriver"):
