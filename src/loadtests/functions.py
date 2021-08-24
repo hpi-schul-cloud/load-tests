@@ -145,6 +145,7 @@ def lernStore(self, courseId):
 
                 datajson = json.loads(response.text)
                 datajson = json.dumps(datajson["data"])
+                print(datajson)
                 datajson = json.loads(datajson.removeprefix("[").removesuffix("]"))
                 courseId_Lernstore = datajson["_id"]
 
