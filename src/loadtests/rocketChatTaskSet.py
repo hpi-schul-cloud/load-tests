@@ -1,14 +1,9 @@
 from loadtests import functions
 from loadtests import loginout
 import time
-import stat
-import os
-import shutil
-import urllib.request
 
 from locust.user.task import TaskSet, tag, task
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
-from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
@@ -29,17 +24,10 @@ class rocketChatTaskSet(TaskSet):
 
     def on_start(self):
         loginout.login(self)
-        remote_url = 'https://chromedriver.storage.googleapis.com/90.0.4430.24/chromedriver_linux64.zip'
-        # Define the local filename to save data
-        local_file = 'chromedriver_linux64.zip'
-        # Download remote and save locally
-        urllib.request.urlretrieve(remote_url, local_file)
-        shutil.unpack_archive(local_file)
-        os.chmod("chromedriver", stat.S_IXOTH)
+        loginout.installChromedriver(self)
 
     def on_stop(self):
-        if os.path.exists("./chromedriver"):
-            os.remove("./chromedriver")
+        loginout.deleteChromedriver(self)
         loginout.logout(self)
 
     @tag('rocketChat')

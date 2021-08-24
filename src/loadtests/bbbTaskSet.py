@@ -1,12 +1,8 @@
 import time
-import stat
-import os
-import urllib.request
 import hashlib
-import shutil
 
-from requests.api import request
 from loadtests import constant
+from loadtests import loginout
 
 from locust import task, tag
 from locust.user.task import TaskSet
@@ -23,18 +19,11 @@ class bbbTaskSet(TaskSet):
     '''
 
     def on_start(self):
-        remote_url = 'https://chromedriver.storage.googleapis.com/90.0.4430.24/chromedriver_linux64.zip'
-        # Define the local filename to save data
-        local_file = 'chromedriver_linux64.zip'
-        # Download remote and save locally
-        urllib.request.urlretrieve(remote_url, local_file)
-        shutil.unpack_archive(local_file)
-        os.chmod("chromedriver", stat.S_IXOTH)
+        loginout.installChromedriver(self)
 
 
     def on_stop(self):
-        if os.path.exists("./chromedriver"):
-            os.remove("./chromedriver")
+        loginout.deleteChromedriver(self)
 
     @tag('bbb')
     @task
