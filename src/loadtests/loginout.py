@@ -35,7 +35,7 @@ def login(self):
                 response_header = login_post_response.headers
                 #Extracting BearerToken from Responses Header
                 self.bearer_token = (response_header["set-cookie"]).split(";")[0].replace("jwt=", "")
-                if len(self.bearer_token) > 12:
+                if len(self.bearer_token) > 20:
                     token = (self.bearer_token)[0:461] + "=="
                     decoded_token =  base64.b64decode(token)
                     decoded_token_json = json.loads(decoded_token.decode('utf-8')[30:])
@@ -89,6 +89,7 @@ def cleanUpLoadtest(self):
         self.createdTeams = None
 
 def installChromedriver(self):
+    print(os.path.abspath(os.getcwd()))
     remote_url = 'https://chromedriver.storage.googleapis.com/90.0.4430.24/chromedriver_linux64.zip'
     # Define the local filename to save data
     local_file = './chromedriver_linux64.zip'
