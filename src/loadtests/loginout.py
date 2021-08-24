@@ -91,12 +91,12 @@ def cleanUpLoadtest(self):
 def installChromedriver(self):
     remote_url = 'https://chromedriver.storage.googleapis.com/90.0.4430.24/chromedriver_linux64.zip'
     # Define the local filename to save data
-    local_file = 'chromedriver_linux64.zip'
+    local_file = './chromedriver_linux64.zip'
     # Download remote and save locally
     urllib.request.urlretrieve(remote_url, local_file)
     os.chmod(local_file, stat.S_IWOTH)
     shutil.unpack_archive(local_file)
-    os.chmod("chromedriver", stat.S_IWOTH)
+    os.chmod("./chromedriver", stat.S_IWOTH)
 
 def deleteChromedriver(self):
     if os.path.exists("./chromedriver"):
