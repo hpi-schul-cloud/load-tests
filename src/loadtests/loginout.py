@@ -35,11 +35,9 @@ def login(self):
                 response_header = login_post_response.headers
                 #Extracting BearerToken from Responses Header
                 self.bearer_token = (response_header["set-cookie"]).split(";")[0].replace("jwt=", "")
-                if len(self.bearer_token) > 0:
-                    print(len(self.bearer_token))
+                if len(self.bearer_token) > 12:
                     token = (self.bearer_token)[0:461] + "=="
                     decoded_token =  base64.b64decode(token)
-                    print(len(decoded_token))
                     decoded_token_json = json.loads(decoded_token.decode('utf-8')[30:])
                     self.user_id = decoded_token_json["userId"]
                     self.school_id = decoded_token_json["schoolId"]
@@ -88,7 +86,6 @@ def cleanUpLoadtest(self):
                 findId = soup.find_all({"data-id":teamId})
             if not findId is None:
                 deleteTeam(self, teamId)
-                print(f"[loginout] Deleted {teamId}.")
         self.createdTeams = None
 
 def installChromedriver(self):
