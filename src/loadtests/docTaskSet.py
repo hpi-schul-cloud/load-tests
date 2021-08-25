@@ -6,6 +6,7 @@ from loadtests.loginout import *
 from loadtests.functions import createDoc, deleteDoc
 from locust.user.task import TaskSet, task, tag
 from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
 from selenium.webdriver.common.by import By
@@ -62,7 +63,8 @@ class docTaskSet(TaskSet):
 
             host = self.user.host + "/files" # url to where the file will be saved
 
-            driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used for calling the host and saving the documents
+            driverWB = webdriver.Remote("http://127.0.0.1:4444/wd/hub", DesiredCapabilities.CHROME)
+            #driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used for calling the host and saving the documents
             driverWB.get(host)
 
             # Login user
@@ -127,7 +129,8 @@ class docTaskSet(TaskSet):
 
             host = self.user.host + "/files" # url to where the file will be saved
 
-            driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used for calling the host and saving the documents
+            driverWB = webdriver.Remote("http://127.0.0.1:4444/wd/hub", DesiredCapabilities.CHROME)
+            #driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used for calling the host and saving the documents
             driverWB.get(host)
 
             # Login User
@@ -193,7 +196,8 @@ class docTaskSet(TaskSet):
 
             host = self.user.host + "/files" # url to where the file will be saved
 
-            driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used for calling the host and saving the documents
+            driverWB = webdriver.Remote("http://127.0.0.1:4444/wd/hub", DesiredCapabilities.CHROME)
+            #driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used for calling the host and saving the documents
             driverWB.get(host)
 
             # Login User

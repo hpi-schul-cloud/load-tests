@@ -2,6 +2,7 @@ from loadtests import functions
 from loadtests import loginout
 import time
 
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from locust.user.task import TaskSet, tag, task
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
 from selenium import webdriver
@@ -49,7 +50,8 @@ class rocketChatTaskSet(TaskSet):
 
             # Opens chrome browser
             url = f"{self.user.host}/teams/{teamId}/edit"
-            driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used
+            driverWB = webdriver.Remote("http://127.0.0.1:4444/wd/hub", DesiredCapabilities.CHROME)
+            #driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used
             driverWB.get(url)
 
             functions.loginLoadtestUserOnTeamToEdit(self, driverWB) # Login user

@@ -7,6 +7,7 @@ from loadtests import loginout
 from locust import task, tag
 from locust.user.task import TaskSet
 from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.common.exceptions import (ElementClickInterceptedException, NoSuchWindowException)
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
@@ -37,7 +38,8 @@ class bbbTaskSet(TaskSet):
         '''
 
         #Starts a chrome Browser
-        driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used for creating the BBB rooms
+        driverWB = webdriver.Remote("http://127.0.0.1:4444/wd/hub", DesiredCapabilities.CHROME)
+        #driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used for creating the BBB rooms
         driverWB.get(constant.constant.bBBHost)
 
         counterfirst = 0 # counter for creating a specific number of rooms
