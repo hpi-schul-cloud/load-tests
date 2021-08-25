@@ -143,48 +143,48 @@ def lernStore(self, courseId):
                     "sec-fetch-dest"    : "empty"
                 }
             ) as response:
+                print("Response:" + response.text)
+                if len(response.text) > 10:
+                    datajson = json.loads(response.text)
+                    datajson = json.dumps(datajson["data"])
+                    print("datajson:" + datajson)
+                    datajson = json.loads(datajson.removeprefix("[").removesuffix("]"))
+                    courseId_Lernstore = datajson["_id"]
 
-                print(response.text)
-                datajson = json.loads(response.text)
-                datajson = json.dumps(datajson["data"])
-                print(datajson)
-                datajson = json.loads(datajson.removeprefix("[").removesuffix("]"))
-                courseId_Lernstore = datajson["_id"]
-
-                data = {
-                    "title":"Geschichte der Mathematik - Die Sprache des Universums",
-                    "client":"Schul-Cloud",
-                    "url":"http://merlin.nibis.de/auth.php?identifier=BWS-04983086",
-                    "merlinReference":"BWS-04983086"
-                }
-
-                # Adding a material from the Lernstore to the course
-                with self.client.request("POST",
-                    "https://api." + self.user.host.replace("https://", "") + "/lessons/" + courseId_Lernstore + "/material",
-                    data=json.dumps(data),
-                    name="/lessons/material",
-                    catch_response=True,
-                    allow_redirects=True,
-                    headers = {
-                        "authority"         : "api.staging.niedersachsen.hpi-schul-cloud.org",
-                        "path"  	        : "/lessons/" + courseId_Lernstore + "/material",
-                        "scheme"            : "https",
-                        "accept"            : "application/json, text/plain, */*",
-                        "accept-encoding"   : "gzip, deflate, br",
-                        "accept-language"   : "en-US,en;q=0.9",
-                        "authorization"     : "Bearer " + self.bearer_token,
-                        "content-type"      : "application/json;charset=UTF-8",
-                        "origin"            : self.user.host,
-                        "sec-ch-ua"         : '" Not;A Brand";v="99", "Google Chrome";v="91", "Chromium";v="91"',
-                        "sec-ch-ua-moblie"  : "?0",
-                        "sec-fetch-site"    : "same-site",
-                        "sec-fetch-mode"    : "cors",
-                        "sec-fetch-dest"    : "empty",
-                        "sec-ch-ua-moblie"  : "?0"
+                    data = {
+                        "title":"Geschichte der Mathematik - Die Sprache des Universums",
+                        "client":"Schul-Cloud",
+                        "url":"http://merlin.nibis.de/auth.php?identifier=BWS-04983086",
+                        "merlinReference":"BWS-04983086"
                     }
-                ) as response:
-                    if response.status_code != constant.constant.returncodeCreated:
-                        response.failure(requestFailureMessage(self, response))
+
+                    # Adding a material from the Lernstore to the course
+                    with self.client.request("POST",
+                        "https://api." + self.user.host.replace("https://", "") + "/lessons/" + courseId_Lernstore + "/material",
+                        data=json.dumps(data),
+                        name="/lessons/material",
+                        catch_response=True,
+                        allow_redirects=True,
+                        headers = {
+                            "authority"         : "api.staging.niedersachsen.hpi-schul-cloud.org",
+                            "path"  	        : "/lessons/" + courseId_Lernstore + "/material",
+                            "scheme"            : "https",
+                            "accept"            : "application/json, text/plain, */*",
+                            "accept-encoding"   : "gzip, deflate, br",
+                            "accept-language"   : "en-US,en;q=0.9",
+                            "authorization"     : "Bearer " + self.bearer_token,
+                            "content-type"      : "application/json;charset=UTF-8",
+                            "origin"            : self.user.host,
+                            "sec-ch-ua"         : '" Not;A Brand";v="99", "Google Chrome";v="91", "Chromium";v="91"',
+                            "sec-ch-ua-moblie"  : "?0",
+                            "sec-fetch-site"    : "same-site",
+                            "sec-fetch-mode"    : "cors",
+                            "sec-fetch-dest"    : "empty",
+                            "sec-ch-ua-moblie"  : "?0"
+                        }
+                    ) as response:
+                        if response.status_code != constant.constant.returncodeCreated:
+                            response.failure(requestFailureMessage(self, response))
 
 def courseAddEtherPadAndTool(self, courseId):
     '''
