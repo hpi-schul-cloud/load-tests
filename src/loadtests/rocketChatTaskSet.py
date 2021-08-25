@@ -50,7 +50,7 @@ class rocketChatTaskSet(TaskSet):
 
             # Opens chrome browser
             url = f"{self.user.host}/teams/{teamId}/edit"
-            driverWB = webdriver.Remote("http://127.0.0.1:4444/wd/hub", DesiredCapabilities.CHROME)
+            driverWB = webdriver.Remote("http://10.216.187.22:4444/wd/hub", DesiredCapabilities.CHROME)
             #driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used
             driverWB.get(url)
 

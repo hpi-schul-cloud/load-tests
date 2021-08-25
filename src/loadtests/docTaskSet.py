@@ -63,7 +63,7 @@ class docTaskSet(TaskSet):
 
             host = self.user.host + "/files" # url to where the file will be saved
 
-            driverWB = webdriver.Remote("http://127.0.0.1:4444/wd/hub", DesiredCapabilities.CHROME)
+            driverWB = webdriver.Remote("http://10.216.187.22:4444/wd/hub", DesiredCapabilities.CHROME)
             #driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used for calling the host and saving the documents
             driverWB.get(host)
 
@@ -129,7 +129,7 @@ class docTaskSet(TaskSet):
 
             host = self.user.host + "/files" # url to where the file will be saved
 
-            driverWB = webdriver.Remote("http://127.0.0.1:4444/wd/hub", DesiredCapabilities.CHROME)
+            driverWB = webdriver.Remote("http://10.216.187.22:4444/wd/hub", DesiredCapabilities.CHROME)
             #driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used for calling the host and saving the documents
             driverWB.get(host)
 
@@ -196,7 +196,7 @@ class docTaskSet(TaskSet):
 
             host = self.user.host + "/files" # url to where the file will be saved
 
-            driverWB = webdriver.Remote("http://127.0.0.1:4444/wd/hub", DesiredCapabilities.CHROME)
+            driverWB = webdriver.Remote("http://10.216.187.22:4444/wd/hub", DesiredCapabilities.CHROME)
             #driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used for calling the host and saving the documents
             driverWB.get(host)
 
