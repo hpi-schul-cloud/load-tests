@@ -37,7 +37,6 @@ class docTaskSet(TaskSet):
         logout(self)
 
     @tag('doc')
-    @tag('sc')
     @task
     def newFilesDocx(self):
         '''
@@ -103,7 +102,6 @@ class docTaskSet(TaskSet):
             deleteDoc(self, docId)
 
     @tag('doc')
-    @tag('sc')
     @task
     def newFilesXlsx(self):
         '''
@@ -170,7 +168,6 @@ class docTaskSet(TaskSet):
             deleteDoc(self, docId)
 
     @tag('doc')
-    @tag('sc')
     @task
     def newFilesPptx(self):
         '''
