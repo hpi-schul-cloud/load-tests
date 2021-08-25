@@ -144,7 +144,7 @@ def lernStore(self, courseId):
                 }
             ) as response:
 
-                print(response.txt)
+                print(response.text)
                 datajson = json.loads(response.text)
                 datajson = json.dumps(datajson["data"])
                 print(datajson)
