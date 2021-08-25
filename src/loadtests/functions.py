@@ -73,7 +73,6 @@ def createCourse(self, data):
         if response.status_code != constant.constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
         else:
-            print(soup)
             json_object = json.loads(str(soup))
             courseId = str(json_object["createdCourse"]["id"])
             self.createdCourses.append(courseId)
@@ -143,11 +142,9 @@ def lernStore(self, courseId):
                     "sec-fetch-dest"    : "empty"
                 }
             ) as response:
-                print("Response:" + response.text)
-                if len(response.text) > 10:
+                if len(response.text) > 30:
                     datajson = json.loads(response.text)
                     datajson = json.dumps(datajson["data"])
-                    print("datajson:" + datajson)
                     datajson = json.loads(datajson.removeprefix("[").removesuffix("]"))
                     courseId_Lernstore = datajson["_id"]
 
