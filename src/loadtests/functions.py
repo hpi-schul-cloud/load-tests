@@ -73,6 +73,7 @@ def createCourse(self, data):
         if response.status_code != constant.constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
         else:
+            print(soup)
             json_object = json.loads(str(soup))
             courseId = str(json_object["createdCourse"]["id"])
             self.createdCourses.append(courseId)
@@ -143,6 +144,7 @@ def lernStore(self, courseId):
                 }
             ) as response:
 
+                print(response.txt)
                 datajson = json.loads(response.text)
                 datajson = json.dumps(datajson["data"])
                 print(datajson)
@@ -226,12 +228,14 @@ def courseAddEtherPadAndTool(self, courseId):
                 "sec-fetch-site"    : "same-origin",
                 "x-requested-with"  : "XMLHttpRequest"
             },
-            data = ('privacy_permission=anonymous&openNewTab=true&name=bettermarks&url=' + str(constant.constant.urlBetterMarks) + '&key=&logo_url=https://acc.bettermarks.com/app/assets/bm-logo.png&isLocal=true&resource_link_id=&lti_version=&lti_message_type=&isTemplate=false&skipConsent=false&createdAt=2021-01-14T13:35:44.689Z&updatedAt=2021-01-14T13:35:44.689Z&__v=0&originTool=600048b0755565002840fde4&courseId=' + str(courseId)).encode('utf-8'),
+            data = ('privacy_permission=anonymous&openNewTab=true&name=bettermarks&url=' + str(constant.constant.urlBetterMarks) + 
+                '&key=&logo_url=https://acc.bettermarks.com/app/assets/bm-logo.png&isLocal=true&resource_link_id=&lti_version=&lti_message_type=&isTemplate=false&skipConsent=false&createdAt=2021-01-14T13:35:44.689Z&updatedAt=2021-01-14T13:35:44.689Z&__v=0&originTool=600048b0755565002840fde4&courseId=' 
+                + str(courseId)).encode('utf-8'),
             catch_response=True,
             allow_redirects=True
         ) as response:
             with self.client.request("GET",
-                constant.constant.urlBetterMarks,
+                str(constant.constant.urlBetterMarks),
                 catch_response=True,
                 allow_redirects=True
             ) as response:
