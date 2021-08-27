@@ -62,8 +62,7 @@ class docTaskSet(TaskSet):
 
             host = self.user.host + "/files" # url to where the file will be saved
 
-            driverWB = webdriver.Remote("http://" + constant.constant.browserIpPort + "/wd/hub", DesiredCapabilities.CHROME)
-            #driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used for calling the host and saving the documents
+            driverWB = webdriver.Remote("http://" + constant.constant.browserIpPort + "/wd/hub", DesiredCapabilities.CHROME) # browser which will be used for calling the host and saving the documents
             driverWB.get(host)
 
             # Login user
