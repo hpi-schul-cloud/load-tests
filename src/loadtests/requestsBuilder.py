@@ -83,7 +83,7 @@ def courseDataBuilder(self):
         "color"                 : "#ACACAC",
         "teacherIds"            : self.user_id,
         "startDate"             : "01.08.2020",
-        "untilDate"             : "31.07.2022",
+        "untilDate"             : "31.07.2023",
         "times[0][weekday]"     : "0",
         "times[0][startTime]"   : "12:00",
         "times[0][duration]"    : "90",
