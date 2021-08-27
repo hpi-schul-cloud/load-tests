@@ -25,7 +25,7 @@ class constant():
     bBBKey = os.environ.get("BBBKEY")
     bBBHost = os.environ.get("BBBHOST")
 
-    browserIpPort= os.getenv("BROWSERIPPORT", "chromedriver-svc")
+    browserIpPort= os.getenv("BROWSERIPPORT", "chromedriver-svc:4444")
 
     urlBetterMarks = os.environ.get("URLBETTERMARKS") # required for downloading bettermarks-tools
 
