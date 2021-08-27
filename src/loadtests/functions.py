@@ -133,7 +133,7 @@ def lernStore(self, courseId):
                 catch_response=True,
                 allow_redirects=True,
                 headers = {
-                    "authority"         : "api.staging.niedersachsen.hpi-schul-cloud.org",
+                    "authority"         : "staging.niedersachsen.hpi-schul-cloud.org",
                     "accept"            : "application/json, text/plain, */*",
                     "authorization"     : "Bearer " + self.bearer_token,
                     "origin"            : self.user.host,
@@ -158,13 +158,13 @@ def lernStore(self, courseId):
 
                     # Adding a material from the Lernstore to the course
                     with self.client.request("POST",
-                        "https://api." + self.user.host.replace("https://", "") + "/lessons/" + courseId_Lernstore + "/material",
+                        self.user.host + "/api/v1/lessons/" + courseId_Lernstore + "/material",
                         data=json.dumps(data),
                         name="/lessons/material",
                         catch_response=True,
                         allow_redirects=True,
                         headers = {
-                            "authority"         : "api.staging.niedersachsen.hpi-schul-cloud.org",
+                            "authority"         : "staging.niedersachsen.hpi-schul-cloud.org",
                             "path"  	        : "/lessons/" + courseId_Lernstore + "/material",
                             "scheme"            : "https",
                             "accept"            : "application/json, text/plain, */*",
