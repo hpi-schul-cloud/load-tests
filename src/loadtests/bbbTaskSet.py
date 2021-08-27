@@ -107,7 +107,7 @@ class bbbTaskSet(TaskSet):
             counterTab += 1
             countersecond += 1
 
-            while countersecond < constant.constant.numberUsers:
+            while countersecond < int(constant.constant.numberUsers):
 
                 # Normal User joins the room
                 operator = "join"
