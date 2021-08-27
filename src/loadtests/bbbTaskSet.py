@@ -81,7 +81,7 @@ class bbbTaskSet(TaskSet):
             time.sleep(int(constant.constant.timeToWaitShort))
 
             # Clicks on the Plussign
-            ui_element = "tippy-21"
+            ui_element = "tippy-69"
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.ID, ui_element)))
             element.click()
 
