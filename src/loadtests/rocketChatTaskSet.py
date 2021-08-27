@@ -1,4 +1,6 @@
+#from locust.user.wait_time import constant
 from loadtests import functions
+from loadtests import constant
 from loadtests import loginout
 import time
 
@@ -50,7 +52,7 @@ class rocketChatTaskSet(TaskSet):
 
             # Opens chrome browser
             url = f"{self.user.host}/teams/{teamId}/edit"
-            driverWB = webdriver.Remote("http://10.216.187.22:4444/wd/hub", DesiredCapabilities.CHROME)
+            driverWB = webdriver.Remote("http://" + constant.constant.browserIpPort + "/wd/hub", DesiredCapabilities.CHROME)
             #driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used
             driverWB.get(url)
 

@@ -25,6 +25,8 @@ class constant():
     bBBKey = os.environ.get("BBBKEY")
     bBBHost = os.environ.get("BBBHOST")
 
+    browserIpPort= os.getenv("BROWSERIPPORT", "chromedriver-svc")
+
     urlBetterMarks = os.environ.get("URLBETTERMARKS") # required for downloading bettermarks-tools
 
     # Get the user credentials for locust HttpUser. Either the file-path or the constants will be used, other wise the programm will exit.

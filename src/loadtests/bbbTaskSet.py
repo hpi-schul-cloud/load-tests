@@ -38,9 +38,9 @@ class bbbTaskSet(TaskSet):
         '''
 
         #Starts a chrome Browser
-        options = webdriver.ChromeOptions()
-        options.add_argument('--no-sandbox')
-        driverWB = webdriver.Remote("http://10.216.187.22:4444/wd/hub", DesiredCapabilities.CHROME, options=options)
+        #options = webdriver.ChromeOptions()
+        #options.add_argument('--no-sandbox')
+        driverWB = webdriver.Remote("http://" + constant.constant.browserIpPort + "/wd/hub", DesiredCapabilities.CHROME, options=options)
         #driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used for creating the BBB rooms
         driverWB.get(constant.constant.bBBHost)
 
