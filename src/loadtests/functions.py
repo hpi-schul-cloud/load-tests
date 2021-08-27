@@ -127,7 +127,7 @@ def lernStore(self, courseId):
 
             # Request to the Lernstore to get the internal id of the course
             with self.client.request("GET",
-                "https://api." + self.user.host.replace("https://", "") + "/lessons?courseId=" + courseId,
+                self.user.host + "/api/v1/lessons?courseId=" + courseId,
                 name="/lessons?courseId=",
                 data="courseId=" + courseId,
                 catch_response=True,

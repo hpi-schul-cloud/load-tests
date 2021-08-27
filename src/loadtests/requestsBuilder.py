@@ -30,10 +30,10 @@ def fetch_static_assets(self, response):
             resource_urls.add(url)
 
     for use_url in resource_urls:
-        print(use_url)
-        with self.client.get(use_url, catch_response=True, allow_redirects=True) as response:
-            if response.status_code != constant.constant.returncodeNormal:
-                    response.failure(requestFailureMessage(self, response))
+        if use_url != "/themes/n21/favicon.png":
+            with self.client.get(use_url, catch_response=True, allow_redirects=True) as response:
+                if response.status_code != constant.constant.returncodeNormal:
+                        response.failure(requestFailureMessage(self, response))
 
 def requestFailureMessage(self, response):
     '''
