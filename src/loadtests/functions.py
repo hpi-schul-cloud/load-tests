@@ -145,8 +145,9 @@ def lernStore(self, courseId):
                 if len(response.text) > 30:
                     datajson = json.loads(response.text)
                     datajson = json.dumps(datajson["data"])
-                    print(datajson)
-                    datajson = json.loads(datajson.removeprefix("[").removesuffix("]"))
+                    datajson = datajson[1:]
+                    datajson = datajson[:(len(datajson) - 2)]
+                    datajson = json.loads(datajson)
                     courseId_Lernstore = datajson["_id"]
 
                     data = {
