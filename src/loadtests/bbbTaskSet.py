@@ -86,7 +86,7 @@ class bbbTaskSet(TaskSet):
             element.click()
 
             # Clicks on the "Share external Video" button
-            ui_element = "li[aria-labelledby='dropdown-item-label-26']"
+            ui_element = "li[aria-labelledby='dropdown-item-label-74']"
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
             element.click()
 
