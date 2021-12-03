@@ -12,6 +12,7 @@ from loadtests.scTaskSet import scTaskSet
 from loadtests.docTaskSet import docTaskSet
 from loadtests.reqWithoutUserTaskSet import reqWithoutUserTaskSet
 from loadtests.rocketChatTaskSet import rocketChatTaskSet
+from loadtests.statusServiceTaskSet import statusServiceTaskSet
 
 class PupilUser(HttpUser):
     '''
@@ -57,6 +58,19 @@ class TeacherUser(HttpUser):
     def __init__(self, *args, **kwargs):
         super(TeacherUser, self).__init__(*args, **kwargs)
         getUserCredentials(self)
+
+class AnonymousUser(HttpUser):
+    '''
+    Representing a teacher user on the SchulCloud.
+    '''
+
+    weight = 3 # specifys how often the loadtest should simulate this user-type.
+    tasks = {bbbTaskSet:0, scTaskSet:0, docTaskSet:0, reqWithoutUserTaskSet:1, statusServiceTaskSet:1, rocketChatTaskSet:0} # collection of taks-sets which can be applied to the user
+    wait_time = constant.constant.wait_time # specifys the waiting time after finishing a task and starting the next
+    login_credentials = None # gives the user log-in credentials for further actions
+
+    def __init__(self, *args, **kwargs):
+        super(TeacherUser, self).__init__(*args, **kwargs)
 
 
 def getUserCredentials(user):
