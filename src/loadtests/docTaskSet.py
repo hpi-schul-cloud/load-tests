@@ -1,10 +1,12 @@
 import time
 from loadtests import constant
+from loadtests import loginout
 
 from loadtests.loginout import *
 from loadtests.functions import createDoc, deleteDoc
 from locust.user.task import TaskSet, task, tag
 from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
 from selenium.webdriver.common.by import By
@@ -25,15 +27,16 @@ class docTaskSet(TaskSet):
         First task on docTaskSet, which starts the login of the user.
         '''
         login(self)
+        loginout.installChromedriver(self)
 
     def on_stop(self):
         '''
         Last task on docTaskSet, which will be triggerd after stopping the loadtest. Automatically starts a clean-up and loggs out the user.
         '''
+        loginout.deleteChromedriver(self)
         logout(self)
 
     @tag('doc')
-    @tag('sc')
     @task
     def newFilesDocx(self):
         '''
@@ -59,7 +62,7 @@ class docTaskSet(TaskSet):
 
             host = self.user.host + "/files" # url to where the file will be saved
 
-            driverWB = webdriver.Chrome('.\chromedriver.exe') # browser which will be used for calling the host and saving the documents
+            driverWB = webdriver.Remote("http://" + constant.constant.browserIpPort + "/wd/hub", DesiredCapabilities.CHROME) # browser which will be used for calling the host and saving the documents
             driverWB.get(host)
 
             # Login user
@@ -98,7 +101,6 @@ class docTaskSet(TaskSet):
             deleteDoc(self, docId)
 
     @tag('doc')
-    @tag('sc')
     @task
     def newFilesXlsx(self):
         '''
@@ -124,7 +126,8 @@ class docTaskSet(TaskSet):
 
             host = self.user.host + "/files" # url to where the file will be saved
 
-            driverWB = webdriver.Chrome('.\chromedriver.exe') # browser which will be used for calling the host and saving the documents
+            driverWB = webdriver.Remote("http://" + constant.constant.browserIpPort + "/wd/hub", DesiredCapabilities.CHROME)
+            #driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used for calling the host and saving the documents
             driverWB.get(host)
 
             # Login User
@@ -164,7 +167,6 @@ class docTaskSet(TaskSet):
             deleteDoc(self, docId)
 
     @tag('doc')
-    @tag('sc')
     @task
     def newFilesPptx(self):
         '''
@@ -190,7 +192,8 @@ class docTaskSet(TaskSet):
 
             host = self.user.host + "/files" # url to where the file will be saved
 
-            driverWB = webdriver.Chrome('.\chromedriver.exe') # browser which will be used for calling the host and saving the documents
+            driverWB = webdriver.Remote("http://" + constant.constant.browserIpPort + "/wd/hub", DesiredCapabilities.CHROME)
+            #driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used for calling the host and saving the documents
             driverWB.get(host)
 
             # Login User

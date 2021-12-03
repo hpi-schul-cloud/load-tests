@@ -73,9 +73,10 @@ def createCourse(self, data):
         if response.status_code != constant.constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
         else:
-            json_object = json.loads(soup.string)
-            courseId = str(json_object["createdCourse"]["id"])
-            self.createdCourses.append(courseId)
+            if len(str(soup)) > 10:
+                json_object = json.loads(str(soup))
+                courseId = str(json_object["createdCourse"]["id"])
+                self.createdCourses.append(courseId)
             return (courseId)
 
 def deleteCourse(self, courseId):
@@ -127,13 +128,13 @@ def lernStore(self, courseId):
 
             # Request to the Lernstore to get the internal id of the course
             with self.client.request("GET",
-                "https://api." + self.user.host.replace("https://", "") + "/lessons?courseId=" + courseId,
+                self.user.host + "/api/v1/lessons?courseId=" + courseId,
                 name="/lessons?courseId=",
                 data="courseId=" + courseId,
                 catch_response=True,
                 allow_redirects=True,
                 headers = {
-                    "authority"         : "api.staging.niedersachsen.hpi-schul-cloud.org",
+                    "authority"         : "staging.niedersachsen.hpi-schul-cloud.org",
                     "accept"            : "application/json, text/plain, */*",
                     "authorization"     : "Bearer " + self.bearer_token,
                     "origin"            : self.user.host,
@@ -142,46 +143,48 @@ def lernStore(self, courseId):
                     "sec-fetch-dest"    : "empty"
                 }
             ) as response:
+                if len(response.text) > 30:
+                    datajson = json.loads(response.text)
+                    datajson = json.dumps(datajson["data"])
+                    datajson = datajson[1:]
+                    datajson = datajson[:(len(datajson) - 1)]
+                    datajson = json.loads(datajson)
+                    courseId_Lernstore = datajson["_id"]
 
-                datajson = json.loads(response.text)
-                datajson = json.dumps(datajson["data"])
-                datajson = json.loads(datajson.removeprefix("[").removesuffix("]"))
-                courseId_Lernstore = datajson["_id"]
-
-                data = {
-                    "title":"Geschichte der Mathematik - Die Sprache des Universums",
-                    "client":"Schul-Cloud",
-                    "url":"http://merlin.nibis.de/auth.php?identifier=BWS-04983086",
-                    "merlinReference":"BWS-04983086"
-                }
-
-                # Adding a material from the Lernstore to the course
-                with self.client.request("POST",
-                    "https://api." + self.user.host.replace("https://", "") + "/lessons/" + courseId_Lernstore + "/material",
-                    data=json.dumps(data),
-                    name="/lessons/material",
-                    catch_response=True,
-                    allow_redirects=True,
-                    headers = {
-                        "authority"         : "api.staging.niedersachsen.hpi-schul-cloud.org",
-                        "path"  	        : "/lessons/" + courseId_Lernstore + "/material",
-                        "scheme"            : "https",
-                        "accept"            : "application/json, text/plain, */*",
-                        "accept-encoding"   : "gzip, deflate, br",
-                        "accept-language"   : "en-US,en;q=0.9",
-                        "authorization"     : "Bearer " + self.bearer_token,
-                        "content-type"      : "application/json;charset=UTF-8",
-                        "origin"            : self.user.host,
-                        "sec-ch-ua"         : '" Not;A Brand";v="99", "Google Chrome";v="91", "Chromium";v="91"',
-                        "sec-ch-ua-moblie"  : "?0",
-                        "sec-fetch-site"    : "same-site",
-                        "sec-fetch-mode"    : "cors",
-                        "sec-fetch-dest"    : "empty",
-                        "sec-ch-ua-moblie"  : "?0"
+                    data = {
+                        "title":"Geschichte der Mathematik - Die Sprache des Universums",
+                        "client":"Schul-Cloud",
+                        "url":"http://merlin.nibis.de/auth.php?identifier=BWS-04983086",
+                        "merlinReference":"BWS-04983086"
                     }
-                ) as response:
-                    if response.status_code != constant.constant.returncodeCreated:
-                        response.failure(requestFailureMessage(self, response))
+
+                    # Adding a material from the Lernstore to the course
+                    with self.client.request("POST",
+                        self.user.host + "/api/v1/lessons/" + courseId_Lernstore + "/material",
+                        data=json.dumps(data),
+                        name="/lessons/material",
+                        catch_response=True,
+                        allow_redirects=True,
+                        headers = {
+                            "authority"         : "staging.niedersachsen.hpi-schul-cloud.org",
+                            "path"  	        : "/lessons/" + courseId_Lernstore + "/material",
+                            "scheme"            : "https",
+                            "accept"            : "application/json, text/plain, */*",
+                            "accept-encoding"   : "gzip, deflate, br",
+                            "accept-language"   : "en-US,en;q=0.9",
+                            "authorization"     : "Bearer " + self.bearer_token,
+                            "content-type"      : "application/json;charset=UTF-8",
+                            "origin"            : self.user.host,
+                            "sec-ch-ua"         : '" Not;A Brand";v="99", "Google Chrome";v="91", "Chromium";v="91"',
+                            "sec-ch-ua-moblie"  : "?0",
+                            "sec-fetch-site"    : "same-site",
+                            "sec-fetch-mode"    : "cors",
+                            "sec-fetch-dest"    : "empty",
+                            "sec-ch-ua-moblie"  : "?0"
+                        }
+                    ) as response:
+                        if response.status_code != constant.constant.returncodeCreated:
+                            response.failure(requestFailureMessage(self, response))
 
 def courseAddEtherPadAndTool(self, courseId):
     '''
@@ -225,15 +228,14 @@ def courseAddEtherPadAndTool(self, courseId):
                 "sec-fetch-site"    : "same-origin",
                 "x-requested-with"  : "XMLHttpRequest"
             },
-            data = ("privacy_permission=anonymous&openNewTab=true&name=bettermarks&url="
-                + constant.constant.urlBetterMarks +
-                "&key=&logo_url=https://acc.bettermarks.com/app/assets/bm-logo.png&isLocal=true&resource_link_id=&lti_version=&lti_message_type=&isTemplate=false&skipConsent=false&createdAt=2021-01-14T13:35:44.689Z&updatedAt=2021-01-14T13:35:44.689Z&__v=0&originTool=600048b0755565002840fde4&courseId="
-                + str(courseId)),
+            data = ('privacy_permission=anonymous&openNewTab=true&name=bettermarks&url=' + str(constant.constant.urlBetterMarks) + 
+                '&key=&logo_url=https://acc.bettermarks.com/app/assets/bm-logo.png&isLocal=true&resource_link_id=&lti_version=&lti_message_type=&isTemplate=false&skipConsent=false&createdAt=2021-01-14T13:35:44.689Z&updatedAt=2021-01-14T13:35:44.689Z&__v=0&originTool=600048b0755565002840fde4&courseId=' 
+                + str(courseId)).encode('utf-8'),
             catch_response=True,
             allow_redirects=True
         ) as response:
             with self.client.request("GET",
-                constant.constant.urlBetterMarks,
+                str(constant.constant.urlBetterMarks),
                 catch_response=True,
                 allow_redirects=True
             ) as response:
@@ -294,7 +296,7 @@ def deleteTeam(self, teamId):
         teamId: Id of the team
     '''
 
-    header = requestHeaderBuilder(self, (self.user.host + "/teams/" + teamId + "/edit"))
+    header = requestHeaderBuilder(self, (str(self.user.host) + "/teams/" + teamId + "/edit"))
     header["accept"] = "*/*"
     header["accept-language"] = "en-US,en;q=0.9"
 

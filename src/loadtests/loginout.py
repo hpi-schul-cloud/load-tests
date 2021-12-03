@@ -1,6 +1,9 @@
 import base64
 import os
 import json
+import urllib.request
+import stat
+import zipfile
 from loadtests import constant
 
 from loadtests.functions import *
@@ -32,10 +35,12 @@ def login(self):
                 response_header = login_post_response.headers
                 #Extracting BearerToken from Responses Header
                 self.bearer_token = (response_header["set-cookie"]).split(";")[0].replace("jwt=", "")
-                decoded_token = base64.b64decode(self.bearer_token[0:461])
-                decoded_token_json = json.loads(decoded_token.decode('utf_8').removeprefix('{"alg":"HS256","typ":"access"}'))
-                self.user_id = decoded_token_json["userId"]
-                self.school_id = decoded_token_json["schoolId"]
+                if len(self.bearer_token) > 12:
+                    token = (self.bearer_token)[0:461] + "=="
+                    decoded_token =  base64.b64decode(token)
+                    decoded_token_json = json.loads(decoded_token.decode('utf-8')[30:])
+                    self.user_id = decoded_token_json["userId"]
+                    self.school_id = decoded_token_json["schoolId"]
     return self
 
 def logout(self):
@@ -81,5 +86,22 @@ def cleanUpLoadtest(self):
                 findId = soup.find_all({"data-id":teamId})
             if not findId is None:
                 deleteTeam(self, teamId)
-                print(f"[loginout] Deleted {teamId}.")
         self.createdTeams = None
+
+def installChromedriver(self):
+    self.workpath = str(os.path.dirname(os.path.abspath(__file__)))
+    remote_url = 'https://chromedriver.storage.googleapis.com/90.0.4430.24/chromedriver_linux64.zip'
+    # Define the local filename to save data
+    local_file = self.workpath + '/chromedriver_linux64.zip'
+    # Download remote and save locally
+    urllib.request.urlretrieve(remote_url, local_file)
+    os.chmod(local_file, stat.S_IRWXU)
+    with zipfile.ZipFile(local_file,"r") as zip_ref:
+        zip_ref.extractall(self.workpath)
+    os.chmod(self.workpath + "/chromedriver", stat.S_IRWXU)
+
+def deleteChromedriver(self):
+    if os.path.exists(self.workpath + "/chromedriver"):
+        os.remove(self.workpath + "/chromedriver")
+    if os.path.exists(self.workpath + "/chromedriver_linux64.zip"):
+        os.remove(self.workpath + "/chromedriver_linux64.zip")

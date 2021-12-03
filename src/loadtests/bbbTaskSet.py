@@ -1,11 +1,13 @@
 import time
-import os
 import hashlib
+
 from loadtests import constant
+from loadtests import loginout
 
 from locust import task, tag
 from locust.user.task import TaskSet
 from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.common.exceptions import (ElementClickInterceptedException, NoSuchWindowException)
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
@@ -16,6 +18,13 @@ class bbbTaskSet(TaskSet):
     '''
     Task-Set which contains all test-tasks for working with BBB on the SchulCloud.
     '''
+
+    def on_start(self):
+        loginout.installChromedriver(self)
+
+
+    def on_stop(self):
+        loginout.deleteChromedriver(self)
 
     @tag('bbb')
     @task
@@ -29,7 +38,7 @@ class bbbTaskSet(TaskSet):
         '''
 
         #Starts a chrome Browser
-        driverWB = webdriver.Chrome('.\chromedriver.exe') # browser which will be used for creating the BBB rooms
+        driverWB = webdriver.Remote("http://" + constant.constant.browserIpPort + "/wd/hub", DesiredCapabilities.CHROME) # browser which will be used for creating the BBB rooms
         driverWB.get(constant.constant.bBBHost)
 
         counterfirst = 0 # counter for creating a specific number of rooms
@@ -69,12 +78,12 @@ class bbbTaskSet(TaskSet):
             time.sleep(int(constant.constant.timeToWaitShort))
 
             # Clicks on the Plussign
-            ui_element = "tippy-21"
+            ui_element = "tippy-69"
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.ID, ui_element)))
             element.click()
 
             # Clicks on the "Share external Video" button
-            ui_element = "li[aria-labelledby='dropdown-item-label-26']"
+            ui_element = "li[aria-labelledby='dropdown-item-label-74']"
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
             element.click()
 
@@ -95,7 +104,7 @@ class bbbTaskSet(TaskSet):
             counterTab += 1
             countersecond += 1
 
-            while countersecond < constant.constant.numberUsers:
+            while countersecond < int(constant.constant.numberUsers):
 
                 # Normal User joins the room
                 operator = "join"

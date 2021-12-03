@@ -30,9 +30,10 @@ def fetch_static_assets(self, response):
             resource_urls.add(url)
 
     for use_url in resource_urls:
-        with self.client.get(use_url, catch_response=True, allow_redirects=True) as response:
-            if response.status_code != constant.constant.returncodeNormal:
-                    response.failure(requestFailureMessage(self, response))
+        if use_url != "/themes/n21/favicon.png":
+            with self.client.get(use_url, catch_response=True, allow_redirects=True) as response:
+                if response.status_code != constant.constant.returncodeNormal:
+                        response.failure(requestFailureMessage(self, response))
 
 def requestFailureMessage(self, response):
     '''
@@ -82,7 +83,7 @@ def courseDataBuilder(self):
         "color"                 : "#ACACAC",
         "teacherIds"            : self.user_id,
         "startDate"             : "01.08.2020",
-        "untilDate"             : "31.07.2022",
+        "untilDate"             : "31.07.2023",
         "times[0][weekday]"     : "0",
         "times[0][startTime]"   : "12:00",
         "times[0][duration]"    : "90",
