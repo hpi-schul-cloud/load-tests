@@ -64,13 +64,14 @@ class AnonymousUser(HttpUser):
     Representing a teacher user on the SchulCloud.
     '''
 
-    weight = 3 # specifys how often the loadtest should simulate this user-type.
+    weight = 10 # specifys how often the loadtest should simulate this user-type.
     tasks = {bbbTaskSet:0, scTaskSet:0, docTaskSet:0, reqWithoutUserTaskSet:1, statusServiceTaskSet:1, rocketChatTaskSet:0} # collection of taks-sets which can be applied to the user
     wait_time = constant.constant.wait_time # specifys the waiting time after finishing a task and starting the next
+    user_type = "anonymous" # specifys the type of the user
     login_credentials = None # gives the user log-in credentials for further actions
 
     def __init__(self, *args, **kwargs):
-        super(TeacherUser, self).__init__(*args, **kwargs)
+        super(AnonymousUser, self).__init__(*args, **kwargs)
 
 
 def getUserCredentials(user):
@@ -93,7 +94,7 @@ def getUserCredentials(user):
                     user.login_credentials = random.choice(yaml_loaded[user.user_type])
         else:
             logger.error("File does not exist: " + filename)
-            sys.exit(1)
+#            sys.exit(1)
     except:
         if user.user_type == 'admin' and constant.constant.loginCredentialsAdmin['email'] is not None and constant.constant.loginCredentialsAdmin['password'] is not None:
             user.login_credentials = constant.constant.loginCredentialsAdmin
@@ -103,7 +104,7 @@ def getUserCredentials(user):
             user.login_credentials = constant.constant.loginCredentialsPupil
         else:
             logger.error("User not found: " + user.user_type)
-            sys.exit(1)
+#            sys.exit(1)
 
     if user.login_credentials == None:
         logger.info("No %s users found in " + filename, user.user_type)
