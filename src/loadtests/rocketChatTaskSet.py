@@ -1,10 +1,12 @@
+#from locust.user.wait_time import constant
 from loadtests import functions
+from loadtests import constant
 from loadtests import loginout
 import time
 
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from locust.user.task import TaskSet, tag, task
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
-from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
@@ -19,10 +21,16 @@ class rocketChatTaskSet(TaskSet):
     createdCourses = []
     createdTeams = []
 
+    # Initialization of important id's
+    school_id = None
+    user_id = None
+
     def on_start(self):
         loginout.login(self)
+        loginout.installChromedriver(self)
 
     def on_stop(self):
+        loginout.deleteChromedriver(self)
         loginout.logout(self)
 
     @tag('rocketChat')
@@ -44,7 +52,7 @@ class rocketChatTaskSet(TaskSet):
 
             # Opens chrome browser
             url = f"{self.user.host}/teams/{teamId}/edit"
-            driverWB = webdriver.Chrome('.\chromedriver.exe') # browser which will be used
+            driverWB = webdriver.Remote("http://" + constant.constant.browserIpPort + "/wd/hub", DesiredCapabilities.CHROME) # browser which will be used
             driverWB.get(url)
 
             functions.loginLoadtestUserOnTeamToEdit(self, driverWB) # Login user

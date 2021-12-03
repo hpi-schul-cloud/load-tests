@@ -6,7 +6,7 @@ import random
 
 from loadtests import constant
 from urllib.parse import urlparse
-from locust import HttpUser, between
+from locust import HttpUser
 from loadtests.bbbTaskSet import bbbTaskSet
 from loadtests.scTaskSet import scTaskSet
 from loadtests.docTaskSet import docTaskSet
