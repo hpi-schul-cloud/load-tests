@@ -15,4 +15,9 @@ class statusServiceTaskSet(TaskSet):
         Param:
             self (TaskSet): TaskSet
         '''
-        normalGET(self, "/")
+    with self.client.get(url, catch_response=True, allow_redirects=True) as response:
+        if response.status_code != constant.constant.returncodeNormal:
+            response.failure(requestFailureMessage(self, response))
+    with self.client.get(url+"/api/v1", catch_response=True, allow_redirects=True) as response:
+        if response.status_code != constant.constant.returncodeNormal:
+            response.failure(requestFailureMessage(self, response))
