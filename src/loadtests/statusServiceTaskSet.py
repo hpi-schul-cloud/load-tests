@@ -2,7 +2,7 @@ from loadtests import constant
 
 from locust.user.task import TaskSet, tag, task
 
-from loadtests.requestsBuilder import normalGET
+from loadtests.requestsBuilder import normalGET, requestFailureMessage
 
 class statusServiceTaskSet(TaskSet):
 
@@ -15,9 +15,10 @@ class statusServiceTaskSet(TaskSet):
         Param:
             self (TaskSet): TaskSet
         '''
-    with self.client.get(url, catch_response=True, allow_redirects=True) as response:
-        if response.status_code != constant.constant.returncodeNormal:
-            response.failure(requestFailureMessage(self, response))
-    with self.client.get(url+"/api/v1", catch_response=True, allow_redirects=True) as response:
-        if response.status_code != constant.constant.returncodeNormal:
-            response.failure(requestFailureMessage(self, response))
+        url = f"{self.user.host}"
+        with self.client.get(url, catch_response=True, allow_redirects=True) as response:
+            if response.status_code != constant.constant.returncodeNormal:
+                response.failure(requestFailureMessage(self, response))
+        with self.client.get(url+"/api/v1", catch_response=True, allow_redirects=True) as response:
+            if response.status_code != constant.constant.returncodeNormal:
+                response.failure(requestFailureMessage(self, response))
