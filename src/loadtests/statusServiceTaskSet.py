@@ -21,6 +21,7 @@ class statusServiceTaskSet(TaskSet):
                 response.failure(requestFailureMessage(self, response))
 
     @tag('statusService')
+    @tag('statusServiceApi')
     @task
     def componentsApiRequest(self):
         '''
@@ -35,6 +36,7 @@ class statusServiceTaskSet(TaskSet):
                 response.failure(requestFailureMessage(self, response))
 
     @tag('statusService')
+    @tag('statusServiceApi')
     @task
     def incidentsApiRequest(self):
         '''
