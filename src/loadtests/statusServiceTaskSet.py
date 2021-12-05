@@ -22,7 +22,7 @@ class statusServiceTaskSet(TaskSet):
 
     @tag('statusService')
     @task
-    def apiRequest(self):
+    def componentsApiRequest(self):
         '''
         Request of API, domain and nuxtversion of a supplied domain without a user.
 
@@ -31,5 +31,19 @@ class statusServiceTaskSet(TaskSet):
         '''
         url = f"{self.user.host}"
         with self.client.get(url+"/api/v1/components", catch_response=True, allow_redirects=True) as response:
+            if response.status_code != constant.constant.returncodeNormal:
+                response.failure(requestFailureMessage(self, response))
+
+    @tag('statusService')
+    @task
+    def incidentsApiRequest(self):
+        '''
+        Request of API, domain and nuxtversion of a supplied domain without a user.
+
+        Param:
+            self (TaskSet): TaskSet
+        '''
+        url = f"{self.user.host}"
+        with self.client.get(url+"/api/v1/incidents", catch_response=True, allow_redirects=True) as response:
             if response.status_code != constant.constant.returncodeNormal:
                 response.failure(requestFailureMessage(self, response))
