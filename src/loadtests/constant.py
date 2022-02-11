@@ -9,22 +9,22 @@ class constant():
     wait_time = between(5, 15) # Provides a random number which will be used as waiting time for the users
     MATRIX_MESSENGER = os.environ.get("MMHOST")
     
-    timeToWaitShort = os.getenv("TIMESHORT", 5)
+    timeToWaitShort = int(os.getenv("TIMESHORT", 5))
     logger.info(timeToWaitShort)
-    timeToWaitLong = os.getenv("TIMELONG", 10)
+    timeToWaitLong = int(os.getenv("TIMELONG", 10))
     logger.info(timeToWaitLong)
-    numberRooms = os.getenv("BBBNUMBERROOMS", 3)
+    numberRooms = int(os.getenv("BBBNUMBERROOMS", 3))
     logger.info(numberRooms)
-    numberUsers = os.getenv("BBBNUMBERUSERS", 6)
+    numberUsers = int(os.getenv("BBBNUMBERUSERS", 6))
     logger.info(numberUsers)
 
-    adminWeight = os.getenv("ADMIN_WEIGHT")#, 1)
+    adminWeight = int(os.getenv("ADMIN_WEIGHT"))#, 1)
     logger.info(adminWeight)
-    teacherWeight = os.getenv("TEACHER_WEIGHT")#, 3)
+    teacherWeight = int(os.getenv("TEACHER_WEIGHT"))#, 3)
     logger.info(teacherWeight)
-    pupilWeight = os.getenv("PUPIL_WEIGHT")#, 5)
+    pupilWeight = int(os.getenv("PUPIL_WEIGHT"))#, 5)
     logger.info(pupilWeight)
-    anonymousWeight = os.getenv("ANONYMOUS_WEIGHT")#, 10)
+    anonymousWeight = int(os.getenv("ANONYMOUS_WEIGHT"))#, 10)
     logger.info(anonymousWeight)
 
     returncodeNormal = 200 # Returncode if a Request is successful
