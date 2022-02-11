@@ -19,7 +19,7 @@ class PupilUser(HttpUser):
     Representing a pupil user on the SchulCloud.
     '''
 
-    weight = 5 # specifys how often the loadtest should simulate this user-type.
+    weight = constant.constant.pupilWeight # specifys how often the loadtest should simulate this user-type.
     tasks = {bbbTaskSet:1, scTaskSet:3, docTaskSet:1, reqWithoutUserTaskSet:1, rocketChatTaskSet:1} # collection of taks-sets which can be applied to the user
     wait_time = constant.constant.wait_time # specifys the waiting time after finishing a task and starting the next
     user_type = "pupil" # specifys the type of the user
@@ -34,7 +34,7 @@ class AdminUser(HttpUser):
     Representing a admin user on the SchulCloud.
     '''
 
-    weight = 1 # specifys how often the loadtest should simulate this user-type
+    weight = constant.constant.adminWeight # specifys how often the loadtest should simulate this user-type
     tasks = {bbbTaskSet:1, scTaskSet:3, docTaskSet:1, reqWithoutUserTaskSet:1, rocketChatTaskSet:1} # collection of taks-sets which can be applied to the user
     wait_time = constant.constant.wait_time # specifys the waiting time after finishing a task and starting the next
     user_type = "admin" # specifys the type of the user
@@ -49,7 +49,7 @@ class TeacherUser(HttpUser):
     Representing a teacher user on the SchulCloud.
     '''
 
-    weight = 3 # specifys how often the loadtest should simulate this user-type.
+    weight = constant.constant.teacherWeight # specifys how often the loadtest should simulate this user-type.
     tasks = {bbbTaskSet:1, scTaskSet:3, docTaskSet:1, reqWithoutUserTaskSet:1, rocketChatTaskSet:1} # collection of taks-sets which can be applied to the user
     wait_time = constant.constant.wait_time # specifys the waiting time after finishing a task and starting the next
     user_type = "teacher" # specifys the type of the user
@@ -64,7 +64,7 @@ class AnonymousUser(HttpUser):
     Representing a teacher user on the SchulCloud.
     '''
 
-    weight = 10 # specifys how often the loadtest should simulate this user-type.
+    weight = constant.constant.anonymousWeight # specifys how often the loadtest should simulate this user-type.
     tasks = {bbbTaskSet:0, scTaskSet:0, docTaskSet:0, reqWithoutUserTaskSet:1, statusServiceTaskSet:1, rocketChatTaskSet:0} # collection of taks-sets which can be applied to the user
     wait_time = constant.constant.wait_time # specifys the waiting time after finishing a task and starting the next
     user_type = "anonymous" # specifys the type of the user

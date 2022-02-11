@@ -18,6 +18,15 @@ class constant():
     numberUsers = os.getenv("BBBNUMBERUSERS", 6)
     logger.info(numberUsers)
 
+    adminWeight = os.getenv("ADMIN_WEIGHT", 1)
+    logger.info(adminWeight)
+    teacherWeight = os.getenv("TEACHER_WEIGHT", 3)
+    logger.info(teacherWeight)
+    pupilWeight = os.getenv("PUPIL_WEIGHT", 5)
+    logger.info(pupilWeight)
+    anonymousWeight = os.getenv("ANONYMOUS_WEIGHT", 10)
+    logger.info(anonymousWeight)
+
     returncodeNormal = 200 # Returncode if a Request is successful
     returncodeRedirect = 302 # Returncode if a Request is successful and the user was redirected on an other website
     returncodeCreated = 201 # Returncode if a Request to create something was successful
