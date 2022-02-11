@@ -18,13 +18,13 @@ class constant():
     numberUsers = os.getenv("BBBNUMBERUSERS", 6)
     logger.info(numberUsers)
 
-    adminWeight = os.getenv("ADMIN_WEIGHT", 1)
+    adminWeight = os.getenv("ADMIN_WEIGHT")#, 1)
     logger.info(adminWeight)
-    teacherWeight = os.getenv("TEACHER_WEIGHT", 3)
+    teacherWeight = os.getenv("TEACHER_WEIGHT")#, 3)
     logger.info(teacherWeight)
-    pupilWeight = os.getenv("PUPIL_WEIGHT", 5)
+    pupilWeight = os.getenv("PUPIL_WEIGHT")#, 5)
     logger.info(pupilWeight)
-    anonymousWeight = os.getenv("ANONYMOUS_WEIGHT", 10)
+    anonymousWeight = os.getenv("ANONYMOUS_WEIGHT")#, 10)
     logger.info(anonymousWeight)
 
     returncodeNormal = 200 # Returncode if a Request is successful
