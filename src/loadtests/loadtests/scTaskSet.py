@@ -1,9 +1,10 @@
-from loadtests.loginout import *
-from loadtests.requestsBuilder import *
-from loadtests.functions import *
-from locust.user.task import tag
-from locust import task
 import locust
+from locust import task
+from locust.user.task import tag
+
+from loadtests.loadtests.loginout import *
+from loadtests.loadtests.requestsBuilder import *
+from loadtests.loadtests.functions import *
 
 class scTaskSet(locust.user.task.TaskSet):
     '''

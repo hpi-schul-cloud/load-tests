@@ -1,15 +1,15 @@
 import time
-from shared import constant
-from loadtests import loginout
 
-from loadtests.loginout import *
-from loadtests.functions import createDoc, deleteDoc
 from locust.user.task import TaskSet, task, tag
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
 from selenium.webdriver.common.by import By
+
+from loadtests.shared import constant
+from loadtests.loadtests.loginout import *
+from loadtests.loadtests.functions import createDoc, deleteDoc
 
 class docTaskSet(TaskSet):
     '''

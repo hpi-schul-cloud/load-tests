@@ -1,18 +1,15 @@
 import logging
-import sys
-import yaml
-import os
 import random
 
 from locust import HttpUser
 
-from shared import constant
-from loadtests.bbbTaskSet import bbbTaskSet
-from loadtests.scTaskSet import scTaskSet
-from loadtests.docTaskSet import docTaskSet
-from loadtests.reqWithoutUserTaskSet import reqWithoutUserTaskSet
-from loadtests.rocketChatTaskSet import rocketChatTaskSet
-from loadtests.statusServiceTaskSet import statusServiceTaskSet
+from loadtests.shared import constant
+from loadtests.loadtests.bbbTaskSet import bbbTaskSet
+from loadtests.loadtests.scTaskSet import scTaskSet
+from loadtests.loadtests.docTaskSet import docTaskSet
+from loadtests.loadtests.reqWithoutUserTaskSet import reqWithoutUserTaskSet
+from loadtests.loadtests.rocketChatTaskSet import rocketChatTaskSet
+from loadtests.loadtests.statusServiceTaskSet import statusServiceTaskSet
 
 class PupilUser(HttpUser):
     '''
@@ -27,7 +24,6 @@ class PupilUser(HttpUser):
 
     def __init__(self, *args, **kwargs):
         super(PupilUser, self).__init__(*args, **kwargs)
-        fillInCredentials(self)
 
 class AdminUser(HttpUser):
     '''
@@ -42,7 +38,6 @@ class AdminUser(HttpUser):
 
     def __init__(self, *args, **kwargs):
         super(AdminUser, self).__init__(*args, **kwargs)
-        fillInCredentials(self)
 
 class TeacherUser(HttpUser):
     '''
@@ -57,7 +52,6 @@ class TeacherUser(HttpUser):
 
     def __init__(self, *args, **kwargs):
         super(TeacherUser, self).__init__(*args, **kwargs)
-        fillInCredentials(self)
 
 class AnonymousUser(HttpUser):
     '''

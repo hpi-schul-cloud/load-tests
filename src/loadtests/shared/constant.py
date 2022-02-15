@@ -1,8 +1,5 @@
-import os
-import logging
-import random
 
-from shared.loadEnv import getEnvironmentVariable, checkForMissingEnvironmentVariables
+from loadtests.shared.loadEnv import getEnvironmentVariable, checkForMissingEnvironmentVariables
 
 MATRIX_MESSENGER = getEnvironmentVariable("MMHOST")
 

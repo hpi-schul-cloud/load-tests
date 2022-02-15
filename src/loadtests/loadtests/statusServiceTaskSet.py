@@ -1,8 +1,8 @@
-from shared import constant
 
 from locust.user.task import TaskSet, tag, task
 
-from loadtests.requestsBuilder import normalGET, requestFailureMessage
+from loadtests.shared import constant
+from loadtests.loadtests.requestsBuilder import normalGET, requestFailureMessage
 
 class statusServiceTaskSet(TaskSet):
 

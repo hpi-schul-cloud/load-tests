@@ -1,14 +1,15 @@
 #from locust.user.wait_time import constant
-from loadtests import functions
-from shared import constant
-from loadtests import loginout
 import time
 
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from locust.user.task import TaskSet, tag, task
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+
+from loadtests.shared import constant
+from loadtests.loadtests import loginout
+from loadtests.loadtests import functions
 
 class rocketChatTaskSet(TaskSet):
     '''

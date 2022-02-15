@@ -4,10 +4,11 @@ import json
 import urllib.request
 import stat
 import zipfile
-from shared import constant
 
-from loadtests.functions import *
 from bs4 import BeautifulSoup
+
+from loadtests.shared import constant
+from loadtests.loadtests.functions import *
 
 
 def login(taskset):

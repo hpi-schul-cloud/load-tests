@@ -1,15 +1,13 @@
 import json
-from random import betavariate
-import requests
 import time
 
-from loadtests import requestsBuilder
+from requests.api import head
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
 from selenium import webdriver
-from requests.api import head
-from loadtests.requestsBuilder import *
+from loadtests.loadtests import requestsBuilder
+from loadtests.loadtests.requestsBuilder import *
 
 def createDoc(self, docdata):
     '''
