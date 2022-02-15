@@ -1,5 +1,5 @@
 import time
-from loadtests import constant
+from shared import constant
 from loadtests import loginout
 
 from loadtests.loginout import *

@@ -1,6 +1,6 @@
 #from locust.user.wait_time import constant
 from loadtests import functions
-from loadtests import constant
+from shared import constant
 from loadtests import loginout
 import time
 

@@ -1,7 +1,7 @@
 import time
 import hashlib
 
-from loadtests import constant
+from shared import constant
 from loadtests import loginout
 
 from locust import task, tag

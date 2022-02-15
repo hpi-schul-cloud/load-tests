@@ -1,10 +1,11 @@
 from loadtests.loginout import *
 from loadtests.requestsBuilder import *
 from loadtests.functions import *
-from locust.user.task import TaskSet, tag
+from locust.user.task import tag
 from locust import task
+import locust
 
-class scTaskSet(TaskSet):
+class scTaskSet(locust.user.task.TaskSet):
     '''
     Definition of the specific tasks, the loadtest should execute.
     Tasks, which are marked with tags, can be directly addressed by the start of the loadtest. The other tasks then will be ignored.
@@ -22,7 +23,7 @@ class scTaskSet(TaskSet):
 
     def on_start(self):
         '''
-        Frist Task that is executed.
+        First Task that is executed.
         It logs in the User.
 
         Param:
