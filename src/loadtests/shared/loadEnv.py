@@ -8,11 +8,15 @@ missing_env_vars = False
 
 def getEnvironmentVariable(name: str, dtype: type = None, required: bool = True):
     var = os.environ.get(name)
-    if var and dtype:
-        var = dtype(var)
-    if not var and required:
-        logger.error(f'Environment variable {name} not found but required')
-        missing_env_vars = True
+    if var:
+        if dtype:
+            var = dtype(var)
+        return var
+    else:
+        if required:
+            logger.error(f'Environment variable {name} not found but required')
+            missing_env_vars = True
+        return None
 
 def checkForMissingEnvironmentVariables():
     if missing_env_vars:
