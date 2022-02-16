@@ -5,7 +5,7 @@ from loadtests.shared.loadEnv import getEnvironmentVariable, checkForMissingEnvi
 
 logger = logging.getLogger(__name__)
 class Constant:
-    MATRIX_MESSENGER = getEnvironmentVariable("MMHOST", required=False)
+    #MATRIX_MESSENGER = getEnvironmentVariable("MMHOST")
 
     timeToWaitShort = getEnvironmentVariable("TIMESHORT", int)
     timeToWaitLong = getEnvironmentVariable("TIMELONG", int)
@@ -24,9 +24,9 @@ class Constant:
     bBBKey = getEnvironmentVariable("BBBKEY")
     bBBHost = getEnvironmentVariable("BBBHOST")
 
-    browserIpPort= getEnvironmentVariable("BROWSERIPPORT", "chromedriver-svc:4444") #URL and Port for the chromedriver Pod
+    browserIpPort= getEnvironmentVariable("BROWSERIPPORT", default="chromedriver-svc:4444") #URL and Port for the chromedriver Pod
 
-    urlBetterMarks = getEnvironmentVariable("URLBETTERMARKS") # required for downloading bettermarks-tools
+    #urlBetterMarks = getEnvironmentVariable("URLBETTERMARKS") # required for downloading bettermarks-tools
 
     # Get the user credentials for locust HttpUser. Either the file-path or the constants will be used, other wise the programm will exit.
     loginCredentialsAdmin = {'email': getEnvironmentVariable("ADMIN_EMAIL"), 'password': getEnvironmentVariable("ADMIN_PASSWORD")}
