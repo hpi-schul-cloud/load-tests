@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 
-from loadtests.shared import constant
+from loadtests.shared.constant import Constant
 
 def fetch_static_assets(self, response):
     '''
@@ -32,7 +32,7 @@ def fetch_static_assets(self, response):
     for use_url in resource_urls:
         if use_url != "/themes/n21/favicon.png":
             with self.client.get(use_url, catch_response=True, allow_redirects=True) as response:
-                if response.status_code != constant.constant.returncodeNormal:
+                if response.status_code != Constant.returncodeNormal:
                         response.failure(requestFailureMessage(self, response))
 
 def requestFailureMessage(self, response):
@@ -48,7 +48,7 @@ def normalGET(self, url):
     '''
 
     with self.client.get(url, catch_response=True, allow_redirects=True) as response:
-        if response.status_code != constant.constant.returncodeNormal:
+        if response.status_code != Constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
         else:
             fetch_static_assets(self, response)

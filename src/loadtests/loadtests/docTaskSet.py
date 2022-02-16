@@ -7,7 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
 from selenium.webdriver.common.by import By
 
-from loadtests.shared import constant
+from loadtests.shared.constant import Constant
 from loadtests.loadtests.loginout import *
 from loadtests.loadtests.functions import createDoc, deleteDoc
 
@@ -62,7 +62,7 @@ class docTaskSet(TaskSet):
 
             host = self.user.host + "/files" # url to where the file will be saved
 
-            driverWB = webdriver.Remote("http://" + constant.constant.browserIpPort + "/wd/hub", DesiredCapabilities.CHROME) # browser which will be used for calling the host and saving the documents
+            driverWB = webdriver.Remote("http://" + Constant.browserIpPort + "/wd/hub", DesiredCapabilities.CHROME) # browser which will be used for calling the host and saving the documents
             driverWB.get(host)
 
             # Login user
@@ -88,14 +88,14 @@ class docTaskSet(TaskSet):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.TAG_NAME, ui_element)))
             driverWB.switch_to.frame(element)
 
-            time.sleep(int(constant.constant.timeToWaitShort))
+            time.sleep(int(Constant.timeToWaitShort))
 
             # Edit document
             ui_element = "html/body"
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.XPATH, ui_element)))
             element.send_keys("Der Loadtest der loaded den Test!")
 
-            time.sleep(int(constant.constant.timeToWaitShort))
+            time.sleep(int(Constant.timeToWaitShort))
 
             driverWB.quit()
             deleteDoc(self, docId)
@@ -126,7 +126,7 @@ class docTaskSet(TaskSet):
 
             host = self.user.host + "/files" # url to where the file will be saved
 
-            driverWB = webdriver.Remote("http://" + constant.constant.browserIpPort + "/wd/hub", DesiredCapabilities.CHROME)
+            driverWB = webdriver.Remote("http://" + Constant.browserIpPort + "/wd/hub", DesiredCapabilities.CHROME)
             #driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used for calling the host and saving the documents
             driverWB.get(host)
 
@@ -151,7 +151,7 @@ class docTaskSet(TaskSet):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.TAG_NAME, ui_element)))
             driverWB.switch_to.frame(element)
 
-            time.sleep(int(constant.constant.timeToWaitShort))
+            time.sleep(int(Constant.timeToWaitShort))
 
             # Edit Doc
             ui_element = "input[id='formulaInput']"
@@ -161,7 +161,7 @@ class docTaskSet(TaskSet):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
             element.click()
 
-            time.sleep(int(constant.constant.timeToWaitShort))
+            time.sleep(int(Constant.timeToWaitShort))
 
             driverWB.quit()
             deleteDoc(self, docId)
@@ -192,7 +192,7 @@ class docTaskSet(TaskSet):
 
             host = self.user.host + "/files" # url to where the file will be saved
 
-            driverWB = webdriver.Remote("http://" + constant.constant.browserIpPort + "/wd/hub", DesiredCapabilities.CHROME)
+            driverWB = webdriver.Remote("http://" + Constant.browserIpPort + "/wd/hub", DesiredCapabilities.CHROME)
             #driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used for calling the host and saving the documents
             driverWB.get(host)
 
@@ -220,14 +220,14 @@ class docTaskSet(TaskSet):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
             driverWB.switch_to.frame(element)
 
-            time.sleep(int(constant.constant.timeToWaitShort))
+            time.sleep(int(Constant.timeToWaitShort))
 
             # Edit Doc
             ui_element = "html/body"
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.XPATH, ui_element)))
             element.send_keys("Der Loadtest der loaded den Test!")
 
-            time.sleep(int(constant.constant.timeToWaitShort))
+            time.sleep(int(Constant.timeToWaitShort))
 
             driverWB.quit()
             deleteDoc(self, docId)
