@@ -31,7 +31,7 @@ def login(taskset):
             "_csrf"     : taskset.csrf_token
         }
         with taskset.client.request("POST", "/login/", data=login_data, catch_response=True, allow_redirects=False)  as login_post_response:
-            if (login_post_response.status_code != Constant.returncodeRedirect) or not login_post_response.headers.get('location').startswith("/login/success"):
+            if (login_post_response.status_code != constant.Constant.returncodeRedirect) or not login_post_response.headers.get('location').startswith("/login/success"):
                 login_post_response.failure("Failed! (username: " + taskset.user.login_credentials["email"] + ", http-code: "+str(login_post_response.status_code)+", header: "+str(login_post_response.headers)+")")
             else:
                 response_header = login_post_response.headers
