@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 missing_env_vars = False
 
 def getEnvironmentVariable(name: str, dtype: type = None, required: bool = True):
-    var = os.environ.get(name)
+    var = os.getenv(name)
     if var:
         if dtype:
             var = dtype(var)
