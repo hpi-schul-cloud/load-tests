@@ -8,7 +8,7 @@ setuptools.setup(
     version="1.0.0",
     author="HPI Schulcloud",
     author_email="devops@hpi-schul-cloud.de",
-    description="Utilities to work with 1password",
+    description="tests for schulcloud",
     long_description=long_description,
     url="https://github.com/hpi-schul-cloud/load-tests",
     package_dir={"": "src"},
