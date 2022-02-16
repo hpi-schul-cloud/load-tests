@@ -3,9 +3,6 @@ import random
 
 from locust import HttpUser
 
-import time
-while True:
-    time.sleep(3600)
 
 from loadtests.shared import constant
 from loadtests.loadtests.bbbTaskSet import bbbTaskSet
