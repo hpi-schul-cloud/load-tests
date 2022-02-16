@@ -1,7 +1,6 @@
 import json
 import time
 
-from requests.api import head
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
