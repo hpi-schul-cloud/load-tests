@@ -3,15 +3,15 @@ from loadtests.shared.loadEnv import getEnvironmentVariable, checkForMissingEnvi
 
 MATRIX_MESSENGER = getEnvironmentVariable("MMHOST")
 
-timeToWaitShort = int(getEnvironmentVariable("TIMESHORT"))
-timeToWaitLong = int(getEnvironmentVariable("TIMELONG"))
-numberRooms = int(getEnvironmentVariable("BBBNUMBERROOMS"))
-numberUsers = int(getEnvironmentVariable("BBBNUMBERUSERS"))
+timeToWaitShort = getEnvironmentVariable("TIMESHORT", int)
+timeToWaitLong = getEnvironmentVariable("TIMELONG", int)
+numberRooms = getEnvironmentVariable("BBBNUMBERROOMS", int)
+numberUsers = getEnvironmentVariable("BBBNUMBERUSERS", int)
 
-adminWeight = int(getEnvironmentVariable("ADMIN_WEIGHT"))
-teacherWeight = int(getEnvironmentVariable("TEACHER_WEIGHT"))
-pupilWeight = int(getEnvironmentVariable("PUPIL_WEIGHT"))
-anonymousWeight = int(getEnvironmentVariable("ANONYMOUS_WEIGHT"))
+adminWeight = getEnvironmentVariable("ADMIN_WEIGHT", int)
+teacherWeight = getEnvironmentVariable("TEACHER_WEIGHT", int)
+pupilWeight = getEnvironmentVariable("PUPIL_WEIGHT", int)
+anonymousWeight = getEnvironmentVariable("ANONYMOUS_WEIGHT", int)
 
 returncodeNormal = 200 # Returncode if a Request is successful
 returncodeRedirect = 302 # Returncode if a Request is successful and the user was redirected on an other website
