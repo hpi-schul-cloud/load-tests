@@ -12,7 +12,7 @@ from selenium.webdriver.support import expected_conditions as EC # available sin
 from selenium.webdriver.common.by import By
 
 from loadtests.loadtests import loginout
-from loadtests.shared.constant import Constant
+from loadtests.shared import constant
 
 class bbbTaskSet(TaskSet):
     '''
@@ -38,19 +38,19 @@ class bbbTaskSet(TaskSet):
         '''
 
         #Starts a chrome Browser
-        driverWB = webdriver.Remote("http://" + Constant.browserIpPort + "/wd/hub", DesiredCapabilities.CHROME) # browser which will be used for creating the BBB rooms
-        driverWB.get(Constant.bBBHost)
+        driverWB = webdriver.Remote("http://" + constant.Constant.browserIpPort + "/wd/hub", DesiredCapabilities.CHROME) # browser which will be used for creating the BBB rooms
+        driverWB.get(constant.Constant.bBBHost)
 
         counterfirst = 0 # counter for creating a specific number of rooms
         counterTab = 1 # counter for open tabs
-        while counterfirst < int(Constant.numberRooms):
+        while counterfirst < int(constant.Constant.numberRooms):
 
             timestamp = str(time.time())
             # Creates a BBB-Room with a password
             operator = "create"
             urlparam = "meetingID=loadtest-" + timestamp + str(counterfirst) + "&name=loadtest-" + str(time.time()) + str(counterfirst) + "&moderatorPW=123&attendeePW=456&lockSettingsDisableMic=true"
-            urlstart = Constant.bBBHost + "/bigbluebutton/api/" + operator + "?" + urlparam
-            url = str(operator) + str(urlparam) + str(Constant.bBBKey)
+            urlstart = constant.Constant.bBBHost + "/bigbluebutton/api/" + operator + "?" + urlparam
+            url = str(operator) + str(urlparam) + str(constant.Constant.bBBKey)
             urlsha = str(urlstart) + "&checksum=" + hashlib.sha1(url.encode()).hexdigest()
 
             driverWB.get(urlsha)
@@ -60,8 +60,8 @@ class bbbTaskSet(TaskSet):
             # Moderator joins the room on a new Tab
             operator = "join"
             urlparam = "meetingID=loadtest-" + timestamp + str(counterfirst) + "&fullName=loadtest-" + str(counterfirst) + "userMLoadtest-" + str(countersecond) + "&userID=loadtest-" + str(counterfirst) + "userMLoadtest-" + str(countersecond) + "&password=123"
-            urlstart = Constant.bBBHost + "/bigbluebutton/api/" + operator + "?" + urlparam
-            url = str(operator) + str(urlparam) + str(Constant.bBBKey)
+            urlstart = constant.Constant.bBBHost + "/bigbluebutton/api/" + operator + "?" + urlparam
+            url = str(operator) + str(urlparam) + str(constant.Constant.bBBKey)
             urlsha = urlstart + "&checksum=" + hashlib.sha1(url.encode()).hexdigest()
 
             windows = driverWB.window_handles
@@ -75,7 +75,7 @@ class bbbTaskSet(TaskSet):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
             element.click()
 
-            time.sleep(int(Constant.timeToWaitShort))
+            time.sleep(int(constant.Constant.timeToWaitShort))
 
             # Clicks on the Plussign
             ui_element = "tippy-69"
@@ -92,25 +92,25 @@ class bbbTaskSet(TaskSet):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
             element.send_keys('https://player.vimeo.com/video/418854539')
 
-            time.sleep(int(Constant.timeToWaitShort))
+            time.sleep(int(constant.Constant.timeToWaitShort))
 
             # Clicks on the button "Share a new video"
             ui_element = "button[class='button--Z2dosza md--Q7ug4 default--Z19H5du startBtn--ZifpQ9']"
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
             element.click()
 
-            time.sleep(int(Constant.timeToWaitShort))
+            time.sleep(int(constant.Constant.timeToWaitShort))
 
             counterTab += 1
             countersecond += 1
 
-            while countersecond < int(Constant.numberUsers):
+            while countersecond < int(constant.Constant.numberUsers):
 
                 # Normal User joins the room
                 operator = "join"
                 urlparam = "meetingID=loadtest-" + timestamp + str(counterfirst) + "&fullName=loadtest-" + str(counterfirst) + "userLoadtest-" + str(countersecond) + "&userID=loadtest-" + str(counterfirst) + "userLoadtest-" + str(countersecond) + "&password=456"
-                urlstart = Constant.bBBHost + "/bigbluebutton/api/" + operator + "?" + urlparam
-                url = str(operator) + str(urlparam) + str(Constant.bBBKey)
+                urlstart = constant.Constant.bBBHost + "/bigbluebutton/api/" + operator + "?" + urlparam
+                url = str(operator) + str(urlparam) + str(constant.Constant.bBBKey)
                 urlsha = urlstart + "&checksum=" + hashlib.sha1(url.encode()).hexdigest()
 
                 # changes the browsertab
@@ -123,7 +123,7 @@ class bbbTaskSet(TaskSet):
                 element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
                 element.click()
 
-                time.sleep(int(Constant.timeToWaitShort))
+                time.sleep(int(constant.Constant.timeToWaitShort))
 
                 countersecond += 1
                 counterTab += 1
@@ -132,12 +132,12 @@ class bbbTaskSet(TaskSet):
 
         counterfirst = 0
         time.sleep(30)
-        while counterfirst < int(Constant.numberRooms):
+        while counterfirst < int(constant.Constant.numberRooms):
             # Closes all the rooms
             operator = "end"
             urlparam = "meetingID=loadtest-" + timestamp + str(counterfirst) + "&password=123"
-            urlstart = Constant.bBBHost + "/bigbluebutton/api/" + operator + "?" + urlparam
-            url = str(operator) + str(urlparam) + str(Constant.bBBKey)
+            urlstart = constant.Constant.bBBHost + "/bigbluebutton/api/" + operator + "?" + urlparam
+            url = str(operator) + str(urlparam) + str(constant.Constant.bBBKey)
             urlsha = str(urlstart) + "&checksum=" + hashlib.sha1(url.encode()).hexdigest()
 
             driverWB.get(urlsha)

@@ -2,7 +2,7 @@
 from loadtests.shared.loadEnv import getEnvironmentVariable, checkForMissingEnvironmentVariables
 
 class Constant:
-    MATRIX_MESSENGER = getEnvironmentVariable("MMHOST")
+    MATRIX_MESSENGER = getEnvironmentVariable("MMHOST", required=False)
 
     timeToWaitShort = getEnvironmentVariable("TIMESHORT", int)
     timeToWaitLong = getEnvironmentVariable("TIMELONG", int)

@@ -7,7 +7,7 @@ import zipfile
 
 from bs4 import BeautifulSoup
 
-from loadtests.shared.constant import Constant
+from loadtests.shared import constant
 from loadtests.loadtests.functions import *
 
 

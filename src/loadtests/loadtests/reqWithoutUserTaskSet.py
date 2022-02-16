@@ -1,6 +1,6 @@
 from locust.user.task import TaskSet, tag, task
 
-from loadtests.shared.constant import Constant
+from loadtests.shared import constant
 
 class reqWithoutUserTaskSet(TaskSet):
 

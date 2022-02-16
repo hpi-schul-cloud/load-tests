@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC # available sin
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
-from loadtests.shared.constant import Constant
+from loadtests.shared import constant
 from loadtests.loadtests import loginout
 from loadtests.loadtests import functions
 
@@ -53,7 +53,7 @@ class rocketChatTaskSet(TaskSet):
 
             # Opens chrome browser
             url = f"{self.user.host}/teams/{teamId}/edit"
-            driverWB = webdriver.Remote("http://" + Constant.browserIpPort + "/wd/hub", DesiredCapabilities.CHROME) # browser which will be used
+            driverWB = webdriver.Remote("http://" + constant.Constant.browserIpPort + "/wd/hub", DesiredCapabilities.CHROME) # browser which will be used
             driverWB.get(url)
 
             functions.loginLoadtestUserOnTeamToEdit(self, driverWB) # Login user

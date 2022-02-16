@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 
-from loadtests.shared.constant import Constant
+from loadtests.shared import constant
 
 def fetch_static_assets(self, response):
     '''
