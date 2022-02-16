@@ -5,7 +5,6 @@ from loadtests.shared.loadEnv import getEnvironmentVariable, checkForMissingEnvi
 
 logger = logging.getLogger(__name__)
 class Constant:
-    logger.error('Constant run -----------------')
     MATRIX_MESSENGER = getEnvironmentVariable("MMHOST", required=False)
 
     timeToWaitShort = getEnvironmentVariable("TIMESHORT", int)
