@@ -8,6 +8,7 @@ missing_env_vars = False
 
 def getEnvironmentVariable(name: str, dtype: type = None, required: bool = True):
     var = os.getenv(name)
+    logger.info(f'os.getenv({name}) -> {var=}')
     if var:
         if dtype:
             var = dtype(var)
