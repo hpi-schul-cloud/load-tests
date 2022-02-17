@@ -3,7 +3,6 @@ import random
 
 from locust import HttpUser
 
-
 from loadtests.shared.constant import Constant
 from loadtests.loadtests.bbbTaskSet import bbbTaskSet
 from loadtests.loadtests.scTaskSet import scTaskSet
