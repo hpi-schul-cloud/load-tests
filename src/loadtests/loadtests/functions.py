@@ -5,8 +5,10 @@ from selenium.webdriver.support import expected_conditions as EC # available sin
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
 
+from loadtests.shared import constant
 from loadtests.loadtests import requestsBuilder
 from loadtests.loadtests.requestsBuilder import *
+
 
 def createDoc(self, docdata):
     '''
@@ -28,7 +30,7 @@ def createDoc(self, docdata):
         catch_response = True,
         allow_redirects = True
     ) as response:
-        if response.status_code != constant.constant.returncodeNormal:
+        if response.status_code != constant.Constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
         else:
             self.createdDocuments.append(response.text) # Adding the new document to createdDocumets-list for final clean-up
@@ -53,7 +55,7 @@ def deleteDoc(self, docId):
         allow_redirects = True,
         name="/files/file/delete"
     ) as response:
-        if response.status_code != constant.constant.returncodeNormal:
+        if response.status_code != constant.Constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
 
 def createCourse(self, data):
@@ -67,7 +69,7 @@ def createCourse(self, data):
 
     with self.client.request("POST", "/courses/", data=data, catch_response=True, allow_redirects=True) as response:
         soup = BeautifulSoup(response.text, "html.parser")
-        if response.status_code != constant.constant.returncodeNormal:
+        if response.status_code != constant.Constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
         else:
             if len(str(soup)) > 10:
@@ -96,7 +98,7 @@ def deleteCourse(self, courseId):
         allow_redirects=True,
         name="/courses/delete"
     ) as response:
-        if response.status_code != constant.constant.returncodeNormal:
+        if response.status_code != constant.Constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
 
 def lernStore(self, courseId):
@@ -120,7 +122,7 @@ def lernStore(self, courseId):
             catch_response=True,
             allow_redirects=True
         ) as response:
-            if response.status_code != constant.constant.returncodeNormal:
+            if response.status_code != constant.Constant.returncodeNormal:
                 response.failure(requestFailureMessage(self, response))
 
             # Request to the Lernstore to get the internal id of the course
@@ -180,7 +182,7 @@ def lernStore(self, courseId):
                             "sec-ch-ua-moblie"  : "?0"
                         }
                     ) as response:
-                        if response.status_code != constant.constant.returncodeCreated:
+                        if response.status_code != constant.Constant.returncodeCreated:
                             response.failure(requestFailureMessage(self, response))
 
 def courseAddEtherPadAndTool(self, courseId):
@@ -206,7 +208,7 @@ def courseAddEtherPadAndTool(self, courseId):
             catch_response=True,
             allow_redirects=True
         ) as response:
-            if response.status_code != constant.constant.returncodeNormal:
+            if response.status_code != constant.Constant.returncodeNormal:
                 response.failure(requestFailureMessage(self, response))
 
         # Add Tool
@@ -225,18 +227,18 @@ def courseAddEtherPadAndTool(self, courseId):
                 "sec-fetch-site"    : "same-origin",
                 "x-requested-with"  : "XMLHttpRequest"
             },
-            data = ('privacy_permission=anonymous&openNewTab=true&name=bettermarks&url=' + str(constant.constant.urlBetterMarks) + 
+            data = ('privacy_permission=anonymous&openNewTab=true&name=bettermarks&url=' + str(constant.Constant.urlBetterMarks) + 
                 '&key=&logo_url=https://acc.bettermarks.com/app/assets/bm-logo.png&isLocal=true&resource_link_id=&lti_version=&lti_message_type=&isTemplate=false&skipConsent=false&createdAt=2021-01-14T13:35:44.689Z&updatedAt=2021-01-14T13:35:44.689Z&__v=0&originTool=600048b0755565002840fde4&courseId=' 
                 + str(courseId)).encode('utf-8'),
             catch_response=True,
             allow_redirects=True
         ) as response:
             with self.client.request("GET",
-                str(constant.constant.urlBetterMarks),
+                str(constant.Constant.urlBetterMarks),
                 catch_response=True,
                 allow_redirects=True
             ) as response:
-                if response.status_code != constant.constant.returncodeNormal:
+                if response.status_code != constant.Constant.returncodeNormal:
                     response.failure(requestFailureMessage(self, response))
 
 def newTeam(self):
@@ -274,7 +276,7 @@ def newTeam(self):
         catch_response=True,
         allow_redirects=True
     ) as response:
-        if response.status_code != constant.constant.returncodeNormal:
+        if response.status_code != constant.Constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
         else:
             soup = BeautifulSoup(response.text, "html.parser")
@@ -304,7 +306,7 @@ def deleteTeam(self, teamId):
         catch_response=True,
         allow_redirects=True
     ) as response:
-        if response.status_code != constant.constant.returncodeNormal:
+        if response.status_code != constant.Constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
 
 def loginLoadtestUserOnTeamToEdit(self, webbrowser):
@@ -361,7 +363,7 @@ def findTeamChatId(self, teamId):
         catch_response = True,
         allow_redirects = True
     ) as response:
-        if response.status_code == constant.constant.returncodeNormal:
+        if response.status_code == constant.Constant.returncodeNormal:
             soup = BeautifulSoup(response.text, 'html.parser')
             teamChatId = soup.find('iframe')['src']
             host = self.user.host.replace("https://", "")
@@ -393,16 +395,16 @@ def matrixMessenger(self):
     Method is not used and not functional
     '''
     txn_id = 0
-    mainHost = constant.constant.MATRIX_MESSENGER
+    mainHost = constant.Constant.MATRIX_MESSENGER
     with self.client.request("GET", "/messenger/token", catch_response=True, allow_redirects=False) as response:
-                if(response.status_code == constant.constant.returncodeNormal):
+                if(response.status_code == constant.Constant.returncodeNormal):
                     i = json.loads(response.text)
                     self.token = i["accessToken"]
                     self.user_id = i["userId"]
 
     room_ids = None
     with self.client.get("/courses/" , catch_response=True, allow_redirects=True) as response:
-        if(response.status_code == constant.constant.returncodeNormal):
+        if(response.status_code == constant.Constant.returncodeNormal):
             soup = BeautifulSoup(response.text, "html.parser")
             for room_id in soup.find_all('article'):
                 room_ids.append(room_id.get('data-loclink').removeprefix("/courses/"))
@@ -416,7 +418,7 @@ def matrixMessenger(self):
 
     name = mainHost + "/r0/sync"
     response = self.client.get(mainHost + "/r0/sync", params=payload)#, name=name)
-    if response.status_code != constant.constant.returncodeNormal:
+    if response.status_code != constant.Constant.returncodeNormal:
         return
 
     json_response_dict = response.json()
@@ -449,7 +451,7 @@ def matrixMessenger(self):
             mainHost + "/r0/rooms/" + room_id + "/send/m.room.message",
             json=message,
         ) as response:
-            if response.status_code == constant.constant.returncodeNormal:
+            if response.status_code == constant.Constant.returncodeNormal:
                 soup = BeautifulSoup(response.text, "html.parser")
                 json_object = json.loads(soup.string)
 
