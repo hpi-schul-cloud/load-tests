@@ -1,4 +1,5 @@
 
+import sys
 import os
 import logging
 from typing import Any
@@ -22,4 +23,6 @@ def getEnvironmentVariable(name: str, dtype: type = None, default: Any = None):
 
 def checkForMissingEnvironmentVariables():
     if missing_env_vars:
-        raise RuntimeError('Missing environment variables. Check error log.')
+        #raise RuntimeError('Missing environment variables. Check error log.')
+        logger.error('Missing environment variables.')
+        sys.exit(1)
