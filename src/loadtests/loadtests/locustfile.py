@@ -1,5 +1,6 @@
 import logging
 import random
+from typing import List, Type
 
 from locust import HttpUser
 
@@ -68,3 +69,4 @@ class AnonymousUser(HttpUser):
         super(AnonymousUser, self).__init__(*args, **kwargs)
 
 
+user_classes: List[Type[HttpUser]] = [AdminUser, TeacherUser, PupilUser, AnonymousUser]

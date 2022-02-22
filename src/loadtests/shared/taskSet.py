@@ -1,6 +1,8 @@
 
-from curses.ascii import HT
+from typing import TypedDict
 from re import S
+
+from curses.ascii import HT
 from signal import set_wakeup_fd
 import requests
 from locust.user import HttpUser
@@ -14,22 +16,25 @@ from loadtests.loadtests.locustfile import AdminUser
 from loadtests.loadtests.scTaskSet import scTaskSet
 
 
+Login = TypedDict('Login', {'email': str, 'password': str})
+
+
 class Interface:
     
-    def __init__(self) -> None:
-        self.login = None
-        self.requests_client = requests.Session()
-        self.base_url = ''
-        self.csrf_token = None
-        
+    def __init__(self):
+        self.login: Login = None
+        self.requests_client: requests.Session = None
+        self.base_url: str = None
+        self.csrf_token: str = None
     
     def interrupt(self):
         pass
     
 
-class TaskSetSchulCloud:
+class TaskSetSchulCloud(TaskSet):
 
-    def __init__(self, interface: Interface) -> None:
+    def __init__(self, parent, creator_is_locust=True):
+        super(TaskSetSchulCloud, self).__init__(parent)
         self.interface: Interface = interface
 
     @property
@@ -46,7 +51,7 @@ class TaskSetSchulCloud:
         login_data = {
                 'challenge' : '',
                 'username' : self.login['email'],
-                'password' : self.login['passwort'],
+                'password' : self.login['password'],
                 '_csrf' : self.interface.csrf_token
         }    
 
