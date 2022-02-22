@@ -211,7 +211,7 @@ def createDoc(session : requests.session, docdata):
         self: Taskset
         docdata: Configuration for the new Document
     '''
-    with session.post("/files/my", 
+    with session.client.post("/files/my", 
         data = docdata,
         ContentTypeHeader = "application/x-www-form-urlencoded" # Adding entry "Content-Type" (data format for request body),
     ) as response:
@@ -241,7 +241,7 @@ def deleteDoc(session : requests.session, docId):
         "Referer"           : f"{session.host}/files/my/"
     }
 
-    with session.delete(
+    with session.client.delete(
         "/files/file/",
         headers = header,
         data = data,
