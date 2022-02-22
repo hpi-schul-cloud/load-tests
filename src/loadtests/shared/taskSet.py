@@ -3,7 +3,7 @@ from curses.ascii import HT
 from re import S
 from signal import set_wakeup_fd
 from typing_extensions import runtime
-from locust import task
+from locust import constant, task
 import requests
 from locust.user import HttpUser
 from locust.user.task import TaskSet
@@ -14,8 +14,11 @@ import base64
 import json
 from loadtests.loadtests.functions import deleteDoc
 from loadtests.shared.constant import Constant
+from loadtests.shared import constant
 from loadtests.loadtests.locustfile import AdminUser
 from loadtests.loadtests.scTaskSet import scTaskSet
+from loadtests.loadtests.requestsBuilder import *
+from loadtests.loadtests import requestsBuilder
 
 
 class Interface:
@@ -123,11 +126,65 @@ class TaskSetSchulCloud:
     
     
     def deleteDoc(self, documentId):
-        pass
-    
+        '''
+        Deletes a document on the SchulCloud website.
+        '''
+        
+        data = {"id" : documentId}
+        with self.interface.requests_client.request(
+            "DELETE",
+            "/files/file/",
+            headers = requestHeaderBuilder(self, "/files/my/"),
+            data = data,
+            catch_response = True,
+            allow_redirects = True,
+            name="/files/file/delete"
+        ) as response:
+            if response.status_code != constant.Constant.returncodeNormal:
+                response.failure(requestFailureMessage(self, response))
+            else:
+                self.createdDocuments.append(response.text) # Adding the new document to createdDocumets-list for final clean-up
+                return response.text
+
+
+
     def deleteCourse(self, courseId):
-        pass
+        '''
+        Delete a course
+        '''
+        header = requestHeaderBuilder(self, "/courses/"+ courseId +"/edit")
+        header["accept"] = "*/*" # Adding "accept" entry
+        header["accept-language"] = "en-US,en;q=0.9" # Adding accepted language
+
+        with self.interface.requests_client.request(
+            "DELETE",
+             "/courses/" + courseId + "/" ,
+            headers = header,
+            catch_response=True,
+            allow_redirects=True,
+            name="/courses/delete"
+        ) as response:
+            if response.status_code != constant.Constant.returncodeNormal:
+                response.failure(requestFailureMessage(self, response))
+
+
 
     def deleteTeam(self, teamId):
-        pass
+        '''
+        Deletes a Team
+        '''
+        header = requestHeaderBuilder(self, (str(self.user.host) + "/teams/" + teamId + "/edit"))
+        header["accept"] = "*/*"
+        header["accept-language"] = "en-US,en;q=0.9"
+        
+        with self.interface.requests_client.request(
+            "DELETE",
+             "/teams/" + teamId + "/" ,
+            headers = header,
+            name="/teams/delete",
+            catch_response=True,
+            allow_redirects=True
+        ) as response:
+            if response.status_code != constant.Constant.returncodeNormal:
+                response.failure(requestFailureMessage(self, response))
 
