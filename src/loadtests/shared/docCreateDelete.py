@@ -213,7 +213,7 @@ def createDoc(session : requests.session, docdata):
     '''
     with session.client.post("/files/my", 
         data = docdata,
-        ContentTypeHeader = "application/x-www-form-urlencoded" # Adding entry "Content-Type" (data format for request body),
+        #ContentTypeHeader = "application/x-www-form-urlencoded" # Adding entry "Content-Type" (data format for request body),
     ) as response:
         if response.status_code != Constant.returncodeNormal:
             print(response.failure())#requestFailureMessage(self, response))
