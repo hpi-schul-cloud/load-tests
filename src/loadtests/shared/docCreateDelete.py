@@ -218,7 +218,7 @@ def createDoc(session : requests.session, docdata):
         if response.status_code != Constant.returncodeNormal:
             print(response.failure())#requestFailureMessage(self, response))
         else:
-            #self.createdDocuments.append(response.text) # Adding the new document to createdDocumets-list for final clean-up
+            session.createdDocuments.append(response.text) # Adding the new document to createdDocumets-list for final clean-up
             return response.text
 
 def deleteDoc(session : requests.session, docId):
