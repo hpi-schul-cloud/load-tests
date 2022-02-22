@@ -18,7 +18,7 @@ def main():
     env.events.test_start.add_listener(lambda **kw: print('test_start:', kw))
     env.events.test_stop.add_listener(lambda **kw: print('test_stop:', kw))
     
-    # run all tasks
+    #run all tasks
     for user_class in user_classes:
         user = user_class(env)
         user.on_start()
