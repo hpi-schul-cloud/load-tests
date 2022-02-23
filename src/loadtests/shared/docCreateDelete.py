@@ -211,14 +211,14 @@ def createDoc(session : requests.session, docdata):
         self: Taskset
         docdata: Configuration for the new Document
     '''
-    with session.post("/files/my", 
+    with session.client.post("/files/my", 
         data = docdata,
-        ContentTypeHeader = "application/x-www-form-urlencoded" # Adding entry "Content-Type" (data format for request body),
+        #ContentTypeHeader = "application/x-www-form-urlencoded" # Adding entry "Content-Type" (data format for request body),
     ) as response:
         if response.status_code != Constant.returncodeNormal:
             print(response.failure())#requestFailureMessage(self, response))
         else:
-            #self.createdDocuments.append(response.text) # Adding the new document to createdDocumets-list for final clean-up
+            session.createdDocuments.append(response.text) # Adding the new document to createdDocumets-list for final clean-up
             return response.text
 
 def deleteDoc(session : requests.session, docId):
@@ -241,7 +241,7 @@ def deleteDoc(session : requests.session, docId):
         "Referer"           : f"{session.host}/files/my/"
     }
 
-    with session.delete(
+    with session.client.delete(
         "/files/file/",
         headers = header,
         data = data,

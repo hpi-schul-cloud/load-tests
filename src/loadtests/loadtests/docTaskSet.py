@@ -46,7 +46,7 @@ class docTaskSet(TaskSet):
         Abbords, if the user is a pupil user. Otherwise, logs in the user and creates as well as edits a new document.
         Deletes the doument after finishing the task.
         '''
-        self.createdDocuments.append(newFilesDocxShared(self.session))
+        newFilesDocxShared(self)
         
 
     @tag('doc')
@@ -58,7 +58,7 @@ class docTaskSet(TaskSet):
         Abbords, if the user is a pupil user. Otherwise, logs in the user and creates as well as edits a new document.
         Deletes the doument after finishing the task.
         '''
-        self.createdDocuments.append(newFilesXlsxShared(self.session))
+        newFilesXlsxShared(self)
 
         
     @tag('doc')
@@ -70,4 +70,4 @@ class docTaskSet(TaskSet):
         Abbords, if the user is a pupil user. Otherwise, logs in the user and creates as well as edits a new document.
         Deletes the doument after finishing the task.
         '''
-        self.createdDocuments.append(newFilesPptxShared(self.session))
+        newFilesPptxShared(self)

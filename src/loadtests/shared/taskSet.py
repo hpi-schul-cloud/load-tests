@@ -49,7 +49,7 @@ class TaskSetSchulCloud(TaskSet):
 
     def __init__(self, parent, creator_is_locust=True):
         super(TaskSetSchulCloud, self).__init__(parent)
-        self.interface: Interface = interface
+        self.interface: Interface = self.interface
 
     @property
     def base_url(self):
