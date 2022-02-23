@@ -191,4 +191,3 @@ class TaskSetSchulCloud(TaskSet):
         ) as response:
             if response.status_code != constant.Constant.returncodeNormal:
                 response.failure(requestFailureMessage(self, response))
-
