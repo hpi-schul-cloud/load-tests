@@ -64,12 +64,12 @@ def bBBSharedTest(session):
         time.sleep(int(Constant.timeToWaitShort))
 
         # Clicks on the Plussign
-        ui_element = "tippy-69"
+        ui_element = "tippy-19"
         element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.ID, ui_element)))
         element.click()
 
         # Clicks on the "Share external Video" button
-        ui_element = "li[aria-labelledby='dropdown-item-label-74']"
+        ui_element = "li[data-test='external-video']"
         element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
         element.click()
 
