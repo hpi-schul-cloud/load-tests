@@ -51,7 +51,7 @@ def normalGET(self, url):
         if response.status_code != Constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
         else:
-            fetch_static_assets(self, response)
+            fetch_static_assets(self, response)  # TODO: really necessary? slows down functional tests A LOT
 
 def requestHeaderBuilder(self, referer_url):
     '''
