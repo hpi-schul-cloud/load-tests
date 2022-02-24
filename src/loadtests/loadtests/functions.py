@@ -257,7 +257,6 @@ def newTeam(self):
         "_method"       : "post",
         "name"          : "Loadtest Team",
         "description"   : "Loadtest Team",
-        "messenger"     : "true",
         "rocketChat"    : "true",
         "color"         : "#d32f2f",
         "_csrf"         : self.csrf_token
