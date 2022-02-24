@@ -8,7 +8,8 @@ from selenium.webdriver.support import expected_conditions as EC # available sin
 from selenium.webdriver.common.by import By
 
 from loadtests.shared.constant import Constant
-from loadtests.loadtests.functions import createDoc, deleteDoc
+from loadtests.loadtests.functions import requestHeaderBuilder
+
 
 def newFilesDocxShared(session : requests.session):
         '''
@@ -31,6 +32,7 @@ def newFilesDocxShared(session : requests.session):
             # Creates .docx document
             docId = createDoc(session, data) # ID of the new document
             session.createdDocuments.append(docId)
+            print(docId)
 
             host = session.user.host + "/files" # url to where the file will be saved
 
@@ -211,6 +213,9 @@ def createDoc(session : requests.session, docdata):
         self: Taskset
         docdata: Configuration for the new Document
     '''
+    header = requestHeaderBuilder(self, "/files/my/")
+    header["Content-Type"] = "application/x-www-form-urlencoded" # Adding entry "Content-Type" (data format for request body)
+
     with session.client.post("/files/my", 
         data = docdata,
         #ContentTypeHeader = "application/x-www-form-urlencoded" # Adding entry "Content-Type" (data format for request body),
