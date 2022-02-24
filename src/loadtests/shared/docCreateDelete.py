@@ -11,7 +11,7 @@ from loadtests.shared.constant import Constant
 from loadtests.loadtests.functions import requestHeaderBuilder
 
 
-def newFilesDocxShared(session : requests.session):
+def newFilesDocxShared(session):
         '''
         Task for creating and editing .docx documents on the SchulCloud.
 
@@ -75,7 +75,7 @@ def newFilesDocxShared(session : requests.session):
             deleteDoc(session, docId)
             return docId
             
-def newFilesXlsxShared(session : requests.session):
+def newFilesXlsxShared(session):
         '''
         Task for creating and editing .xlsx documents on the SchulCloud.
 
@@ -140,7 +140,7 @@ def newFilesXlsxShared(session : requests.session):
             deleteDoc(session, docId)
             return docId
 
-def newFilesPptxShared(session : requests.session):
+def newFilesPptxShared(session):
         '''
         Task for creating and editing .pptx documents on the SchulCloud.
 
@@ -205,7 +205,7 @@ def newFilesPptxShared(session : requests.session):
             deleteDoc(session, docId)
             return docId
 
-def createDoc(session : requests.session, docdata):
+def createDoc(session, docdata):
     '''
     Creates a document on the SchulCloud website.
 
@@ -213,7 +213,7 @@ def createDoc(session : requests.session, docdata):
         self: Taskset
         docdata: Configuration for the new Document
     '''
-    header = requestHeaderBuilder(self, "/files/my/")
+    header = requestHeaderBuilder(session, "/files/my/")
     header["Content-Type"] = "application/x-www-form-urlencoded" # Adding entry "Content-Type" (data format for request body)
 
     with session.client.post("/files/my", 
@@ -226,7 +226,7 @@ def createDoc(session : requests.session, docdata):
             session.createdDocuments.append(response.text) # Adding the new document to createdDocumets-list for final clean-up
             return response.text
 
-def deleteDoc(session : requests.session, docId):
+def deleteDoc(session, docId):
     '''
     Deletes a document on the SchulCloud website.
 
