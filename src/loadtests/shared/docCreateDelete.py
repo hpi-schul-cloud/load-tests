@@ -8,7 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC # available sin
 from selenium.webdriver.common.by import By
 
 from loadtests.shared.constant import Constant
-from loadtests.loadtests.functions import requestHeaderBuilder
+from loadtests.loadtests.functions import createDoc, deleteDoc
 
 
 def newFilesDocxShared(session):
@@ -204,55 +204,3 @@ def newFilesPptxShared(session):
             driverWB.quit()
             deleteDoc(session, docId)
             return docId
-
-def createDoc(session, docdata):
-    '''
-    Creates a document on the SchulCloud website.
-
-    Param:
-        self: Taskset
-        docdata: Configuration for the new Document
-    '''
-    header = requestHeaderBuilder(session, "/files/my/")
-    header["Content-Type"] = "application/x-www-form-urlencoded" # Adding entry "Content-Type" (data format for request body)
-
-    with session.client.post("/files/my", 
-        data = docdata,
-        #ContentTypeHeader = "application/x-www-form-urlencoded" # Adding entry "Content-Type" (data format for request body),
-    ) as response:
-        if response.status_code != Constant.returncodeNormal:
-            print(response.failure())#requestFailureMessage(self, response))
-        else:
-            session.createdDocuments.append(response.text) # Adding the new document to createdDocumets-list for final clean-up
-            return response.text
-
-def deleteDoc(session, docId):
-    '''
-    Deletes a document on the SchulCloud website.
-
-    Param:
-        self: Taskset
-        docId: Document ID
-    '''
-    data = {"id" : docId}
-    header = {
-        "Connection"        : "keep-alive", # 'keep-alive' allows the connection to remain open for further requests/response
-        "x-requested-with"  : "XMLHttpRequest", # Used for identifying Ajax requests
-        "csrf-token"        : session.cookies['csrftoken'], # Security token
-        "Origin"            : session.host,
-        "Sec-Fetch-Site"    : "same-origin", # Indicates the origin of the request
-        "Sec-Fetch-Mode"    : "cors", # Indicates the mode of the request
-        "Sec-Fetch-Dest"    : "empty", # Indicates the request's destination
-        "Referer"           : f"{session.host}/files/my/"
-    }
-
-    with session.client.delete(
-        "/files/file/",
-        headers = header,
-        data = data,
-        catch_response = True,
-        allow_redirects = True,
-        name="/files/file/delete"
-    ) as response:
-        if response.status_code != Constant.returncodeNormal:
-            print(response.failure())
