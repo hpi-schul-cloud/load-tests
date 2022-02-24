@@ -276,8 +276,9 @@ class scTaskSet(TaskSet):
            pass
         else:
             courseId = createCourse(self, courseDataBuilder(self))
-            lernStore(self, courseId)
-            deleteCourse(self, courseId)
+            if courseId:
+                lernStore(self, courseId)
+                deleteCourse(self, courseId)
 
     @tag('test')
     @tag('sc')
@@ -295,8 +296,9 @@ class scTaskSet(TaskSet):
            pass
         else:
             courseId = createCourse(self, courseDataBuilder(self))
-            courseAddEtherPadAndTool(self, courseId)
-            deleteCourse(self, courseId)
+            if courseId:
+                courseAddEtherPadAndTool(self, courseId)
+                deleteCourse(self, courseId)
 
     @tag('sc')
     @task
@@ -312,7 +314,8 @@ class scTaskSet(TaskSet):
           pass
         else:
             teamId = newTeam(self)
-            deleteTeam(self, teamId)
+            if teamId:
+                deleteTeam(self, teamId)
 
     def message(self):
         '''

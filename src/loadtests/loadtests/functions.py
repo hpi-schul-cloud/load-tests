@@ -28,7 +28,7 @@ def createDoc(self, docdata):
         headers = header,
         data = docdata,
         catch_response = True,
-        allow_redirects = True
+        allow_redirects = False
     ) as response:
         if response.status_code != constant.Constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
@@ -52,7 +52,7 @@ def deleteDoc(self, docId):
         headers = requestHeaderBuilder(self, "/files/my/"),
         data = data,
         catch_response = True,
-        allow_redirects = True,
+        allow_redirects = False,
         name="/files/file/delete"
     ) as response:
         if response.status_code != constant.Constant.returncodeNormal:
@@ -67,7 +67,7 @@ def createCourse(self, data):
         data: Configuration of the course
     '''
 
-    with self.client.request("POST", "/courses/", data=data, catch_response=True, allow_redirects=True) as response:
+    with self.client.request("POST", "/courses/", data=data, catch_response=True, allow_redirects=False) as response:
         soup = BeautifulSoup(response.text, "html.parser")
         if response.status_code != constant.Constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
@@ -95,7 +95,7 @@ def deleteCourse(self, courseId):
         "/courses/" + courseId + "/" ,
         headers = header,
         catch_response=True,
-        allow_redirects=True,
+        allow_redirects=False,
         name="/courses/delete"
     ) as response:
         if response.status_code != constant.Constant.returncodeNormal:
@@ -120,7 +120,7 @@ def lernStore(self, courseId):
             name="/courses/topics",
             data=thema_data,
             catch_response=True,
-            allow_redirects=True
+            allow_redirects=False
         ) as response:
             if response.status_code != constant.Constant.returncodeNormal:
                 response.failure(requestFailureMessage(self, response))
@@ -131,7 +131,7 @@ def lernStore(self, courseId):
                 name="/lessons?courseId=",
                 data="courseId=" + courseId,
                 catch_response=True,
-                allow_redirects=True,
+                allow_redirects=False,
                 headers = {
                     "authority"         : "staging.niedersachsen.hpi-schul-cloud.org",
                     "accept"            : "application/json, text/plain, */*",
@@ -163,7 +163,7 @@ def lernStore(self, courseId):
                         data=json.dumps(data),
                         name="/lessons/material",
                         catch_response=True,
-                        allow_redirects=True,
+                        allow_redirects=False,
                         headers = {
                             "authority"         : "staging.niedersachsen.hpi-schul-cloud.org",
                             "path"  	        : "/lessons/" + courseId_Lernstore + "/material",
@@ -206,7 +206,7 @@ def courseAddEtherPadAndTool(self, courseId):
             name="/courses/topics",
             data=thema_data,
             catch_response=True,
-            allow_redirects=True
+            allow_redirects=False
         ) as response:
             if response.status_code != constant.Constant.returncodeNormal:
                 response.failure(requestFailureMessage(self, response))
@@ -231,12 +231,12 @@ def courseAddEtherPadAndTool(self, courseId):
                 '&key=&logo_url=https://acc.bettermarks.com/app/assets/bm-logo.png&isLocal=true&resource_link_id=&lti_version=&lti_message_type=&isTemplate=false&skipConsent=false&createdAt=2021-01-14T13:35:44.689Z&updatedAt=2021-01-14T13:35:44.689Z&__v=0&originTool=600048b0755565002840fde4&courseId=' 
                 + str(courseId)).encode('utf-8'),
             catch_response=True,
-            allow_redirects=True
+            allow_redirects=False
         ) as response:
             with self.client.request("GET",
                 str(constant.Constant.urlBetterMarks),
                 catch_response=True,
-                allow_redirects=True
+                allow_redirects=False
             ) as response:
                 if response.status_code != constant.Constant.returncodeNormal:
                     response.failure(requestFailureMessage(self, response))
@@ -274,7 +274,7 @@ def newTeam(self):
         },
         data = data,
         catch_response=True,
-        allow_redirects=True
+        allow_redirects=False
     ) as response:
         if response.status_code != constant.Constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
@@ -304,7 +304,7 @@ def deleteTeam(self, teamId):
         headers = header,
         name="/teams/delete",
         catch_response=True,
-        allow_redirects=True
+        allow_redirects=False
     ) as response:
         if response.status_code != constant.Constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
@@ -361,7 +361,7 @@ def findTeamChatId(self, teamId):
         url,
         headers = requestsBuilder.requestHeaderBuilder(self, self.user.host),
         catch_response = True,
-        allow_redirects = True
+        allow_redirects = False
     ) as response:
         if response.status_code == constant.Constant.returncodeNormal:
             soup = BeautifulSoup(response.text, 'html.parser')
@@ -403,7 +403,7 @@ def matrixMessenger(self):
                     self.user_id = i["userId"]
 
     room_ids = None
-    with self.client.get("/courses/" , catch_response=True, allow_redirects=True) as response:
+    with self.client.get("/courses/" , catch_response=True, allow_redirects=False) as response:
         if(response.status_code == constant.Constant.returncodeNormal):
             soup = BeautifulSoup(response.text, "html.parser")
             for room_id in soup.find_all('article'):

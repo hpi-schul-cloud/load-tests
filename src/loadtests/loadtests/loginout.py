@@ -17,9 +17,6 @@ def login(taskset):
     Gets bearer token after login from the response header and extracts specific informations for further progress.
     '''
 
-    if taskset.user.login_credentials == None:
-        taskset.interrupt(reschedule=False)
-
     with taskset.client.get("/login/", catch_response=True) as login_get_response:
         soup = BeautifulSoup(login_get_response.text, "html.parser")
         taskset.csrf_token = soup.select_one('meta[name="csrfToken"]')['content']
@@ -60,7 +57,7 @@ def cleanUpLoadtest(taskset):
     Skips if no document-, course- our team- ID found.
     '''
 
-    if taskset._user.user_type == "teacher":
+    if taskset._user.user_type in ("teacher", "admin"):
 
         for documentId in taskset.createdDocuments :
             url = f"{taskset.user.host}/files/my/"

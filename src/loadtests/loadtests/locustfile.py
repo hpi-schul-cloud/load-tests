@@ -62,7 +62,7 @@ class AnonymousUser(HttpUser):
     weight = Constant.anonymousWeight # specifys how often the loadtest should simulate this user-type.
     tasks = {bbbTaskSet:0, scTaskSet:0, docTaskSet:0, reqWithoutUserTaskSet:1, statusServiceTaskSet:1, rocketChatTaskSet:0} # collection of taks-sets which can be applied to the user
     user_type = "anonymous" # specifys the type of the user
-    login_credentials = None # gives the user log-in credentials for further actions
+    login_credentials = Constant.loginCredentialsAnonymous # gives the user log-in credentials for further actions
     wait_time = lambda self: random.randint(Constant.timeToWaitShort, Constant.timeToWaitLong)
 
     def __init__(self, *args, **kwargs):
