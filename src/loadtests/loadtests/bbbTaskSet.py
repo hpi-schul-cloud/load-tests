@@ -26,4 +26,4 @@ class bbbTaskSet(TaskSet):
         moderator will share a video. The number of joining users is contained in the 'numberUsers' variable. After finishing the taks, all tabs
         and BBB rooms will be closed.
         '''
-        bBBSharedTest(self.session)
+        bBBSharedTest(self)
