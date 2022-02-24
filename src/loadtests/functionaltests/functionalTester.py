@@ -49,6 +49,8 @@ class FunctionalTester:
                 taskset.on_start()
                 for task in taskset.tasks:
                     self.task_name = task.__name__
+                    #if not self.task_name == 'createDeleteTeam':
+                    #    continue
                     print(self.task_name)
                     task(taskset)
                 self.task_name = 'taskset.on_stop'

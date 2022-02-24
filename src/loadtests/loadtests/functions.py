@@ -1,5 +1,6 @@
 import json
 import time
+import re
 
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
 from selenium.webdriver.common.by import By
@@ -276,12 +277,10 @@ def newTeam(self):
         catch_response=True,
         allow_redirects=False
     ) as response:
-        if response.status_code != constant.Constant.returncodeNormal:
+        if response.status_code != constant.Constant.returncodeRedirect:
             response.failure(requestFailureMessage(self, response))
         else:
-            soup = BeautifulSoup(response.text, "html.parser")
-            teamIdString = soup.find_all("section", {"class": "section-teams"})
-            teamId = str(teamIdString).partition('\n')[0][41:65]
+            teamId = re.search(r'/teams/([a-f0-9]*)', response.text).group(1)
             self.createdTeams.append(teamId)
 
     return teamId
@@ -306,6 +305,7 @@ def deleteTeam(self, teamId):
         catch_response=True,
         allow_redirects=False
     ) as response:
+        # currently causes an internal server error while the real client works just fine
         if response.status_code != constant.Constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
 

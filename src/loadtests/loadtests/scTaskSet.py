@@ -297,7 +297,7 @@ class scTaskSet(TaskSet):
         else:
             courseId = createCourse(self, courseDataBuilder(self))
             if courseId:
-                courseAddEtherPadAndTool(self, courseId)
+                #courseAddEtherPadAndTool(self, courseId)
                 deleteCourse(self, courseId)
 
     @tag('sc')
