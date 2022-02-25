@@ -1,5 +1,4 @@
 import time
-import requests
 
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
@@ -10,7 +9,8 @@ from selenium.webdriver.common.by import By
 from loadtests.shared.constant import Constant
 from loadtests.loadtests.functions import createDoc, deleteDoc
 
-def newFilesDocxShared(session : requests.session):
+
+def newFilesDocxShared(session):
         '''
         Task for creating and editing .docx documents on the SchulCloud.
 
@@ -31,6 +31,7 @@ def newFilesDocxShared(session : requests.session):
             # Creates .docx document
             docId = createDoc(session, data) # ID of the new document
             session.createdDocuments.append(docId)
+            print(docId)
 
             host = f"{session.user.host}/files" # url to where the file will be saved
 
@@ -73,7 +74,7 @@ def newFilesDocxShared(session : requests.session):
             deleteDoc(session, docId)
             return docId
             
-def newFilesXlsxShared(session : requests.session):
+def newFilesXlsxShared(session):
         '''
         Task for creating and editing .xlsx documents on the SchulCloud.
 
@@ -138,7 +139,7 @@ def newFilesXlsxShared(session : requests.session):
             deleteDoc(session, docId)
             return docId
 
-def newFilesPptxShared(session : requests.session):
+def newFilesPptxShared(session):
         '''
         Task for creating and editing .pptx documents on the SchulCloud.
 
@@ -202,52 +203,3 @@ def newFilesPptxShared(session : requests.session):
             driverWB.quit()
             deleteDoc(session, docId)
             return docId
-
-def createDoc(session : requests.session, docdata):
-    '''
-    Creates a document on the SchulCloud website.
-
-    Param:
-        self: Taskset
-        docdata: Configuration for the new Document
-    '''
-    with session.client.post("/files/my", 
-        data = docdata,
-        #ContentTypeHeader = "application/x-www-form-urlencoded" # Adding entry "Content-Type" (data format for request body),
-    ) as response:
-        if response.status_code != Constant.returncodeNormal:
-            print(response.failure())#requestFailureMessage(self, response))
-        else:
-            session.createdDocuments.append(response.text) # Adding the new document to createdDocumets-list for final clean-up
-            return response.text
-
-def deleteDoc(session : requests.session, docId):
-    '''
-    Deletes a document on the SchulCloud website.
-
-    Param:
-        self: Taskset
-        docId: Document ID
-    '''
-    data = {"id" : docId}
-    header = {
-        "Connection"        : "keep-alive", # 'keep-alive' allows the connection to remain open for further requests/response
-        "x-requested-with"  : "XMLHttpRequest", # Used for identifying Ajax requests
-        "csrf-token"        : session.cookies['csrftoken'], # Security token
-        "Origin"            : session.host,
-        "Sec-Fetch-Site"    : "same-origin", # Indicates the origin of the request
-        "Sec-Fetch-Mode"    : "cors", # Indicates the mode of the request
-        "Sec-Fetch-Dest"    : "empty", # Indicates the request's destination
-        "Referer"           : f"{session.host}/files/my/"
-    }
-
-    with session.client.delete(
-        "/files/file/",
-        headers = header,
-        data = data,
-        catch_response = True,
-        allow_redirects = True,
-        name="/files/file/delete"
-    ) as response:
-        if response.status_code != Constant.returncodeNormal:
-            print(response.failure())

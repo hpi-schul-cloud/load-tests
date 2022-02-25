@@ -24,7 +24,7 @@ class Constant:
     bBBKey = getEnvironmentVariable("BBBKEY")
     bBBHost = getEnvironmentVariable("BBBHOST")
 
-    browserIpPort= getEnvironmentVariable("BROWSERIPPORT", default="chromedriver-svc:4444") #URL and Port for the chromedriver Pod
+    browserIpPort = getEnvironmentVariable("BROWSERIPPORT", default="chromedriver-svc:4444") #URL and Port for the chromedriver Pod
 
     #urlBetterMarks = getEnvironmentVariable("URLBETTERMARKS") # required for downloading bettermarks-tools
 
@@ -32,5 +32,6 @@ class Constant:
     loginCredentialsAdmin = {'email': getEnvironmentVariable("ADMIN_EMAIL"), 'password': getEnvironmentVariable("ADMIN_PASSWORD")}
     loginCredentialsTeacher = {'email': getEnvironmentVariable("TEACHER_EMAIL"), 'password': getEnvironmentVariable("TEACHER_PASSWORD")}
     loginCredentialsPupil = {'email': getEnvironmentVariable("PUPIL_EMAIL"), 'password': getEnvironmentVariable("PUPIL_PASSWORD")}
+    loginCredentialsAnonymous = {'email': getEnvironmentVariable("ANONYMOUS_EMAIL"), 'password': getEnvironmentVariable("ANONYMOUS_PASSWORD")}
 
     checkForMissingEnvironmentVariables()

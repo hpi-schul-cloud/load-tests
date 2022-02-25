@@ -1,5 +1,6 @@
 import json
 import time
+import re
 
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
 from selenium.webdriver.common.by import By
@@ -28,7 +29,7 @@ def createDoc(self, docdata):
         headers = header,
         data = docdata,
         catch_response = True,
-        allow_redirects = True
+        allow_redirects = False
     ) as response:
         if response.status_code != constant.Constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
@@ -52,7 +53,7 @@ def deleteDoc(self, docId):
         headers = requestHeaderBuilder(self, "/files/my/"),
         data = data,
         catch_response = True,
-        allow_redirects = True,
+        allow_redirects = False,
         name="/files/file/delete"
     ) as response:
         if response.status_code != constant.Constant.returncodeNormal:
@@ -67,7 +68,7 @@ def createCourse(self, data):
         data: Configuration of the course
     '''
 
-    with self.client.request("POST", "/courses/", data=data, catch_response=True, allow_redirects=True) as response:
+    with self.client.request("POST", "/courses/", data=data, catch_response=True, allow_redirects=False) as response:
         soup = BeautifulSoup(response.text, "html.parser")
         if response.status_code != constant.Constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
@@ -92,10 +93,10 @@ def deleteCourse(self, courseId):
     header["accept-language"] = "en-US,en;q=0.9" # Adding accepted language
 
     with self.client.request("DELETE",
-        "/courses/" + courseId + "/" ,
+        f"/courses/{courseId}/" ,
         headers = header,
         catch_response=True,
-        allow_redirects=True,
+        allow_redirects=False,
         name="/courses/delete"
     ) as response:
         if response.status_code != constant.Constant.returncodeNormal:
@@ -116,26 +117,26 @@ def lernStore(self, courseId):
 
         # Adding a theme to the course to be able to add material from the Lernstore
         with self.client.request("POST",
-            "/courses/" + courseId + "/topics",
+            f"/courses/{courseId}/topics",
             name="/courses/topics",
             data=thema_data,
             catch_response=True,
-            allow_redirects=True
+            allow_redirects=False
         ) as response:
             if response.status_code != constant.Constant.returncodeNormal:
                 response.failure(requestFailureMessage(self, response))
 
             # Request to the Lernstore to get the internal id of the course
             with self.client.request("GET",
-                self.user.host + "/api/v1/lessons?courseId=" + courseId,
+                f"{self.user.host}/api/v1/lessons?courseId={courseId}",
                 name="/lessons?courseId=",
                 data="courseId=" + courseId,
                 catch_response=True,
-                allow_redirects=True,
+                allow_redirects=False,
                 headers = {
                     "authority"         : "staging.niedersachsen.hpi-schul-cloud.org",
                     "accept"            : "application/json, text/plain, */*",
-                    "authorization"     : "Bearer " + self.bearer_token,
+                    "authorization"     : f"Bearer {self.bearer_token}",
                     "origin"            : self.user.host,
                     "sec-fetch-site"    : "same-site",
                     "sec-fetch-mode"    : "cors",
@@ -159,19 +160,19 @@ def lernStore(self, courseId):
 
                     # Adding a material from the Lernstore to the course
                     with self.client.request("POST",
-                        self.user.host + "/api/v1/lessons/" + courseId_Lernstore + "/material",
+                        f"{self.user.host}/api/v1/lessons/{courseId_Lernstore}/material",
                         data=json.dumps(data),
                         name="/lessons/material",
                         catch_response=True,
-                        allow_redirects=True,
+                        allow_redirects=False,
                         headers = {
                             "authority"         : "staging.niedersachsen.hpi-schul-cloud.org",
-                            "path"  	        : "/lessons/" + courseId_Lernstore + "/material",
+                            "path"  	        : f"/lessons/{courseId_Lernstore}/material",
                             "scheme"            : "https",
                             "accept"            : "application/json, text/plain, */*",
                             "accept-encoding"   : "gzip, deflate, br",
                             "accept-language"   : "en-US,en;q=0.9",
-                            "authorization"     : "Bearer " + self.bearer_token,
+                            "authorization"     : f"Bearer {self.bearer_token}",
                             "content-type"      : "application/json;charset=UTF-8",
                             "origin"            : self.user.host,
                             "sec-ch-ua"         : '" Not;A Brand";v="99", "Google Chrome";v="91", "Chromium";v="91"',
@@ -199,21 +200,21 @@ def courseAddEtherPadAndTool(self, courseId):
         thema_data = themaDataBuilder(self, courseId, "Etherpad")
         thema_data["contents[0][content][title]"] = ""
         thema_data["contents[0][content][description]"] = ""
-        thema_data["contents[0][content][url]"] = self.user.host + "/etherpad/pi68ca"
+        thema_data["contents[0][content][url]"] = f"{self.user.host}/etherpad/pi68ca"
 
         with self.client.request("POST",
-            "/courses/" + courseId + "/topics",
+            f"/courses/{courseId}/topics",
             name="/courses/topics",
             data=thema_data,
             catch_response=True,
-            allow_redirects=True
+            allow_redirects=False
         ) as response:
             if response.status_code != constant.Constant.returncodeNormal:
                 response.failure(requestFailureMessage(self, response))
 
         # Add Tool
         with self.client.request("POST",
-            "/courses/" + str(courseId) + "/tools/add",
+            f"/courses/{str(courseId)}/tools/add",
             name="/courses/tools/add",
             headers = {
                 "accept"            : "*/*",
@@ -231,12 +232,12 @@ def courseAddEtherPadAndTool(self, courseId):
                 '&key=&logo_url=https://acc.bettermarks.com/app/assets/bm-logo.png&isLocal=true&resource_link_id=&lti_version=&lti_message_type=&isTemplate=false&skipConsent=false&createdAt=2021-01-14T13:35:44.689Z&updatedAt=2021-01-14T13:35:44.689Z&__v=0&originTool=600048b0755565002840fde4&courseId=' 
                 + str(courseId)).encode('utf-8'),
             catch_response=True,
-            allow_redirects=True
+            allow_redirects=False
         ) as response:
             with self.client.request("GET",
                 str(constant.Constant.urlBetterMarks),
                 catch_response=True,
-                allow_redirects=True
+                allow_redirects=False
             ) as response:
                 if response.status_code != constant.Constant.returncodeNormal:
                     response.failure(requestFailureMessage(self, response))
@@ -256,7 +257,6 @@ def newTeam(self):
         "_method"       : "post",
         "name"          : "Loadtest Team",
         "description"   : "Loadtest Team",
-        "messenger"     : "true",
         "rocketChat"    : "true",
         "color"         : "#d32f2f",
         "_csrf"         : self.csrf_token
@@ -270,18 +270,16 @@ def newTeam(self):
             "authority" : self.user.host.replace("https://", ""),
             "path"      : "/teams/",
             "origin"    : self.user.host,
-            "referer"   : self.user.host + "/teams/add"
+            "referer"   : f"{self.user.host}/teams/add"
         },
         data = data,
         catch_response=True,
-        allow_redirects=True
+        allow_redirects=False
     ) as response:
-        if response.status_code != constant.Constant.returncodeNormal:
+        if response.status_code != constant.Constant.returncodeRedirect:
             response.failure(requestFailureMessage(self, response))
         else:
-            soup = BeautifulSoup(response.text, "html.parser")
-            teamIdString = soup.find_all("section", {"class": "section-teams"})
-            teamId = str(teamIdString).partition('\n')[0][41:65]
+            teamId = re.search(r'/teams/([a-f0-9]*)', response.text).group(1)
             self.createdTeams.append(teamId)
 
     return teamId
@@ -295,17 +293,18 @@ def deleteTeam(self, teamId):
         teamId: Id of the team
     '''
 
-    header = requestHeaderBuilder(self, (str(self.user.host) + "/teams/" + teamId + "/edit"))
+    header = requestHeaderBuilder(self, f"{str(self.user.host)}/teams/{teamId}/edit")
     header["accept"] = "*/*"
     header["accept-language"] = "en-US,en;q=0.9"
 
     with self.client.request("DELETE",
-        "/teams/" + teamId + "/" ,
+        f"/teams/{teamId}/" ,
         headers = header,
         name="/teams/delete",
         catch_response=True,
-        allow_redirects=True
+        allow_redirects=False
     ) as response:
+        # currently causes an internal server error while the real client works just fine
         if response.status_code != constant.Constant.returncodeNormal:
             response.failure(requestFailureMessage(self, response))
 
@@ -361,7 +360,7 @@ def findTeamChatId(self, teamId):
         url,
         headers = requestsBuilder.requestHeaderBuilder(self, self.user.host),
         catch_response = True,
-        allow_redirects = True
+        allow_redirects = False
     ) as response:
         if response.status_code == constant.Constant.returncodeNormal:
             soup = BeautifulSoup(response.text, 'html.parser')
@@ -403,7 +402,7 @@ def matrixMessenger(self):
                     self.user_id = i["userId"]
 
     room_ids = None
-    with self.client.get("/courses/" , catch_response=True, allow_redirects=True) as response:
+    with self.client.get("/courses/" , catch_response=True, allow_redirects=False) as response:
         if(response.status_code == constant.Constant.returncodeNormal):
             soup = BeautifulSoup(response.text, "html.parser")
             for room_id in soup.find_all('article'):
@@ -416,8 +415,8 @@ def matrixMessenger(self):
         "timeout": 30000
     }
 
-    name = mainHost + "/r0/sync"
-    response = self.client.get(mainHost + "/r0/sync", params=payload)#, name=name)
+    name = f"{mainHost}/r0/sync"
+    response = self.client.get(f"{mainHost}/r0/sync", params=payload)#, name=name)
     if response.status_code != constant.Constant.returncodeNormal:
         return
 
@@ -438,17 +437,17 @@ def matrixMessenger(self):
         }
 
         self.client.put(
-            mainHost + "/r0/rooms/" + room_id + "/typing/" + self.user_id,
+            f"{mainHost}/r0/rooms/{room_id}/typing/{self.user_id}",
             json={"typing": True, "timeout":30000},
         )
 
         self.client.put(
-            mainHost + "/r0/rooms/" + room_id + "/typing/" + self.user_id,
+            f"{mainHost}/r0/rooms/{room_id}/typing/{self.user_id}",
             json={"typing": False},
         )
 
         with self.client.post(
-            mainHost + "/r0/rooms/" + room_id + "/send/m.room.message",
+            f"{mainHost}/r0/rooms/{room_id}/send/m.room.message",
             json=message,
         ) as response:
             if response.status_code == constant.Constant.returncodeNormal:
@@ -468,16 +467,16 @@ def matrixMessenger(self):
                     "body"          : " * Load Test !"
                 }
                 self.client.post(
-                    mainHost + "/r0/rooms/" + room_id + "/send/m.room.message",
+                    f"{mainHost}/r0/rooms/{room_id}/send/m.room.message",
                     json=data,
                 )
 
-    self.client.get(mainHost + "/versions")
+    self.client.get(f"{mainHost}/versions")
 
-    self.client.get(mainHost + "/r0/voip/turnServer")
+    self.client.get(f"{mainHost}/r0/voip/turnServer")
 
-    self.client.get(mainHost + "/r0/pushrules/")
+    self.client.get(f"{mainHost}/r0/pushrules/")
 
-    self.client.get(mainHost + "/r0/joined_groups")
+    self.client.get(f"{mainHost}/r0/joined_groups")
 
-    self.client.get(mainHost + "/r0/profile/" + self.user_id)
+    self.client.get(f"{mainHost}/r0/profile/{self.user_id}")

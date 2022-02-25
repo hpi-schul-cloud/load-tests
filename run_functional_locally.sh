@@ -9,4 +9,4 @@ export PUPIL_WEIGHT=1
 export ANONYMOUS_WEIGHT=1
 
 pip install -r requirements.txt -q
-PYTHONPATH=src python test.py
+PYTHONPATH=src python src/loadtests/functionaltests/test.py
