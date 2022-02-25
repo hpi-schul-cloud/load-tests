@@ -32,7 +32,7 @@ def newFilesDocxShared(session : requests.session):
             docId = createDoc(session, data) # ID of the new document
             session.createdDocuments.append(docId)
 
-            host = session.user.host + "/files" # url to where the file will be saved
+            host = f"{session.user.host}/files" # url to where the file will be saved
 
             driverWB = webdriver.Remote(f"http://{Constant.browserIpPort}/wd/hub", DesiredCapabilities.CHROME) # browser which will be used for calling the host and saving the documents
             driverWB.get(host)
@@ -95,7 +95,7 @@ def newFilesXlsxShared(session : requests.session):
             docId = createDoc(session, data) # ID of the new document
             session.createdDocuments.append(docId)
 
-            host = session.user.host + "/files" # url to where the file will be saved
+            host = f"{session.user.host}/files" # url to where the file will be saved
 
             driverWB = webdriver.Remote(f"http://{Constant.browserIpPort}/wd/hub", DesiredCapabilities.CHROME)
             #driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used for calling the host and saving the documents
@@ -114,7 +114,7 @@ def newFilesXlsxShared(session : requests.session):
             element = WebDriverWait(driverWB, 15).until(EC.presence_of_element_located((By.CSS_SELECTOR, ui_element)))
             element.click()
 
-            host = session.user.host + "/files/file/" + docId + "/lool"
+            host = f"{session.user.host}/files/file/{docId}/lool"
             driverWB.get(host)
 
             # Switch to editorframe
@@ -160,7 +160,7 @@ def newFilesPptxShared(session : requests.session):
             docId = createDoc(session, data) # ID of the new document
             session.createdDocuments.append(docId)
 
-            host = session.user.host + "/files" # url to where the file will be saved
+            host = f"{session.user.host}/files" # url to where the file will be saved
 
             driverWB = webdriver.Remote(f"http://{Constant.browserIpPort}/wd/hub", DesiredCapabilities.CHROME)
             #driverWB = webdriver.Chrome(executable_path=self.workpath + '/chromedriver') # browser which will be used for calling the host and saving the documents

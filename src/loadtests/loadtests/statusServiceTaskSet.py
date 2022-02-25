@@ -31,7 +31,7 @@ class statusServiceTaskSet(TaskSet):
             self (TaskSet): TaskSet
         '''
         url = f"{self.user.host}"
-        with self.client.get(url+"/api/v1/components", catch_response=True, allow_redirects=True) as response:
+        with self.client.get(f"{url}/api/v1/components", catch_response=True, allow_redirects=True) as response:
             if response.status_code != Constant.returncodeNormal:
                 response.failure(requestFailureMessage(self, response))
 
@@ -46,6 +46,6 @@ class statusServiceTaskSet(TaskSet):
             self (TaskSet): TaskSet
         '''
         url = f"{self.user.host}"
-        with self.client.get(url+"/api/v1/incidents", catch_response=True, allow_redirects=True) as response:
+        with self.client.get(f"{url}/api/v1/incidents", catch_response=True, allow_redirects=True) as response:
             if response.status_code != Constant.returncodeNormal:
                 response.failure(requestFailureMessage(self, response))

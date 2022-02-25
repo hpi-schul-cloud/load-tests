@@ -53,7 +53,7 @@ class rocketChatTaskSet(TaskSet):
 
             # Opens chrome browser
             url = f"{self.user.host}/teams/{teamId}/edit"
-            driverWB = webdriver.Remote("http://" + Constant.browserIpPort + "/wd/hub", DesiredCapabilities.CHROME) # browser which will be used
+            driverWB = webdriver.Remote(f"http://{Constant.browserIpPort}/wd/hub", DesiredCapabilities.CHROME) # browser which will be used
             driverWB.get(url)
 
             functions.loginLoadtestUserOnTeamToEdit(self, driverWB) # Login user
@@ -61,7 +61,7 @@ class rocketChatTaskSet(TaskSet):
 
             # Open team chat in new tab (RocketChat)
             url = f"https://chat.{self.user.host.replace('https://', '')}/group/{functions.findTeamChatId(self, teamId)}"
-            driverWB.find_element_by_tag_name('body').send_keys(Keys.COMMAND + 't') # Open new tab
+            driverWB.find_element_by_tag_name('body').send_keys(f"{Keys.COMMAND}t") # Open new tab
             time.sleep(1)
             driverWB.get(url)
             time.sleep(1)

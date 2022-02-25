@@ -58,7 +58,7 @@ class TaskSetSchulCloud(TaskSet):
     def login(self):
         if not self.login:
             self.interface.interrupt()
-        response = self.interface.requests_client.get(self.base_url + "/login/")
+        response = self.interface.requests_client.get(f"{self.base_url}/login/")
         soup = BeautifulSoup(response.text, 'html.parser')
         self.interface.csrf_token = soup.select_one('meta[name="csrfToken"]')['content']
 
@@ -77,7 +77,7 @@ class TaskSetSchulCloud(TaskSet):
             #Extracting BearerToken from Responses Header
             bearer_token = (response_header["set-cookie"]).split(";")[0].replace("jwt=", "")
             if len(bearer_token) > 12:
-                token = (bearer_token)[0:461] + "=="
+                token = f"{(bearer_token)[0:461]}=="
                 decoded_token = base64.b64decode(token)
                 decoded_token_json = json.loads(decoded_token.decode('utf-8')[30:])
                 self.interface.user_id = decoded_token_json["userId"]
@@ -156,13 +156,13 @@ class TaskSetSchulCloud(TaskSet):
         '''
         Delete a course
         '''
-        header = requestHeaderBuilder(self, "/courses/"+ courseId +"/edit")
+        header = requestHeaderBuilder(self, f"/courses/{courseId}/edit")
         header["accept"] = "*/*" # Adding "accept" entry
         header["accept-language"] = "en-US,en;q=0.9" # Adding accepted language
 
         with self.interface.requests_client.request(
             "DELETE",
-             "/courses/" + courseId + "/" ,
+            f"/courses/{courseId}/" ,
             headers = header,
             catch_response=True,
             allow_redirects=True,
@@ -177,13 +177,13 @@ class TaskSetSchulCloud(TaskSet):
         '''
         Deletes a Team
         '''
-        header = requestHeaderBuilder(self, (str(self.user.host) + "/teams/" + teamId + "/edit"))
+        header = requestHeaderBuilder(self, f"{str(self.user.host)}/teams/{teamId}/edit")
         header["accept"] = "*/*"
         header["accept-language"] = "en-US,en;q=0.9"
         
         with self.interface.requests_client.request(
             "DELETE",
-             "/teams/" + teamId + "/" ,
+            f"/teams/{teamId}/" ,
             headers = header,
             name="/teams/delete",
             catch_response=True,
