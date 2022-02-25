@@ -110,7 +110,7 @@ def themaDataBuilder(self, courseId, component):
     thema_data = {
         "authority"                         : self.user.host.replace("https://", ""),
         "origin"                            : self.user.host,
-        "referer"                           : self.user.host + "/courses/" + courseId + "/tools/add",
+        "referer"                           : f"{self.user.host}/courses/{courseId}/tools/add",
         "_method"                           : "post",
         "position"                          : "",
         "courseId"                          : courseId,
