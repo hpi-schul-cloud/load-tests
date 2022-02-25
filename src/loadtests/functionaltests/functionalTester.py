@@ -45,12 +45,6 @@ class FunctionalTester:
             user.on_start()
             for taskset_class in [locustfile.scTaskSet]:
                 taskset = taskset_class(user)
-<<<<<<< HEAD:test.py
-                taskset.on_start()  # TODO: login/logout in user.on_start() ?
-                # TODO: get all task from taskset and run them one by one
-                # e.g.: for task in taskset.task:
-                #           task()
-=======
                 print('\nTaskSet:', type(taskset).__name__)
                 self.task_name = 'taskset.on_start'
                 taskset.on_start()
@@ -61,7 +55,6 @@ class FunctionalTester:
                     print(self.task_name)
                     task(taskset)
                 self.task_name = 'taskset.on_stop'
->>>>>>> c8aec2b158cb22920cc5326ddd973765fc72d3ed:src/loadtests/functionaltests/functionalTester.py
                 taskset.on_stop()
             self.task_name = 'user.on_stop'
             user.on_stop()
