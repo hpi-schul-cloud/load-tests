@@ -1,72 +1,85 @@
-import logging
-import random
+
 from typing import List, Type
 
-from locust import HttpUser
-
-from loadtests.shared.constant import Constant
-from loadtests.loadtests.bbbTaskSet import bbbTaskSet
-from loadtests.loadtests.scTaskSet import scTaskSet
-from loadtests.loadtests.docTaskSet import docTaskSet
-from loadtests.loadtests.reqWithoutUserTaskSet import reqWithoutUserTaskSet
-from loadtests.loadtests.rocketChatTaskSet import rocketChatTaskSet
-from loadtests.loadtests.statusServiceTaskSet import statusServiceTaskSet
-
-class PupilUser(HttpUser):
-    '''
-    Representing a pupil user on the SchulCloud.
-    '''
-
-    weight = Constant.pupilWeight # specifys how often the loadtest should simulate this user-type.
-    tasks = {bbbTaskSet:1, scTaskSet:3, docTaskSet:1, reqWithoutUserTaskSet:1, rocketChatTaskSet:1} # collection of taks-sets which can be applied to the user
-    user_type = "pupil" # specifys the type of the user
-    login_credentials = Constant.loginCredentialsPupil # gives the user log-in credentials for further actions
-    wait_time = lambda self: random.randint(Constant.timeToWaitShort, Constant.timeToWaitLong)
-
-    def __init__(self, *args, **kwargs):
-        super(PupilUser, self).__init__(*args, **kwargs)
-
-class AdminUser(HttpUser):
-    '''
-    Representing a admin user on the SchulCloud.
-    '''
-
-    weight = Constant.adminWeight # specifys how often the loadtest should simulate this user-type
-    tasks = {bbbTaskSet:1, scTaskSet:3, docTaskSet:1, reqWithoutUserTaskSet:1, rocketChatTaskSet:1} # collection of taks-sets which can be applied to the user
-    user_type = "admin" # specifys the type of the user
-    login_credentials = Constant.loginCredentialsAdmin # gives the user log-in credentials for further actions
-    wait_time = lambda self: random.randint(Constant.timeToWaitShort, Constant.timeToWaitLong)
-
-    def __init__(self, *args, **kwargs):
-        super(AdminUser, self).__init__(*args, **kwargs)
-
-class TeacherUser(HttpUser):
-    '''
-    Representing a teacher user on the SchulCloud.
-    '''
-
-    weight = Constant.teacherWeight # specifys how often the loadtest should simulate this user-type.
-    tasks = {bbbTaskSet:1, scTaskSet:3, docTaskSet:1, reqWithoutUserTaskSet:1, rocketChatTaskSet:1} # collection of taks-sets which can be applied to the user
-    user_type = "teacher" # specifys the type of the user
-    login_credentials = Constant.loginCredentialsTeacher # gives the user log-in credentials for further actions
-    wait_time = lambda self: random.randint(Constant.timeToWaitShort, Constant.timeToWaitLong)
-
-    def __init__(self, *args, **kwargs):
-        super(TeacherUser, self).__init__(*args, **kwargs)
-
-class AnonymousUser(HttpUser):
-    '''
-    Representing a teacher user on the SchulCloud.
-    '''
-
-    weight = Constant.anonymousWeight # specifys how often the loadtest should simulate this user-type.
-    tasks = {bbbTaskSet:0, scTaskSet:0, docTaskSet:0, reqWithoutUserTaskSet:1, statusServiceTaskSet:1, rocketChatTaskSet:0} # collection of taks-sets which can be applied to the user
-    user_type = "anonymous" # specifys the type of the user
-    login_credentials = Constant.loginCredentialsAnonymous # gives the user log-in credentials for further actions
-    wait_time = lambda self: random.randint(Constant.timeToWaitShort, Constant.timeToWaitLong)
-
-    def __init__(self, *args, **kwargs):
-        super(AnonymousUser, self).__init__(*args, **kwargs)
+from loadtests.loadtests.config import Config
+from loadtests.loadtests.taskset_bbb import TasksetBBB
+from loadtests.loadtests.taskset_schul_cloud import TasksetSchulCloud
+from loadtests.loadtests.taskset_doc import TasksetDoc
+from loadtests.loadtests.taskset_anonymous import TasksetAnonymous
+from loadtests.loadtests.taskset_rocket_chat import TasksetRocketChat
+from loadtests.loadtests.taskset_status_service import TasksetStatusService
+from loadtests.loadtests.user import SchulcloudUser
+from loadtests.loadtests.user_type import UserType
 
 
-user_classes: List[Type[HttpUser]] = [AdminUser, TeacherUser, PupilUser, AnonymousUser]
+class PupilUser(SchulcloudUser):
+
+    type = UserType.PUPIL
+    credentials = Config.LOGIN_PUPIL
+    weight = Config.WEIGHT_PUPIL
+    tasks = {
+        TasksetBBB: 1,
+        TasksetSchulCloud: 3,
+        TasksetDoc: 1,
+        TasksetRocketChat: 1
+    }
+
+
+class AdminUser(SchulcloudUser):
+
+    type = UserType.ADMIN
+    credentials = Config.LOGIN_ADMIN
+    weight = Config.WEIGHT_ADMIN
+    tasks = {
+        TasksetBBB: 1,
+        TasksetSchulCloud: 3,
+        TasksetDoc: 1,
+        TasksetRocketChat: 1
+    }
+
+
+class TeacherUser(SchulcloudUser):
+
+    type = UserType.TEACHER
+    credentials = Config.LOGIN_TEACHER
+    weight = Config.WEIGHT_TEACHER
+    tasks = {
+        TasksetBBB: 1,
+        TasksetSchulCloud: 3,
+        TasksetDoc: 1,
+        TasksetRocketChat: 1
+    }
+
+
+class AnonymousUser(SchulcloudUser):
+
+    type = UserType.ANONYMOUS
+    credentials = Config.LOGIN_ANONYMOUS
+    weight = Config.WEIGHT_ANONYMOUS
+    tasks = {
+        TasksetBBB: 0,
+        TasksetSchulCloud: 0,
+        TasksetDoc: 0,
+        TasksetStatusService: 1,
+        TasksetRocketChat: 0
+    }
+
+
+class ActualAnonymousUser(SchulcloudUser):
+
+    type = UserType.ACTUAL_ANONYMOUS
+    weight = Config.WEIGHT_ACTUAL_ANONYMOUS
+    tasks = {
+        TasksetAnonymous: 1
+    }
+
+    # override login / logout
+    def on_start(self):
+        pass
+
+    def on_stop(self):
+        pass
+
+
+# list all user classes for functional tests
+user_classes: List[Type[SchulcloudUser]] = [AdminUser, TeacherUser, PupilUser, AnonymousUser, ActualAnonymousUser]
