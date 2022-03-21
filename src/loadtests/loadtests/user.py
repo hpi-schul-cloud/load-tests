@@ -28,7 +28,7 @@ class SchulcloudUser(HttpUser):
 
     @staticmethod
     def wait_time():
-        random.randint(Config.WAIT_TIME_SHORT, Config.WAIT_TIME_LONG)
+        return random.randint(Config.WAIT_TIME_SHORT, Config.WAIT_TIME_LONG)
 
     def login(self):
         """
