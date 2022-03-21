@@ -8,6 +8,7 @@ export ADMIN_WEIGHT=1
 export TEACHER_WEIGHT=1
 export PUPIL_WEIGHT=1
 export ANONYMOUS_WEIGHT=1
+export FUNCTIONAL_TEST=0
 
 HOST=https://agmonlog-1.hpi-schul-cloud.dev
 USER=4

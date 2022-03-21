@@ -41,6 +41,7 @@ class TestThread:
         self.logger = logging.getLogger(host.name)
 
     def run(self):
+        self.logger.info(f'Starting thread for {self.host.name}')
         self.thread = threading.Thread(target=self._run_functional_tester)
         self.thread.start()
 
@@ -48,6 +49,7 @@ class TestThread:
         if self.thread:
             self.thread.join()
             self.thread = None
+            self.logger.info(f'Thread has ended for {self.host.name}')
         else:
             self.logger.warning(f'Cannot join non-existing thread')
 
@@ -56,8 +58,8 @@ class TestThread:
             self.logger.warning(f'test failure: {task_name}, {info}')
             self.host.temp_failure_counter += 1
 
-        def exception_callback(task_name, info):
-            self.logger.warning(f'test exception: {task_name}, {info}')
+        def exception_callback(task_name, exc):
+            self.logger.warning(f'test exception: {task_name}, {type(exc).__name__}: {exc}')
             self.host.temp_exception_counter += 1
 
         tester = FunctionalTester(self.host.url, failure_callback, exception_callback, self.logger)

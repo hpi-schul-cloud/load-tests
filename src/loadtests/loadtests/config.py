@@ -32,6 +32,8 @@ class Config:
         WEIGHT_PUPIL = 1
         WEIGHT_ANONYMOUS = 1
         WEIGHT_ACTUAL_ANONYMOUS = 1
+        WAIT_TIME_SHORT = 1
+        WAIT_TIME_LONG = 1
     else:  # load test
         BBB_ROOM_COUNT = get_environment_var("BBBNUMBERROOMS", int)
         BBB_USER_COUNT = get_environment_var("BBBNUMBERUSERS", int)
@@ -40,9 +42,8 @@ class Config:
         WEIGHT_PUPIL = get_environment_var("PUPIL_WEIGHT", int)
         WEIGHT_ANONYMOUS = get_environment_var("ANONYMOUS_WEIGHT", int)
         WEIGHT_ACTUAL_ANONYMOUS = get_environment_var("ACTUAL_ANONYMOUS_WEIGHT", int, default=1)
-
-    WAIT_TIME_SHORT = get_environment_var("TIMESHORT", int)
-    WAIT_TIME_LONG = get_environment_var("TIMELONG", int)
+        WAIT_TIME_SHORT = get_environment_var("TIMESHORT", int)
+        WAIT_TIME_LONG = get_environment_var("TIMELONG", int)
 
     # URL and Port for the chromedriver Pod
     BROWSER_IP_PORT = get_environment_var("BROWSERIPPORT", default="chromedriver-svc:4444")

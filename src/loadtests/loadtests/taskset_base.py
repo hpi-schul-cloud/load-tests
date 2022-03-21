@@ -146,7 +146,7 @@ class TasksetBase(TaskSet):
                                        name="/teams/delete",
                                        catch_response=True,
                                        allow_redirects=False)
-        # currently causes an internal server error while the real client works just fine
+        # TODO: currently causes an internal server error while the real client works just fine
         if response.status_code != StatusCode.OK:
             response.failure(self.request_failure_message(response))
         else:
