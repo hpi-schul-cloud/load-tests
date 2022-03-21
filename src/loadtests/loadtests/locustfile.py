@@ -57,11 +57,7 @@ class AnonymousUser(SchulcloudUser):
     credentials = Config.LOGIN_ANONYMOUS
     weight = Config.WEIGHT_ANONYMOUS
     tasks = {
-        TasksetBBB: 0,
-        TasksetSchulCloud: 0,
-        TasksetDoc: 0,
         TasksetStatusService: 1,
-        TasksetRocketChat: 0
     }
 
 

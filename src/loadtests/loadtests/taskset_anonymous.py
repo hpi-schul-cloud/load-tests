@@ -8,7 +8,7 @@ class TasksetAnonymous(TaskSet):
         Taskset to make sure certain things work without logging in
     """
 
-    @tag('anonymous_version')
+    @tag('anonymous')
     @task
     def anonymous_version(self):
         """
