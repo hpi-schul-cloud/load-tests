@@ -14,10 +14,11 @@ setuptools.setup(
     package_dir={"": "src"},
     packages=setuptools.find_packages(where="src"),
     install_requires=[
-            'bs4==0.0.1',
-            'locust==2.0.0',
-            'pyyaml==5.4',
-            'selenium==3.141.0'
+        'bs4==0.0.1',
+        'locust==2.0.0',
+        'pyyaml==5.4',
+        'selenium==3.141.0',
+        'defusedxml==0.7.1'
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
