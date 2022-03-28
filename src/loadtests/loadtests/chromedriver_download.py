@@ -26,7 +26,7 @@ def download_chromedriver():
     response.raise_for_status()
     try:
         bucket = ElementTree.fromstring(response.text)
-        contents = [content for content in bucket.getchildren() if content.tag.endswith('Contents')]
+        contents = [content for content in bucket if content.tag.endswith('Contents')]
         url = get_latest_version_url(contents)
     except (ValueError, RuntimeError):
         logging.warning('using fallback url for chromedriver download')
@@ -43,7 +43,7 @@ def get_latest_version_url(contents_list: List[Any]):
     max_version = (0, 0, 0, 0)
     max_url = ''
     for content in contents_list:
-        for child in content.getchildren():
+        for child in content:
             if child.tag.endswith('Key') and child.text.endswith('linux64.zip'):
                 version = child.text.split('/')[0].split('.')
                 if higher(version, max_version):
