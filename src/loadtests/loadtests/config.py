@@ -1,27 +1,6 @@
+from loadtests.utils.envhandler import get_environment_var
 
-import logging
-import os
-from typing import Any
-
-
-logger = logging.getLogger(__name__)
 missing_env_vars = False
-
-
-def get_environment_var(name: str, dtype: type = None, default: Any = None):
-    global missing_env_vars
-    var = os.getenv(name)
-    if var:
-        if dtype:
-            var = dtype(var)
-        return var
-    else:
-        if default is None:
-            logger.error(f'Environment variable {name} not found but required')
-            missing_env_vars = True
-        return default
-
-
 class Config:
     FUNCTIONAL_TEST = bool(get_environment_var("FUNCTIONAL_TEST", int, default=0))
     if FUNCTIONAL_TEST:

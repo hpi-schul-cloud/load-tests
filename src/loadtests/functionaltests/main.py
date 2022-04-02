@@ -1,7 +1,9 @@
-import sys
+import re
+import os
 import time
 import logging
 import threading
+from urllib.parse import urlparse
 from typing import Optional
 
 from gevent import monkey
@@ -9,19 +11,16 @@ from gevent import monkey
 monkey.patch_all = lambda *args, **kwargs: ()
 
 from prometheus_client import start_http_server, Gauge
-
 from loadtests.functionaltests.functionalTester import FunctionalTester
+from loadtests.utils.envhandler import get_environment_var
 
-
-TIMEINTERVAL_SEC = 300
-PROMETHEUS_PORT = 9000
-HOSTS = [
-    ('staging_niedersachsen', 'https://staging.niedersachsen.dbildungscloud.org')
-]
+TIMEINTERVAL_SEC = get_environment_var('TIMEINTERVAL_SEC', int, default=300)
+PROMETHEUS_PORT = get_environment_var('PROMETHEUS_PORT', int, default=9000)
+TARGET_URL = get_environment_var('TARGET_URL')
+HOSTS = (re.sub('[\.-]','_', urlparse(TARGET_URL).hostname.split('.')[0]), TARGET_URL)
 
 
 global_logger = logging.getLogger(__name__)
-
 
 class Host:
     # constructor header must fit HOSTS
@@ -32,7 +31,6 @@ class Host:
         self.temp_exception_counter = 0
         self.failure_counter = Gauge(f'functional_failure_{name}', f'How many functional tests failed in {name}')
         self.exception_counter = Gauge(f'functional_exception_{name}', f'How many exceptions happened in functional tests in {name}')
-
 
 class TestThread:
     def __init__(self, host: Host):
@@ -73,7 +71,8 @@ class TestThread:
 def main():
     logging.basicConfig(level=logging.INFO)  # override locust logging config
     start_http_server(PROMETHEUS_PORT)
-    threads = [TestThread(Host(*host)) for host in HOSTS]
+    # Stay with a list if multiple hosts should run
+    threads = [TestThread(Host(*HOSTS))]
     while True:
         global_logger.info('Starting functional tests...')
         start_time = time.time()
