@@ -9,6 +9,7 @@ on:
       - 'src/**'
       - 'requirements.txt'
       - 'Dockerfile'
+  workflow_dispatch:
 
 jobs:
   skip_ci:
