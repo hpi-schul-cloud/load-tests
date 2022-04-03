@@ -6,7 +6,9 @@ on:
     branches-ignore:
       - main
     paths:
-      - 'loadtests/**'
+      - 'src/**'
+      - requirements.txt
+      - Dockerfile
 
 jobs:
   skip_ci:
