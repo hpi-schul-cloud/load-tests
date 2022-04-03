@@ -35,7 +35,7 @@ jobs:
         id: docker_meta_img_hub
         uses: docker/metadata-action@v3
         with:
-          images: ghcr.io/${{ github.repository_owner }}/dbcmetrics
+          images: ghcr.io/${{ github.repository_owner }}/functests
           tags: |
             type=match,value={{branch}},pattern=.*\d,suffix=-latest
 
