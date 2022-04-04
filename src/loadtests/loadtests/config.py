@@ -1,6 +1,23 @@
-from loadtests.utils.envhandler import get_environment_var
+import os
+import logging
+from typing import Any
 
 missing_env_vars = False
+logger = logging.getLogger(__name__)
+
+def get_environment_var(name: str, dtype: type = None, default: Any = None):
+    global missing_env_vars
+    var = os.getenv(name)
+    if var:
+        if dtype:
+            var = dtype(var)
+        return var
+    else:
+        if default is None:
+            logger.error(f'Environment variable {name} not found but required')
+            missing_env_vars = True
+        return default
+        
 class Config:
     FUNCTIONAL_TEST = bool(get_environment_var("FUNCTIONAL_TEST", int, default=0))
     if FUNCTIONAL_TEST:
@@ -13,6 +30,10 @@ class Config:
         WEIGHT_ACTUAL_ANONYMOUS = 1
         WAIT_TIME_SHORT = 1
         WAIT_TIME_LONG = 1
+        TIMEINTERVAL_SEC = get_environment_var('TIMEINTERVAL_SEC', int, default=300)
+        PROMETHEUS_PORT = get_environment_var('PROMETHEUS_PORT', int, default=9000)
+        TARGET_URL = get_environment_var('TARGET_URL')
+
     else:  # load test
         BBB_ROOM_COUNT = get_environment_var("BBBNUMBERROOMS", int)
         BBB_USER_COUNT = get_environment_var("BBBNUMBERUSERS", int)
