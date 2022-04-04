@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "functests.fullname" . }}
+  name: {{ include "functest.fullname" . }}
   labels:
-    {{- include "functests.labels" . | nindent 4 }}
+    {{- include "functest.labels" . | nindent 4 }}
 data:
   dbcm_config.yaml: |
     {{- toYaml .Values.dbcmconfig | nindent 4 }}

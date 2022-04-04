@@ -4,7 +4,7 @@ name: BAP Docker Image on Tag
 on:
   push:
     tags:
-      - 'functests-[0-9]+.[0-9]+.[0-9]+'
+      - 'functest-[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   build_and_push_docker:

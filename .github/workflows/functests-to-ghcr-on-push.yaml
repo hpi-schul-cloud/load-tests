@@ -1,5 +1,5 @@
 ---
-name: functests Docker Image on Push to GHCR
+name: functest Docker Image on Push to GHCR
 
 on:
   push:
@@ -36,7 +36,7 @@ jobs:
         id: docker_meta_img_hub
         uses: docker/metadata-action@v3
         with:
-          images: ghcr.io/${{ github.repository_owner }}/functests
+          images: ghcr.io/${{ github.repository_owner }}/functest
           tags: |
             type=match,value={{branch}},pattern=.*\d,suffix=-latest
 
