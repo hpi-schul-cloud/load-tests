@@ -12,11 +12,11 @@ monkey.patch_all = lambda *args, **kwargs: ()
 
 from prometheus_client import start_http_server, Gauge
 from loadtests.functionaltests.functionalTester import FunctionalTester
-from loadtests.utils.envhandler import get_environment_var
+from loadtests.loadtests.config import Config
 
-TIMEINTERVAL_SEC = get_environment_var('TIMEINTERVAL_SEC', int, default=300)
-PROMETHEUS_PORT = get_environment_var('PROMETHEUS_PORT', int, default=9000)
-TARGET_URL = get_environment_var('TARGET_URL')
+TIMEINTERVAL_SEC = Config.TIMEINTERVAL_SEC
+PROMETHEUS_PORT = Config.PROMETHEUS_PORT
+TARGET_URL = Config.TARGET_URL
 HOSTS = (re.sub('[\.-]','_', urlparse(TARGET_URL).hostname.split('.')[0]), TARGET_URL)
 
 
