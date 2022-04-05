@@ -47,18 +47,6 @@ spec:
               port: {{ .Values.containerPort }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          volumeMounts:
-          - name: {{ .Chart.Name }}-configyml
-            mountPath: /etc/functest/dbcm_config.yaml
-            subPath: dbcm_config.yaml
-            readOnly: true
-      volumes:
-      - name: {{ .Chart.Name }}-configyml
-        configMap:
-          name: {{ include "functest.fullname" . }}
-          items:
-          - key: dbcm_config.yaml
-            path: dbcm_config.yaml
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

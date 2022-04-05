@@ -68,5 +68,6 @@ affinity: {}
 
 # -- The values below 'dbcnconfigwill be copied via the configmap into the file system of the dbcmetrics pod
 # below the mount point specified in the deployment template which is '/etc/dbcmetrics/dbcm_config.yaml'
-functestconfig:
-  target_url: "https://infra.schulcloud-02.dbildungscloud.dev"
+env:
+  public:
+    target_url: "https://infra.schulcloud-02.dbildungscloud.dev"

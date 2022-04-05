@@ -2,10 +2,8 @@ name: Release Charts
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - 'deploy/infra-otc-cert-manager-webhook'
+    tags:
+      - 'helmfunctest-[0-9]+.[0-9]+.[0-9]+'
       
   workflow_dispatch:
 
