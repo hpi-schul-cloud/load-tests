@@ -70,4 +70,28 @@ affinity: {}
 # below the mount point specified in the deployment template which is '/etc/dbcmetrics/dbcm_config.yaml'
 env:
   public:
-    target_url: "https://infra.schulcloud-02.dbildungscloud.dev"
+    TARGET_URL: "https://infra.schulcloud-02.dbildungscloud.dev"
+    PYTHONPATH: "./src:${PYTHONPATH}"
+    FUNCTIONAL_TEST: 1 
+#    TIMEINTERVAL_SEC: 300
+#    PROMETHEUS_PORT: 9000
+    ADMIN_EMAIL:              "administrator@example.com"
+    TEACHER_EMAIL:            "teacher@example.com"
+    PUPIL_EMAIL:              "pupil@example.com"
+    ANONYMOUS_EMAIL:          "anonymous@example.com"
+#    BBB_ROOM_COUNT: 1
+#    BBB_USER_COUNT: 1
+#    WEIGHT_ADMIN: 1
+#    WEIGHT_TEACHER: 1
+#    WEIGHT_PUPIL: 1
+#    WEIGHT_ANONYMOUS: 1
+#    WEIGHT_ACTUAL_ANONYMOUS: 1
+#    WAIT_TIME_SHORT: 1
+#    WAIT_TIME_LONG: 1
+  private:
+#    ADMIN_PASSWORD: "<administrator_password>"
+#    TEACHER_PASSWORD: "<teacher_password>"
+#    PUPIL_PASSWORD: "<pupil_password>"
+#    ANONYMOUS_PASSWORD: "<anonymous_password>"
+
+existingSecret: ""
