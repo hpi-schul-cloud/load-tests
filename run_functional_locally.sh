@@ -1,12 +1,6 @@
-
-export TIMESHORT=5
-export TIMELONG=10
-export BBBNUMBERROOMS=1
-export BBBNUMBERUSERS=1
-export ADMIN_WEIGHT=1
-export TEACHER_WEIGHT=1
-export PUPIL_WEIGHT=1
-export ANONYMOUS_WEIGHT=1
+#! /usr/bin/env bash
+export FUNCTIONAL_TEST=1
+export TARGET_URL=https://infra.schulcloud-02.dbildungscloud.dev
 
 pip install -r requirements.txt -q
-PYTHONPATH=src python src/loadtests/functionaltests/test.py
+PYTHONPATH=src:$PYTHONPATH python3 src/loadtests/functionaltests/main.py

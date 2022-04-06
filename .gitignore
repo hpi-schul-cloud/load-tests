@@ -2,3 +2,5 @@ __pycache__/
 users_*.yaml
 src/loadtests.egg-info/
 loadtest_secrets.env
+.vscode/
+chromedriver

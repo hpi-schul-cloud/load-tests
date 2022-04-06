@@ -1,4 +1,8 @@
+# when making changes, make sure to also edit setup.py accordingly
 bs4==0.0.1
 locust==1.1.1
 pyyaml==5.4
 selenium==3.141.0
+defusedxml==0.7.1
+prometheus-client==0.13.1
+pyderman==2.0.2
