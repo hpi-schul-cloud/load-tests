@@ -2,8 +2,10 @@ name: Release Charts
 
 on:
   push:
-    tags:
-      - 'helmfunctest-[0-9]+.[0-9]+.[0-9]+'
+    branches:
+      - main
+    paths:
+      - 'charts/functest'
       
   workflow_dispatch:
 
