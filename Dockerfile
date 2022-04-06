@@ -5,6 +5,6 @@ COPY requirements.txt ./
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY src ./src
-ENV PYTHONPATH=src:$PYTHONPATH"
+ENV PYTHONPATH=src:$PYTHONPATH
 
 CMD [ "python3", "src/loadtests/functionaltests/main.py"]
