@@ -69,7 +69,7 @@ class TestThread:
 
 
 def main():
-    logging.basicConfig(level=logging.INFO)  # override locust logging config
+    logging.basicConfig(level=logging.DEBUG)  # override locust logging config
     start_http_server(PROMETHEUS_PORT)
     # Stay with a list if multiple hosts should run
     threads = [TestThread(Host(*HOSTS))]
