@@ -71,14 +71,14 @@ affinity: {}
 env:
   public:
     TARGET_URL: "https://infra.schulcloud-02.dbildungscloud.dev"
-    PYTHONPATH: "./src:${PYTHONPATH}"
+#    PYTHONPATH: "./src:${PYTHONPATH}"
     FUNCTIONAL_TEST: 1 
 #    TIMEINTERVAL_SEC: 300
 #    PROMETHEUS_PORT: 9000
-    ADMIN_EMAIL:              "administrator@example.com"
-    TEACHER_EMAIL:            "teacher@example.com"
-    PUPIL_EMAIL:              "pupil@example.com"
-    ANONYMOUS_EMAIL:          "anonymous@example.com"
+#    ADMIN_EMAIL:              "administrator@example.com"
+#    TEACHER_EMAIL:            "teacher@example.com"
+#    PUPIL_EMAIL:              "pupil@example.com"
+#    ANONYMOUS_EMAIL:          "anonymous@example.com"
 #    BBB_ROOM_COUNT: 1
 #    BBB_USER_COUNT: 1
 #    WEIGHT_ADMIN: 1
