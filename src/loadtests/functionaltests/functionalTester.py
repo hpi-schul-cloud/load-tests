@@ -24,8 +24,8 @@ class FunctionalTester:
         self.env = Environment()
         self.env.events = Events()
         self.env.events.request_failure.add_listener(lambda **kw: self.failure_callback(self.task_name, kw))
-        self.env.events.test_start.add_listener(lambda **kw: self.logger.debug('test_start:', kw))
-        self.env.events.test_stop.add_listener(lambda **kw: self.logger.debug('test_stop:', kw))
+        self.env.events.test_start.add_listener(lambda **kw: self.logger.info('test_start:', kw))
+        self.env.events.test_stop.add_listener(lambda **kw: self.logger.info('test_stop:', kw))
 
     def run(self):
         self.run_all()
@@ -33,14 +33,14 @@ class FunctionalTester:
     def run_all(self):
         for user_class in locustfile.user_classes:
             user = user_class(self.env)
-            self.logger.debug(f'User: {type(user).__name__}')
+            self.logger.info(f'User: {type(user).__name__}')
 
             self.task_name = 'user.on_start'
             user.on_start()
 
             for taskset_class in user.tasks:
                 taskset = taskset_class(user)
-                self.logger.debug(f'  TaskSet: {type(taskset).__name__}')
+                self.logger.info(f'  TaskSet: {type(taskset).__name__}')
 
                 self.task_name = 'taskset.on_start'
                 try:
@@ -50,7 +50,7 @@ class FunctionalTester:
 
                 for task in taskset.tasks:
                     self.task_name = task.__name__
-                    self.logger.debug(f'    {self.task_name}')
+                    self.logger.info(f'    {self.task_name}')
                     try:
                         task(taskset)
                     except Exception as exc:

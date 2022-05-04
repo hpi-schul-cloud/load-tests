@@ -18,6 +18,7 @@ TIMEINTERVAL_SEC = Config.TIMEINTERVAL_SEC
 PROMETHEUS_PORT = Config.PROMETHEUS_PORT
 TARGET_URL = Config.TARGET_URL
 HOSTS = (re.sub('[\.-]','_', urlparse(TARGET_URL).hostname.split('.')[0]), TARGET_URL)
+DEBUG_LEVEL = Config.DEBUG_LEVEL
 
 
 global_logger = logging.getLogger(__name__)
@@ -69,7 +70,7 @@ class TestThread:
 
 
 def main():
-    logging.basicConfig(level=logging.DEBUG)  # override locust logging config
+    logging.basicConfig(level=DEBUG_LEVEL)  # override locust logging config
     start_http_server(PROMETHEUS_PORT)
     # Stay with a list if multiple hosts should run
     threads = [TestThread(Host(*HOSTS))]

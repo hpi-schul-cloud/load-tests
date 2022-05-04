@@ -20,6 +20,7 @@ def get_environment_var(name: str, dtype: type = None, default: Any = None):
         
 class Config:
     FUNCTIONAL_TEST = bool(get_environment_var("FUNCTIONAL_TEST", int, default=0))
+    DEBUG_LEVEL = int(get_environment_var("DEBUG_LEVEL", int, default=20)) # 10 == Debug, 20 = Info, 30 == Warn, 40 == Error
     if FUNCTIONAL_TEST:
         BBB_ROOM_COUNT = 1
         BBB_USER_COUNT = 2
