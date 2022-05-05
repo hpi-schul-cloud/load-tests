@@ -1,5 +1,6 @@
 import os
 import logging
+from urllib.parse import urlparse, urljoin
 from typing import Any
 
 missing_env_vars = False
@@ -17,6 +18,22 @@ def get_environment_var(name: str, dtype: type = None, default: Any = None):
             logger.error(f'Environment variable {name} not found but required')
             missing_env_vars = True
         return default
+
+def normalize_url(domain: str):
+    url: str = ""
+    u = urlparse(domain)
+    mynetloc = u.netloc
+    mypath = u.path
+    myscheme = "https://"
+
+    if mynetloc != "":
+        url = myscheme + mynetloc
+    else:
+        if mypath != "":
+                url = myscheme + mypath
+        else:
+            logger.error(f'Specified domain variable {domain} not correct')
+    return url
         
 class Config:
     FUNCTIONAL_TEST = bool(get_environment_var("FUNCTIONAL_TEST", int, default=0))
@@ -33,7 +50,7 @@ class Config:
         WAIT_TIME_LONG = 1
         TIMEINTERVAL_SEC = get_environment_var('TIMEINTERVAL_SEC', int, default=300)
         PROMETHEUS_PORT = get_environment_var('PROMETHEUS_PORT', int, default=9000)
-        TARGET_URL = get_environment_var('TARGET_URL')
+        TARGET_URL = normalize_url(get_environment_var('TARGET_URL'))
 
     else:  # load test
         BBB_ROOM_COUNT = get_environment_var("BBBNUMBERROOMS", int)
