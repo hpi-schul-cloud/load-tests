@@ -1,20 +1,25 @@
-name: helmdoc
+# https://github.com/terraform-docs/gh-actions
 
+name: Generate Terraform-Docs && Helm-Docs
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [main]
+  pull_request:
+    branches: 
+      - main
+    paths: 
+      - 'charts/**'
+      - 'terraform/**'
+      - '.github/workflows/**'
+      - '.github/templates/**'
 
-  # Allows running this workflow manually from the Actions tab
-  workflow_dispatch:
 
 jobs:
-  # Contains a single job called "build"
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      # Checks out repository under $GITHUB_WORKSPACE, so job can access it
-      - uses: actions/checkout@v2
-
-      - name: Run a one-line script
-        run: echo Hello, world!
+  call-workflow: 
+    uses: hpi-schul-cloud/infra-tools/.github/workflows/generate-tf-helm-docs.yaml@tf-helm-docs-v1
+    with:
+      name: "devops"
+      email: "devops@dbildungscloud.de"
+      src_path_tf: terraform
+      terraform_docs_config_file: .github/templates/.terraform-docs.yaml 
+      src_path_helm: charts
+      helm_docs_template_file: .github/templates/README.md.gotmpl
+      helm_ignored_dirs: sc-sshd,sc-cert-manager-clusterissuer

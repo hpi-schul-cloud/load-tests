@@ -1,20 +1,50 @@
-name: helmtest
+name: Release Charts
 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [main]
-
-  # Allows running this workflow manually from the Actions tab
+    branches:
+      - main
+    paths:
+      - 'charts/functest'
+      
   workflow_dispatch:
 
 jobs:
-  # Contains a single job called "build"
-  build:
+  release:
     runs-on: ubuntu-latest
     steps:
-      # Checks out repository under $GITHUB_WORKSPACE, so job can access it
-      - uses: actions/checkout@v2
+      # https://github.com/actions/checkout 
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+        with:
+          fetch-depth: 0
 
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+      
+      # 
+      # https://github.com/Azure/setup-helm
+      # Acceptable values for version are latest or any semantic version string like v2.16.7 Use this action in workflow to define which version of helm will be used.
+      #
+      - name: Install Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: 3.4.0 #renovate: datasource=github-releases depName=helm/helm
+
+      #- name: Add external Helm repos
+      #  run: helm repo add bitnami https://charts.bitnami.com/bitnami
+
+      # No chart dependencies to build. So left out here.
+
+      # https://github.com/helm/chart-releaser-action
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@v1.2.1
+        with:
+          version: v1.2.1
+          charts_dir: charts
+          # config: 
+          # charts_repo_url: https://<owner>.github.io/<project>
+        env:
+          CR_TOKEN: '${{ secrets.GITHUB_TOKEN }}'

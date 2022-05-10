@@ -19,20 +19,22 @@ The functional tests provide the number of executed and failed tests as Promethe
 - Shared Variables
   * PYTHONPATH=./src:${PYTHONPATH}
   * ADMIN_EMAIL=admin@schul-cloud.org
-  * ADMIN_PASSWORD=<admin_apssword>
+  * ADMIN_PASSWORD=<admin_password>
   * TEACHER_EMAIL=lehrer@schul-cloud.org
-  * TEACHER_PASSWORD=<teacher_apssword>
+  * TEACHER_PASSWORD=<teacher_password>
   * PUPIL_EMAIL=schueler@schul-cloud.org
-  * PUPIL_PASSWORD=<pupil_apssword>
+  * PUPIL_PASSWORD=<pupil_password>
   * ANONYMOUS_EMAIL=hugo@dbildungscloud.de
-  * ANONYMOUS_PASSWORD=<anonymous_apssword>
-  * BBBKEY          : Key for BigBlueButton
-  * BBBHOST         : URL of BigBlueButton
-  * BBBNUMBERROOMS  : INT of Rooms of BBB
-  * BBBNUMERUSERS   : INT of Users per Room
-  * MMHOST          : URL of MatrixMessenger
-  * TIMESHORT       : Time in Sec
-  * TIMELONG        : Time in Sec
+  * ANONYMOUS_PASSWORD=<anonymous_password>
+  * BBB_ROOM_COUNT            : INT of Rooms of BBB
+  * BBB_USER_COUNT            : INT of Users per Room
+  * WEIGHT_ADMIN              : INT users weight
+  * WEIGHT_TEACHER            : INT users weight
+  * WEIGHT_PUPIL              : INT users weight
+  * WEIGHT_ANONYMOUS          : INT users weight
+  * WEIGHT_ACTUAL_ANONYMOUS   : INT users weight
+  * WAIT_TIME_SHORT           : Time in Sec
+  * WAIT_TIME_LONG            : Time in Sec
 - Load Test specific Variables
   * FUNCTIONAL_TEST : 0  
 - Functional Test specific Variables
@@ -41,7 +43,7 @@ The functional tests provide the number of executed and failed tests as Promethe
   * Optional: 
     * TIMEINTERVAL_SEC : Time in sec to sleep between repeated tests, default is 300
     * PROMETHEUS_PORT port to expose Prometheus metrics, default is 9000
-3. Install required programs with `pip3 install -r requirements.txt`
+1. Install required programs with `pip3 install -r requirements.txt`
 
 ## Run the load tests locally
 

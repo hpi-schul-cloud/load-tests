@@ -1,0 +1,97 @@
+# -- Default values for dbcmetrics.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: schulcloud/functest
+  pullPolicy: IfNotPresent
+  # -- Overrides the image tag whose default is the chart appVersion.
+  tag: 
+
+containerPort: 9000
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # -- Specifies whether a service account should be created
+  create: true
+  # -- Annotations to add to the service account
+  annotations: {}
+  # -- The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # -- fsGroup: 2000
+
+securityContext: {}
+  # -- capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources: {}
+  # -- We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 1
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# -- The values below 'dbcnconfigwill be copied via the configmap into the file system of the dbcmetrics pod
+# below the mount point specified in the deployment template which is '/etc/dbcmetrics/dbcm_config.yaml'
+env:
+  public:
+    TARGET_URL: "https://infra.schulcloud-02.dbildungscloud.dev"
+#    PYTHONPATH: "./src:${PYTHONPATH}"
+    FUNCTIONAL_TEST: 1 
+#    TIMEINTERVAL_SEC: 300
+#    PROMETHEUS_PORT: 9000
+#    ADMIN_EMAIL:              "administrator@example.com"
+#    TEACHER_EMAIL:            "teacher@example.com"
+#    PUPIL_EMAIL:              "pupil@example.com"
+#    ANONYMOUS_EMAIL:          "anonymous@example.com"
+#    BBB_ROOM_COUNT: 1
+#    BBB_USER_COUNT: 1
+#    WEIGHT_ADMIN: 1
+#    WEIGHT_TEACHER: 1
+#    WEIGHT_PUPIL: 1
+#    WEIGHT_ANONYMOUS: 1
+#    WEIGHT_ACTUAL_ANONYMOUS: 1
+#    WAIT_TIME_SHORT: 1
+#    WAIT_TIME_LONG: 1
+  private:
+#    ADMIN_PASSWORD: "<administrator_password>"
+#    TEACHER_PASSWORD: "<teacher_password>"
+#    PUPIL_PASSWORD: "<pupil_password>"
+#    ANONYMOUS_PASSWORD: "<anonymous_password>"
+
+existingSecret: ""
