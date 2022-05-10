@@ -19,13 +19,13 @@ The functional tests provide the number of executed and failed tests as Promethe
 - Shared Variables
   * PYTHONPATH=./src:${PYTHONPATH}
   * ADMIN_EMAIL=admin@schul-cloud.org
-  * ADMIN_PASSWORD=<admin_apssword>
+  * ADMIN_PASSWORD=<admin_password>
   * TEACHER_EMAIL=lehrer@schul-cloud.org
-  * TEACHER_PASSWORD=<teacher_apssword>
+  * TEACHER_PASSWORD=<teacher_password>
   * PUPIL_EMAIL=schueler@schul-cloud.org
-  * PUPIL_PASSWORD=<pupil_apssword>
+  * PUPIL_PASSWORD=<pupil_password>
   * ANONYMOUS_EMAIL=hugo@dbildungscloud.de
-  * ANONYMOUS_PASSWORD=<anonymous_apssword>
+  * ANONYMOUS_PASSWORD=<anonymous_password>
   * BBB_ROOM_COUNT            : INT of Rooms of BBB
   * BBB_USER_COUNT            : INT of Users per Room
   * WEIGHT_ADMIN              : INT users weight
