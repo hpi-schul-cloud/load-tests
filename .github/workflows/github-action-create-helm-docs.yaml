@@ -23,4 +23,3 @@ jobs:
       src_path_helm: charts
       helm_docs_template_file: .github/templates/README.md.gotmpl
       helm_ignored_dirs: sc-sshd,sc-cert-manager-clusterissuer
-
