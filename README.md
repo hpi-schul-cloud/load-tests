@@ -33,10 +33,12 @@ The functional tests provide the number of executed and failed tests as Promethe
   * WEIGHT_PUPIL              : INT users weight
   * WEIGHT_ANONYMOUS          : INT users weight
   * WEIGHT_ACTUAL_ANONYMOUS   : INT users weight
+  * WEIGHT_EXTERNAL_PUPIL     : INT users weight
   * WAIT_TIME_SHORT           : Time in Sec
   * WAIT_TIME_LONG            : Time in Sec
 - Load Test specific Variables
   * FUNCTIONAL_TEST : 0  
+  * LOADTEST_EXTERNAL: 0 / 1  : Test IDM with schulcloud-server
 - Functional Test specific Variables
   * FUNCTIONAL_TEST : 1  
   * TARGET_URL      : Specify the instance to be tested as FQDN, e.g. https://nidersachsen.cloud
@@ -46,6 +48,13 @@ The functional tests provide the number of executed and failed tests as Promethe
 1. Install required programs with `pip3 install -r requirements.txt`
 
 ## Run the load tests locally
+
+Load tests make use of selenium with remote browser. To mimic this locally setup the following:
+
+1. Download selenium server from https://www.selenium.dev/downloads/
+1. Follow the setup steps for selenium server according to https://www.selenium.dev/documentation/grid/getting_started/
+1. Set the `BROWSERIPPORT` environment variable to match with your local selenium server (i.e. 'localhost:4444')
+1. Start the server with `java -jar selenium-server-<version>.jar standalone`
 
 ### Command line and web-interface
 To run the load test, first open a command line and start locust with the following command:

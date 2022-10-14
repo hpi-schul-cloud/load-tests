@@ -3,6 +3,7 @@ from typing import List, Type
 
 from loadtests.loadtests.config import Config
 from loadtests.loadtests.taskset_bbb import TasksetBBB
+from loadtests.loadtests.taskset_extern_login import TasksetExternalLogin
 from loadtests.loadtests.taskset_schul_cloud import TasksetSchulCloud
 from loadtests.loadtests.taskset_doc import TasksetDoc
 from loadtests.loadtests.taskset_anonymous import TasksetAnonymous
@@ -76,6 +77,28 @@ class ActualAnonymousUser(SchulcloudUser):
     def on_stop(self):
         pass
 
+class ExternalPupilUser(SchulcloudUser):
+
+    type = UserType.EXTERNAL_PUPIL
+    credentials = Config.LOGIN_EXTERN_PUPIL
+    weight = Config.WEIGHT_EXTERNAL_PUPIL
+    tasks = {
+        TasksetBBB: 0,
+        TasksetSchulCloud: 0,
+        TasksetDoc: 0,
+        TasksetRocketChat: 0,
+        TasksetExternalLogin: 1
+    }
+
+    # override login / logout
+    def on_start(self):
+        print("User instance (%r) executes on_start " % self)
+        pass
+
+    def on_stop(self):
+        print("User instance (%r) executes on_stop " % self)
+        pass
+
 
 # list all user classes for functional tests
-user_classes: List[Type[SchulcloudUser]] = [AdminUser, TeacherUser, PupilUser, AnonymousUser, ActualAnonymousUser]
+user_classes: List[Type[SchulcloudUser]] = [AdminUser, TeacherUser, PupilUser, AnonymousUser, ActualAnonymousUser, ExternalPupilUser]
