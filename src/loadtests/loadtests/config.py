@@ -38,7 +38,7 @@ def normalize_url(domain: str):
 class Config:
     FUNCTIONAL_TEST = bool(get_environment_var("FUNCTIONAL_TEST", int, default=0))
     LOADTEST_EXTERNAL = bool(get_environment_var("LOADTEST_EXTERNAL", int, default=1))
-    DEBUG_LEVEL = int(get_environment_var("DEBUG_LEVEL", int, default=20)) # 10 == Debug, 20 = Info, 30 == Warn, 40 == Error
+    DEBUG_LEVEL = int(get_environment_var("DEBUG_LEVEL", int, default=10)) # 10 == Debug, 20 = Info, 30 == Warn, 40 == Error
     if FUNCTIONAL_TEST:
         print("Do Functional Test")
         BBB_ROOM_COUNT = 1
@@ -48,6 +48,7 @@ class Config:
         WEIGHT_PUPIL = 1
         WEIGHT_ANONYMOUS = 1
         WEIGHT_ACTUAL_ANONYMOUS = 1
+        WEIGHT_EXTERNAL_PUPIL = 0
         WAIT_TIME_SHORT = 1
         WAIT_TIME_LONG = 10
         TIMEINTERVAL_SEC = get_environment_var('TIMEINTERVAL_SEC', int, default=300)
@@ -63,8 +64,8 @@ class Config:
         WEIGHT_ANONYMOUS = 0
         WEIGHT_ACTUAL_ANONYMOUS = 0
         WEIGHT_EXTERNAL_PUPIL = 1
-        WAIT_TIME_SHORT = 1
-        WAIT_TIME_LONG = 1
+        WAIT_TIME_SHORT = get_environment_var("TIMESHORT", int, 1)
+        WAIT_TIME_LONG = get_environment_var("TIMELONG", int, 1)
     else:  # load test
         print("Do Load Test (Default setting)")
         BBB_ROOM_COUNT = get_environment_var("BBBNUMBERROOMS", int, 0)
@@ -74,6 +75,7 @@ class Config:
         WEIGHT_PUPIL = get_environment_var("PUPIL_WEIGHT", int, 1)
         WEIGHT_ANONYMOUS = get_environment_var("ANONYMOUS_WEIGHT", int, 0)
         WEIGHT_ACTUAL_ANONYMOUS = get_environment_var("ACTUAL_ANONYMOUS_WEIGHT", int, default=1)
+        WEIGHT_EXTERNAL_PUPIL = 0
         WAIT_TIME_SHORT = get_environment_var("TIMESHORT", int, 1)
         WAIT_TIME_LONG = get_environment_var("TIMELONG", int, 1)
 
@@ -85,23 +87,23 @@ class Config:
 
     LOGIN_ADMIN = {
         'email': get_environment_var("ADMIN_EMAIL", default="admin@schul-cloud.org"),
-        'password': get_environment_var("ADMIN_PASSWORD", default="Schulcloud1!")
+        'password': get_environment_var("ADMIN_PASSWORD")
     }
     LOGIN_TEACHER = {
         'email': get_environment_var("TEACHER_EMAIL", default="lehrer@schul-cloud.org"),
-        'password': get_environment_var("TEACHER_PASSWORD", default="Schulcloud1!")
+        'password': get_environment_var("TEACHER_PASSWORD")
     }
     LOGIN_PUPIL = {
         'email': get_environment_var("PUPIL_EMAIL", default="schueler@schul-cloud.org"),
-        'password': get_environment_var("PUPIL_PASSWORD", default="Schulcloud1!")
+        'password': get_environment_var("PUPIL_PASSWORD")
     }
     LOGIN_ANONYMOUS = {
         'email': get_environment_var("ANONYMOUS_EMAIL", default="schueler@schul-cloud.org"),
-        'password': get_environment_var("ANONYMOUS_PASSWORD", default="Schulcloud1!")
+        'password': get_environment_var("ANONYMOUS_PASSWORD")
     }
     LOGIN_EXTERN_PUPIL = {
         'email': get_environment_var("EXTERN_PUPIL_EMAIL", default="emil.extern"),
-        'password': get_environment_var("EXTERN_PUPIL_PASSWORD", default="Extern1!")
+        'password': get_environment_var("EXTERN_PUPIL_PASSWORD")
     }
 
     if missing_env_vars:
