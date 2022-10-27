@@ -21,8 +21,9 @@ from loadtests.loadtests.user_type import UserType
 
 class SchulcloudUser(HttpUser):
 
+    abstract = True
     type = UserType.UNDEFINED
-    weight: int = 0
+    weight: int = 1
     tasks: Dict = {}
     credentials: Dict[Literal['email', 'password'], str] = None
 
