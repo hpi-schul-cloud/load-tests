@@ -15,7 +15,7 @@ The functional tests provide the number of executed and failed tests as Promethe
 
 1. Download ChromeDriver
 - The chromedriver.exe needs to be in the same path as the locustfile.py-File
-2. Configure the environment
+2. Configure the environment (config.py, launch.json)
 - Shared Variables
   * PYTHONPATH=./src:${PYTHONPATH}
   * ADMIN_EMAIL=admin@schul-cloud.org
@@ -53,9 +53,12 @@ Load tests make use of selenium with remote browser. To mimic this locally setup
 
 1. Download selenium server from https://www.selenium.dev/downloads/
 1. Follow the setup steps for selenium server according to https://www.selenium.dev/documentation/grid/getting_started/
+1. Copy the Selenium Server jar file to the src\loadtests path
 1. Set the `BROWSERIPPORT` environment variable to match with your local selenium server (i.e. 'localhost:4444')
-1. Start the server with `java -jar selenium-server-<version>.jar standalone`
-
+1. Start the server with the following command:
+```
+ `java -jar selenium-server-<version>.jar standalone`
+ ```
 ### Command line and web-interface
 To run the load test, first open a command line and start locust with the following command:
 ```
