@@ -26,10 +26,10 @@ class TasksetExternalLogin(TaskSet):
         """
         Do a login as external user via IDM
         """
+        driver_wb = webdriver.Remote(f"http://{Config.BROWSER_IP_PORT}/wd/hub", DesiredCapabilities.CHROME)
 
-        # Starts a chrome Browser
-        driver_wb = webdriver.Remote(f"http://{Config.BROWSER_IP_PORT}/wd/hub",
-                                     DesiredCapabilities.CHROME)
+        # note start time
+        self.start_time = time.perf_counter()
 
         # navigate to login page
         url = f"{self.user.host}/login"
@@ -49,15 +49,24 @@ class TasksetExternalLogin(TaskSet):
         element = WebDriverWait(driver_wb, 15).until(expected_conditions.presence_of_element_located((By.ID, ui_element_id)))
         element.send_keys(self.user.credentials["password"], Keys.ENTER)
 
+
         # Open settings menu
         element = WebDriverWait(driver_wb, 15).until(expected_conditions.presence_of_element_located((By.XPATH, "//div[@data-testid='initials']")))
-
-        # Keep session active for at least WAIT_TIME_LONG until settings button was found (i. e. login succeeded)
-        time.sleep(int(Config.WAIT_TIME_LONG))
         element.click()
-
         # Click logout button
         element = WebDriverWait(driver_wb, 15).until(expected_conditions.presence_of_element_located((By.XPATH, "//a[@data-testid='logout']")))
         element.click()
+
+        total_time = (time.perf_counter() - self.start_time) * 1000
+        self.user.environment.events.request.fire(
+            request_type="external_login",
+            name="/",
+            response_time=total_time,
+            response_length=0,
+            context=self.user,
+            exception=None,
+            url="/",
+        )
+        self.start_time = None
 
         driver_wb.quit()
