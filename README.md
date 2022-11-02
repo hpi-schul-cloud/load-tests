@@ -53,7 +53,6 @@ Load tests make use of selenium with remote browser. To mimic this locally setup
 
 1. Download selenium server from https://www.selenium.dev/downloads/
 1. Follow the setup steps for selenium server according to https://www.selenium.dev/documentation/grid/getting_started/
-1. Copy the Selenium Server jar file to the src\loadtests path
 1. Set the `BROWSERIPPORT` environment variable to match with your local selenium server (i.e. 'localhost:4444')
 1. Start the server with the following command:
 ```
