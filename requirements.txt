@@ -1,6 +1,6 @@
 # when making changes, make sure to also edit setup.py accordingly
 bs4==0.0.1
-locust==1.1.1
+locust==2.0.0
 pyyaml==5.4
 selenium==3.141.0
 defusedxml==0.7.1

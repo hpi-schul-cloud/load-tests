@@ -2,7 +2,14 @@
 import json
 import random
 import base64
-from typing import Dict, Optional, Literal
+from typing import Dict, Optional
+
+import traceback
+
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
 
 from locust.user import HttpUser
 from bs4 import BeautifulSoup
@@ -14,6 +21,7 @@ from loadtests.loadtests.user_type import UserType
 
 class SchulcloudUser(HttpUser):
 
+    abstract = True
     type = UserType.UNDEFINED
     weight: int = 1
     tasks: Dict = {}

@@ -9,3 +9,4 @@ class UserType(enum.Enum):
     PUPIL = 3
     ANONYMOUS = 4
     ACTUAL_ANONYMOUS = 5
+    EXTERNAL_PUPIL = 6

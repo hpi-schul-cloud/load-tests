@@ -1,0 +1,32 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+      {
+          "name": "Schulcloud-Verbund Locust load test",
+          "type": "python",
+          "request": "launch",
+          "module": "locust",
+          "cwd": "${workspaceFolder}\\src",
+          "args": [
+            "-f",
+            ".\\loadtests\\loadtests\\locustfile.py",
+            "--host",
+            "https://main.cd.dbildungscloud.dev"
+        ],
+          "console": "integratedTerminal",
+          "gevent": true,
+          "env": {
+            "ADMIN_EMAIL": "admin@schul-cloud.org",
+            "ADMIN_PASSWORD": "",
+            "TEACHER_EMAIL": "schueler@schul-cloud.org",
+            "TEACHER_PASSWORD": "",
+            "PUPIL_EMAIL": "schueler@schul-cloud.org",
+            "PUPIL_PASSWORD": "",
+            "ANONYMOUS_EMAIL": "schueler@schul-cloud.org",
+            "ANONYMOUS_PASSWORD": "",
+            "EXTERN_PUPIL_EMAIL": "emil.extern",
+            "EXTERN_PUPIL_PASSWORD": ""
+          }
+      }
+  ]
+}
