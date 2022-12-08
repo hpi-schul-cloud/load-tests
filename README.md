@@ -1,14 +1,14 @@
 # HPI SchulCloud load tests
 
-To test the performance of the HPI-SchulCloud application, multiple useres will be simulated by the loadtest. It creates a provided number of users, which are different by their user-type (admin, techer, pupil), and swarms the system simultaneausly, simulating their behavior. Courses, BBB-rooms, tasks etc. will be created, edited and deleted to generate additional traffic, and is captured on the Locust web-interface for subsequent analysis.
-Actually the loadtest implementation provides two kinds of starting the tests:
-- scalable load tests which are designed to run with a specified number of user from the locust web interface
-- functional tests which do not scale but execute the same tests as the load tests, this startup typ could be used for smoke testing a fresh deployed instance or regular verfying the proper funtion of a running instance
+To test the performance of the HPI-SchulCloud application, multiple useres will be simulated by the load test. It creates a provided number of users, which are different by their user-type (admin, teacher, pupil), and swarms the system simultaneausly, simulating their behavior. Courses, BBB rooms, tasks etc. will be created, edited and deleted to generate additional traffic, and this is captured on the Locust web interface for subsequent analysis.
+Actually, the load test implementation provides two kinds of starting the tests:
+- scalable load tests which are designed to run with a specified number of users from the Locust web interface
+- functional tests which do not scale, but execute the same tests as the load tests; this startup type could be used for smoke testing a freshly deployed instance or regularly verifying the proper function of a running instance.
 The functional tests provide the number of executed and failed tests as Prometheus metrics to allow alerting on failed tests.
 ## Requirements
 
 - Python (>= 3.6.10)
-- ChromeDriver (>= 90.0.4430.24, just necessary for BBB-Loadtest, Document-Loadtest)
+- ChromeDriver (>= 90.0.4430.24, just necessary for BBB load test, Document load test)
 - Docker (>= 19.03.5, optional)
 
 ## Preparations
@@ -33,13 +33,13 @@ The functional tests provide the number of executed and failed tests as Promethe
   * WEIGHT_PUPIL              : INT users weight
   * WEIGHT_ANONYMOUS          : INT users weight
   * WEIGHT_ACTUAL_ANONYMOUS   : INT users weight
-  * WAIT_TIME_SHORT           : Time in Sec
-  * WAIT_TIME_LONG            : Time in Sec
+  * WAIT_TIME_SHORT           : Time in sec
+  * WAIT_TIME_LONG            : Time in sec
 - Load Test specific Variables
   * FUNCTIONAL_TEST : 0  
 - Functional Test specific Variables
   * FUNCTIONAL_TEST : 1  
-  * TARGET_URL      : Specify the instance to be tested as FQDN, e.g. https://nidersachsen.cloud
+  * TARGET_URL      : Specify the instance to be tested as FQDN, e.g. https://niedersachsen.cloud
   * Optional: 
     * TIMEINTERVAL_SEC : Time in sec to sleep between repeated tests, default is 300
     * PROMETHEUS_PORT port to expose Prometheus metrics, default is 9000
@@ -47,16 +47,16 @@ The functional tests provide the number of executed and failed tests as Promethe
 
 ## Run the load tests locally
 
-### Command line and web-interface
-To run the load test, first open a command line and start locust with the following command:
+### Command line and web interface
+To run the load test, first open a command line and start Locust with the following command:
 ```
 `locust -f ./locustfile.py --host https://hackathon.hpi-schul-cloud.de --tags test`
 ```
-Insert the right host after the '--host' tag*
+Insert the correct host after the '--host' tag*
 *  The '--tags test' tag is optional and will only start tasks which are marked with this tag*
 
-Afterwards, start your webbrowser and open `localhost:8089` or `http://127.0.0.1:8089/`. The locust web-interface should load, and you can fill out the form and start swarming. \
-For further information about running locust check out their [documentation](https://docs.locust.io/en/stable/quickstart.html#start-locust).
+Afterwards, start your webbrowser and open `localhost:8089` or `http://127.0.0.1:8089/`. The Locust web interface should load, and you can fill out the form and start swarming. \
+For further information about running Locust, check out their [documentation](https://docs.locust.io/en/stable/quickstart.html#start-locust).
 
 ### Docker
 
@@ -67,7 +67,7 @@ locust -f ./locustfile.py --no-web --clients 20 --run-time 30s --host https://ha
 ```
 
 ## Run the functional tests locally
-Execute the following command at the top level of the repository
+Execute the following command at the top level of the repository:
 ```
 python3 src/loadtests/functionaltests/main.py
 ```
